@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Latest News</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="latest-news.css">
+	<script src="CoolFroggyClub.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li class="logo">
+                    <a href="home-page-new.html"><img src="CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a>
+                </li>
+                <li><a href="about-us.html">About us</a></li>
+                <li><a href="upcoming-events.html">Upcoming Events</a></li>
+                <li><a href="latest-news.html">Latest News</a></li>
+                <li><a href="join-a-club.html">Join A Club</a></li>
+                <li class="login"><a href="login-new.html">Log in/Sign Up</a></li>
+            </ul>
+        </nav>
+	</header>
+
+    <div aria-label="Breadcrumb" class="breadcrumb">
+        <ul>
+            <li><a href="home-page-new.html">Home</a></li>
+            <li><span aria-current="page">Latest News</span></li>
+        </ul>
+    </div>
+
+    <main>
+        <article>
+            <div class="latest-news">
+                <!-- Events Nav Bar-->
+                <div class="news-nav">
+                    <div class="left-events-nav">
+                        <h1>Latest News</h1>
+                    </div>
+                    <div class="right-events-nav">
+                        <button class="login" type="button" onclick="myFunction()">Past</button> <!-- FILTER PAST EVENTS -->
+                        <button class="login" type="button" onclick="myFunction()">Upcoming</button> <!-- FILTER UPCOMING EVENTS -->
+                    </div>
+                </div>
+
+                <!-- Events List -->
+                <div class="events-list">
+
+                    <form>
+                        <input type="text" placeholder="Search...">
+                        <button type="submit">Search</button>
+                      </form>
+
+                    <div class="indv-news">
+                        <div class="left-news-side">
+                            <h3><a href="https://www.adelaideunisport.com.au/news/beatrice-and-the-dream-to-boost-high-performance-programs/">Science Club hosts virtual seminar on new breakthroughs in cancer research</a></h3>
+                            <br>
+                            <p>Author: Cool Froggy Science Club</p>
+                            <p>Published On: 12 May 2023</p>
+                        </div>
+                    </div>
+
+                    <div class="indv-news">
+                        <div class="left-news-side">
+                            <h3><a href="www.news2.html">International Club celebrates cultural diversity with food festival on campus</a></h3>
+                            <br>
+                            <p>Author: Cool Internation Froggy</p>
+                            <p>Published On: 10 May 2023</p>
+                        </div>
+                    </div>
+
+                    <div class="indv-news">
+                        <div class="left-news-side">
+                            <h3><a href="www.news3.html">Women in Business Club hosts panel discussion with successful female entrepreneurs</a></h3>
+                            <br>
+                            <p>Author: Cool Froggy Woman in STEM</p>
+                            <p>Published On: 7 May 2023</p>
+                        </div>
+                    </div>
+
+                    <div class="indv-news">
+                        <div class="left-news-side">
+                            <h3><a href="www.news4.html">Music Club showcases talented student musicians in annual concert series</a></h3>
+                            <br>
+                            <p>Author: Cool Froggy Music Club</p>
+                            <p>Published On: 1 May 2023</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="social-media">
+          <a href="https://www.facebook.com"><img src="facebook-icon.png" alt="Facebook"></a>
+          <a href="https://www.instagram.com"><img src="instagram-icon.png" alt="Instagram"></a>
+          <a href="https://twitter.com"><img src="twitter-icon.png" alt="Twitter"></a>
+    </footer>
+
+</body>
+
+</html>
