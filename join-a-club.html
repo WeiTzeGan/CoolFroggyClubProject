@@ -6,10 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="join-a-club.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	<script src="CoolFroggyClub.js"></script>
+    <script src="vue-login.js" defer></script>
 </head>
 
 <body>
+    <div id="header">
     <header>
         <nav>
             <ul>
@@ -20,10 +23,12 @@
                 <li><a href="upcoming-events.html">Upcoming Events</a></li>
                 <li><a href="latest-news.html">Latest News</a></li>
                 <li><a href="join-a-club.html">Join A Club</a></li>
-                <li class="login"><a href="login-new.html">Log in/Sign Up</a></li>
+                <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
+                <li class="login" v-show="signedIn"><a href="login-new.html">Sign Out</a></li>
             </ul>
         </nav>
 	</header>
+    </div>
 
     <div aria-label="Breadcrumb" class="breadcrumb">
         <ul>
