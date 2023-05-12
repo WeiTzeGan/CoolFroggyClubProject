@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Signup to Cool Froggy Club!</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="signup.css">
+	<script src="CoolFroggyClub.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li class="logo">
+                    <a href="home-page-new.html"><img src="CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a>
+                </li>
+                <li><a href="about-us.html">About us</a></li>
+                <li><a href="upcoming-events.html">Upcoming Events</a></li>
+                <li><a href="#">Latest News</a></li>
+                <li><a href="join-a-club.html">Join A Club</a></li>
+                <li class="login"><a href="login-new.html">Log in/Sign Up</a></li>
+            </ul>
+        </nav>
+	</header>
+
+    <div aria-label="Breadcrumb" class="breadcrumb">
+        <ul>
+            <li><a href="home-page-new.html">Home</a></li>
+            <li><span aria-current="page">Sign Up</span></li>
+        </ul>
+    </div>
+
+    <main>
+        <article class="signuppage">
+            <h1>Sign Up</h1>
+            <br>
+
+            <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
+            <form>
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name">
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name">
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob">
+
+                <label for="memberID">Cool Froggy Member ID:</label> <!-- VUE + ROUTER ???? -->
+                <input type="text" id="memberID" name="memberID" placeholder="* Auto Generated" value="" readonly>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password">
+
+                <label for="phone">Mobile Phone:</label>
+                <input type="tel" id="phone" name="phone">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+
+                <input type="submit" value="Submit">
+            </form>
+
+        </article>
+
+    </main>
+
+    <footer class="social-media">
+          <a href="https://www.facebook.com"><img src="facebook-icon.png" alt="Facebook"></a>
+          <a href="https://www.instagram.com"><img src="instagram-icon.png" alt="Instagram"></a>
+          <a href="https://twitter.com"><img src="twitter-icon.png" alt="Twitter"></a>
+    </footer>
+
+</body>
+
+</html>
