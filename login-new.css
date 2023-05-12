@@ -137,6 +137,14 @@ input, select {
     font-size: medium;
 }
 
+input[type=password] {
+    margin-bottom: 0px;
+}
+
+p#password-reset {
+    margin-bottom: 20px;
+}
+
 input[type=submit] {
     background-color: #4CAF50;
     color: #fff;
