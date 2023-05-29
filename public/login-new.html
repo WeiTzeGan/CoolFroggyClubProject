@@ -34,22 +34,22 @@
                 <h1>Login</h1>
                 <br>
                 <form>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username">
+                    <label for="userid">User ID:</label>
+                    <input type="text" id="userid" name="userid" v-model="userID">
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password">
+                    <input type="password" id="password" name="password" v-model="userPassword">
 
                     <p id="password-reset"><a href="password-reset.html">Forgot password?</a></p>
 
                     <label for="user-type">User Type:</label>
-                    <select id="user-type" name="user-type">
+                    <select id="user-type" name="user-type" v-model="userType">
                         <option value="" disabled selected>Select User Type</option>
                         <option value="Club Member">Club Member</option>
-                        <option value="club Manager">Club Manager</option>
-                        <option value="admin">Admin</option>
+                        <option value="Club Manager">Club Manager</option>
+                        <option value="Admin">Admin</option>
                     </select>
-                    <input type="submit" value="Log in">
+                    <input type="submit" value="Log in" v-on:click="login">
 
                     <!-- where google login is -->
                     <div id="g_id_onload"

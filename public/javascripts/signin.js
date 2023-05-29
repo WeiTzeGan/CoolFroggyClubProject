@@ -1,16 +1,16 @@
-const vueinst = Vue.createApp ({
-    data(){
-      return{
-        signedIn: false,
-        buttonHover: false,
-        userID: '',
-        userPassword: '',
-        userType: ''
-      };
+const vueinst = Vue.createApp({
+    data() {
+        return {
+            signedIn: false,
+            buttonHover: false,
+            userID: '',
+            userPassword: '',
+            userType: ''
+        };
     },
 
     computed: {
-        URL: function(){
+        URL: function () {
             // If user is signed in, change log in button to account button
             if (this.signedIn === false) {
                 return "login-new.html";
@@ -18,7 +18,7 @@ const vueinst = Vue.createApp ({
                 return 'account.html';
             }
         },
-        buttonName: function() {
+        buttonName: function () {
             // If user is signed in
             if (this.signedIn === true) {
                 return "Account";
@@ -29,51 +29,70 @@ const vueinst = Vue.createApp ({
     },
 
     methods: {
-        signIn() {
-            var xhttp = new XMLHttpRequest();
+        login() {
+            let req = new XMLHttpRequest();
 
-            xhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    this.userID = '';
-                    this.userPassword = '';
-                    this.userType = '';
+            let login_data = {
+                username: vueinst.userID,
+                password: vueinst.userPassword,
+                type: vueinst.userType
+            };
 
-                    const successfulSignIn = this.response.data.signedIn;
-                    if (successfulSignIn) {
-                        this.signedIn = true;
-                    }
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    vueinst.userID = '';
+                    vueinst.userPassword = '';
+                    vueinst.userType = '';
+                    vueinst.signedIn = true;
+
+                    //window.location.href = "home-page-new.html";
+                }
+            };
+            req.open('POST', '/login', true);
+            req.setRequestHeader("Content-type", "application/json");
+            req.send(JSON.stringify(login_data));
+        },
+
+        // hasn't been test in the routes yet
+        logout(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    alert('Logged out');
+                }else if (this.readyState == 4 && this.status == 403){
+                    alert('Not logged in');
                 }
             };
 
-            if (this.userType === "Club Manager") {
-                xhttp.open("GET", "/club_managers/signin", true);
-                xhttp.setRequestHeader("Content-type", "application/json");
-                xhttp.send(JSON.stringify({
-                    username: this.userID,
-                    password: this.userPassword
-                }));
-            } else {
-                return;
-            }
+            req.open('POST', '/logout', true);
+            req.send();
         }
     }
 }).mount('#coolfroggyclub');
 
-
-function google_login(response){
+// THIS HAS TO BE PUT OUTSIDE OF VUEINST TO WORK
+function google_login(response) {
     let req = new XMLHttpRequest();
 
-    req.onreadystatechange = function(){
-        if (this.readyState === 4 && this.status === 200){
+    let google_login_data = {
+        google_login_info: response,
+        type: vueinst.userType
+    };
+
+    console.log(response);
+
+    req.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
             alert('Logged in with Google Sucessfully');
-        }else if (this.readyState === 4 && this.status === 401){
+        } else if (this.readyState === 4 && this.status === 401) {
             alert('Login FAILED');
         }
     };
 
-    req.open('POST','/google-login');
-    req.setRequestHeader('Content-Type','application/json');
-    req.send(JSON.stringify(response));
+    req.open('POST', '/google-login');
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(JSON.stringify(google_login_data));
 }
 
 
