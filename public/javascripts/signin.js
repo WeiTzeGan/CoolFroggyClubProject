@@ -46,7 +46,7 @@ const vueinst = Vue.createApp ({
             };
 
             if (this.userType === "Club Manager") {
-                xhttp.open("GET", "/users/club_managers/signin", true);
+                xhttp.open("GET", "/club_managers/signin", true);
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(JSON.stringify({
                     username: this.userID,
