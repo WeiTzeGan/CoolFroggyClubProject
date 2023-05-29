@@ -5,6 +5,7 @@ const vueinst = Vue.createApp ({
         buttonHover: false
       };
     },
+
     computed: {
         URL: function(){
             // If user is signed in, change log in button to account button
@@ -23,4 +24,23 @@ const vueinst = Vue.createApp ({
             }
         }
     }
-  }).mount('#header');
+}).mount('#header');
+
+
+function google_login(response){
+    let req = new XMLHttpRequest();
+
+    req.onreadystatechange = function(){
+        if (this.readyState === 4 && this.status === 200){
+            alert('Logged in with Google Sucessfully');
+        }else if (this.readyState === 4 && this.status === 401){
+            alert('Login FAILED');
+        }
+    };
+
+    req.open('POST','/google-login');
+    req.setRequestHeader('Content-Type','application/json');
+    req.send(JSON.stringify(response));
+}
+
+
