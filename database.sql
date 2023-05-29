@@ -29,8 +29,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 CREATE TABLE CLUB_MANAGERS (
     manager_id SMALLINT NOT NULL,
     club_id SMALLINT,
-    FOREIGN KEY (manager_id) REFERENCES USERS(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE SET NULL
+    FOREIGN KEY (manager_id) REFERENCES USERS(user_id) ON DELETE CASCADE
+    /*FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE SET NULL*/
 );
 
 CREATE TABLE CLUBS (
@@ -83,3 +83,19 @@ INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)
 VALUES
 ('admin1', 'shinyi', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
+
+INSERT INTO USERS
+(first_name, last_name, date_of_birth, user_password, email, mobile)
+VALUES
+('ShinYi', 'G', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
+
+
+INSERT INTO CLUB_MANAGERS
+(manager_id, club_id)
+VALUES
+('1', '1');
+
+INSERT INTO CLUBS
+(club_name, club_description, club_manager_id)
+VALUES
+('OCF', 'AAAA', '1');
