@@ -48,7 +48,6 @@ const vueinst = Vue.createApp({
                     //window.location.href = "home-page-new.html";
                 }
             };
-
             req.open('POST', '/login', true);
             req.setRequestHeader("Content-type", "application/json");
             req.send(JSON.stringify(login_data));
