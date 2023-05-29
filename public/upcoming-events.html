@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	<script src="javascripts/CoolFroggyClub.js"></script>
     <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/events.js" defer></script>
 </head>
 
 <body>
@@ -28,6 +29,7 @@
             </ul>
         </nav>
 	</header>
+    </div>
 
     <div aria-label="Breadcrumb" class="breadcrumb">
         <ul>
@@ -51,50 +53,14 @@
                 </div>
 
                 <!-- Events List -->
-                <div class="events-list">
+                <div class="events-list" id="events">
 
-                    <div class="indv-event">
+                    <div class="indv-event" v-for="event in all_events" v-bind:key="event.event_id">
                         <div class="left-event-side">
-                            <h2>Free Pizza Lunch</h2>
-                            <h3>Party Club</h3>
-                            <h3>Date Time</h3>
-                            <h3>Venue</h3>
-                        </div>
-                        <div class="right-event-side">
-                            <button class="login" type="button" onclick="myFunction()">RSVP</button> <!-- CREATE FUNCTION TO RSVP -->
-                        </div>
-                    </div>
-
-                    <div class="indv-event">
-                        <div class="left-event-side">
-                            <h2>Free Pizza Lunch</h2>
-                            <h3>Party Club</h3>
-                            <h3>Date Time</h3>
-                            <h3>Venue</h3>
-                        </div>
-                        <div class="right-event-side">
-                            <button class="login" type="button" onclick="myFunction()">RSVP</button> <!-- CREATE FUNCTION TO RSVP -->
-                        </div>
-                    </div>
-
-                    <div class="indv-event">
-                        <div class="left-event-side">
-                            <h2>Free Pizza Lunch</h2>
-                            <h3>Party Club</h3>
-                            <h3>Date Time</h3>
-                            <h3>Venue</h3>
-                        </div>
-                        <div class="right-event-side">
-                            <button class="login" type="button" onclick="myFunction()">RSVP</button> <!-- CREATE FUNCTION TO RSVP -->
-                        </div>
-                    </div>
-
-                    <div class="indv-event">
-                        <div class="left-event-side">
-                            <h2>Free Pizza Lunch</h2>
-                            <h3>Party Club</h3>
-                            <h3>Date Time</h3>
-                            <h3>Venue</h3>
+                            <h2>{{ event.event_name }}</h2>
+                            <h3>{{ event.club_name }}</h3>
+                            <h3>{{ event.event_date }}</h3>
+                            <h3>{{ event.event_location }}</h3>
                         </div>
                         <div class="right-event-side">
                             <button class="login" type="button" onclick="myFunction()">RSVP</button> <!-- CREATE FUNCTION TO RSVP -->
@@ -111,7 +77,6 @@
           <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
           <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
     </footer>
-    </div>
 </body>
 
 </html>

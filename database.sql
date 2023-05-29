@@ -113,4 +113,4 @@ VALUES
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
 VALUES
-('Movie Night', 'We are having a movie night!', '2023-05-29', 'Braggs Lecture Theatre', '1');
+('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');

@@ -148,7 +148,7 @@ router.get('/getEvents', function(req, res, next) {
       res.sendStatus(500);
     }
 
-    let query = "SELECT * FROM EVENTS";
+    let query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
 
     connection.query(query, function(error, rows, fields) {
       connection.release();
