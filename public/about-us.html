@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div id="header">
+    <div id="coolfroggyclub">
         <header>
             <nav>
                 <ul>
@@ -25,11 +25,10 @@
                     <li><a href="latest-news.html">Latest News</a></li>
                     <li><a href="join-a-club.html">Join A Club</a></li>
                     <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
-                    <li class="login" v-show="signedIn"><a href="login-new.html">Sign Out</a></li>
+                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false">Sign Out</button></li>
                 </ul>
             </nav>
         </header>
-    </div>
 
     <div aria-label="Breadcrumb" class="breadcrumb">
         <ul>
@@ -66,6 +65,7 @@
           <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
           <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
     </footer>
+    </div>
 </body>
 
 </html>
