@@ -109,3 +109,8 @@ INSERT INTO CLUBS
 (club_name, club_description, club_manager_id)
 VALUES
 ('OCF', 'AAAA', '1');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
