@@ -84,10 +84,20 @@ INSERT INTO ADMINS
 VALUES
 ('admin1', 'shinyi', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
 
+INSERT INTO ADMINS
+(first_name, last_name, date_of_birth, admin_password, email, mobile)
+VALUES
+('janson', 'vu', '2003-04-23', 'password123', 'thosvu2@gmail.com', '9999999999');
+
 INSERT INTO USERS
 (first_name, last_name, date_of_birth, user_password, email, mobile)
 VALUES
 ('ShinYi', 'G', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
+
+INSERT INTO USERS
+(first_name, last_name, date_of_birth, user_password, email, mobile)
+VALUES
+('janson', 'vu', '2003-04-23', 'password123', 'thosvu2@gmail.com', '9999999999');
 
 
 INSERT INTO CLUB_MANAGERS

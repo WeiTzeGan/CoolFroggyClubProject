@@ -3,8 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 var mysql = require('mysql');
 
+// set up database
 var dbConnectionPool = mysql.createPool({
   host: 'localhost',
   database: 'coolfroggyclub'
@@ -26,10 +28,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// set up middleware of the database
 app.use(function(req, res, next) {
   req.pool = dbConnectionPool;
   next();
 });
+
+// set up session after cookie parser and serving the static webpage
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'super secret string',
+  secure: false
+}));
+
+// testing if session works
+// app.use(function(req,res,next){
+//   console.log("The current user is:  " + req.session.username);
+//   next();
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
