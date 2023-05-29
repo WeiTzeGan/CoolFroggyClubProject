@@ -18,7 +18,7 @@ router.post('/login', function(req, res, next){
   let login_data = req.body;
 
   if ('username' in login_data && 'password' in login_data && 'type' in login_data){
-    if (login_data.username !== '' && login_data.password !== '' && login_data.type != ''){
+    if (login_data.username !== '' && login_data.password !== '' && login_data.type !== ''){
 
       // Connect to the database
       req.pool.getConnection( function(cerr, connection){
@@ -141,7 +141,25 @@ router.post('/google-login', async function (req, res, next) {
 
 });
 
+/* Route to get events table */
+router.get('/getEvents', function(req, res, next) {
+  req.pool.getConnection(function(err, connection) {
+    if (err){
+      res.sendStatus(500);
+    }
 
+    let query = "SELECT * FROM EVENTS";
 
+    connection.query(query, function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+      }
+
+      res.json(rows);
+    });
+  });
+});
 
 module.exports = router;

@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	<script src="javascripts/CoolFroggyClub.js"></script>
     <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/events.js" defer></script>
 </head>
 
 <body onload="showSlides()">
@@ -29,6 +30,7 @@
             </ul>
         </nav>
 	</header>
+    </div>
 
 	<main>
 
@@ -66,13 +68,10 @@
         </div>
 
 
-		<div class="upcoming-events">
+		<div class="upcoming-events" id="events">
 			<h2>Upcoming Events</h2>
-			<ul>
-				<li><a href="upcoming-events.html">Event 1</a></li>
-				<li><a href="upcoming-events.html">Event 2</a></li>
-				<li><a href="upcoming-events.html">Event 3</a></li>
-				<li><a href="upcoming-events.html">Event 4</a></li>
+			<ul v-for="event in all_events" v-bind:key="event.event_id">
+				<li><a href="upcoming-events.html">{{ event.event_name }}</a></li>
 			</ul>
 		</div>
 
@@ -112,6 +111,5 @@
           <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
           <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
     </footer>
-    </div>
 </body>
 </html>

@@ -60,6 +60,7 @@ const vueinst = Vue.createApp({
             req.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200){
                     alert('Logged out');
+                    vueinst.signedIn = false;
                 }else if (this.readyState == 4 && this.status == 403){
                     alert('Not logged in');
                 }
