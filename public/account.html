@@ -11,7 +11,7 @@
         <script src="javascripts/signin.js" defer></script>
     </head>
     <body>
-        <div id="coolfroggyclub">
+        <div id="coolfroggyclub" >
         <header>
             <nav>
                 <ul>
@@ -23,7 +23,7 @@
                     <li><a href="latest-news.html">Latest News</a></li>
                     <li><a href="join-a-club.html">Join A Club</a></li>
                     <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
-                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false">Sign Out</button></li>
+                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false; logout()">Sign Out</button></li>
                 </ul>
             </nav>
         </header>

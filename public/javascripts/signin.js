@@ -6,7 +6,6 @@ const vueinst = Vue.createApp({
             userID: '',
             userPassword: '',
             userType: '',
-            userSession: ''
         };
     },
 
@@ -40,13 +39,12 @@ const vueinst = Vue.createApp({
             };
 
             req.onreadystatechange = function () {
-                if (req.readyState === 4 && req.status === 200) {
+                if (req.readyState === 4 && req.status === 200 ) {
                     vueinst.userID = '';
                     vueinst.userPassword = '';
                     vueinst.userType = '';
-                    vueinst.userSession = JSON.parse(this.responseText);
 
-                    //window.location.href = "home-page-new.html";
+                    window.location.href = "home-page-new.html";
                 }
             };
             req.open('POST', '/login', true);
@@ -54,7 +52,6 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(login_data));
         },
 
-        // hasn't been test in the routes yet
         logout(){
             let req = new XMLHttpRequest();
 
@@ -82,11 +79,12 @@ function google_login(response) {
         type: vueinst.userType
     };
 
-    console.log(response);
+    //console.log(response);
 
     req.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             alert('Logged in with Google Sucessfully');
+            window.location.href = "home-page-new.html";
         } else if (this.readyState === 4 && this.status === 401) {
             alert('Login FAILED');
         }
@@ -97,16 +95,18 @@ function google_login(response) {
     req.send(JSON.stringify(google_login_data));
 }
 
-window.onload = function() {
+window.onload = function(){
+    /*
+        This checks if user has logged in to
+        display the "sign out" and "account" OR "log in/ signup"
+    */
     let req = new XMLHttpRequest();
 
     req.onreadystatechange = function() {
         if (req.readyState === 4 && req.status === 200) {
             vueinst.signedIn = true;
-            vueinst.userSession = JSON.parse(this.responseText);
         } else {
             vueinst.signedIn = false;
-            vueinst.userSession = '';
         }
     };
 
