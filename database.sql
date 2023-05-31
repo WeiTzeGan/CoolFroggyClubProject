@@ -114,3 +114,23 @@ INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
 VALUES
 ('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('1', '1');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('1', '2');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('1', '1');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('1', '2');
