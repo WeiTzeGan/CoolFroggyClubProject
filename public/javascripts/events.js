@@ -17,6 +17,16 @@ const eventsVue = Vue.createApp({
 
             xhttp.open("GET", "/getEvents", true);
             xhttp.send();
+        },
+
+        formatDate(date) {
+            const options = {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+
+            return new Date(date).toLocaleDateString(undefined, options);
         }
     }
 }).mount('#events');
