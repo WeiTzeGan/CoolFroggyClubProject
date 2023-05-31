@@ -67,6 +67,14 @@ router.post('/login', function(req, res, next){
   }
 });
 
+router.get('/checkLogin', function(req, res, next) {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 // LOG OUT FOR NORMAL LOGIN
 router.post('/logout', function (req, res, next) {
 

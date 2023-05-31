@@ -5,7 +5,8 @@ const vueinst = Vue.createApp({
             buttonHover: false,
             userID: '',
             userPassword: '',
-            userType: ''
+            userType: '',
+            userSession: ''
         };
     },
 
@@ -43,7 +44,7 @@ const vueinst = Vue.createApp({
                     vueinst.userID = '';
                     vueinst.userPassword = '';
                     vueinst.userType = '';
-                    vueinst.signedIn = true;
+                    vueinst.userSession = JSON.parse(this.responseText);
 
                     //window.location.href = "home-page-new.html";
                 }
@@ -62,7 +63,7 @@ const vueinst = Vue.createApp({
                     alert('Logged out');
                     vueinst.signedIn = false;
                 }else if (this.readyState == 4 && this.status == 403){
-                    alert('Not logged in');
+                    alert('Not logged out');
                 }
             };
 
@@ -96,4 +97,19 @@ function google_login(response) {
     req.send(JSON.stringify(google_login_data));
 }
 
+window.onload = function() {
+    let req = new XMLHttpRequest();
 
+    req.onreadystatechange = function() {
+        if (req.readyState === 4 && req.status === 200) {
+            vueinst.signedIn = true;
+            vueinst.userSession = JSON.parse(this.responseText);
+        } else {
+            vueinst.signedIn = false;
+            vueinst.userSession = '';
+        }
+    };
+
+    req.open('GET', '/checkLogin', true);
+    req.send();
+};
