@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Member Profile</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="stylesheets/member-profile.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="javascripts/CoolFroggyClub.js"></script>
+    <script src="javascripts/signin.js" defer></script>
+</head>
+
+<body>
+    <div id="coolfroggyclub">
+        <header>
+            <nav>
+                <ul>
+                    <li class="logo">
+                        <a href="home-page-new.html"><img src="images/CoolFroggyLogo.png"
+                                alt="Cool Froggy Club logo"></a>
+                    </li>
+                    <li><a href="about-us.html">About us</a></li>
+                    <li><a href="upcoming-events.html">Upcoming Events</a></li>
+                    <li><a href="latest-news.html">Latest News</a></li>
+                    <li><a href="join-a-club.html">Join A Club</a></li>
+                    <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
+                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false; logout()">Sign
+                            Out</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div aria-label="Breadcrumb" class="breadcrumb">
+            <ul>
+                <li><a href="home-page-new.html">Home</a></li>
+                <li><a href="account-page.html">Account</a></li>
+                <li><span aria-current="page">Profile</span></li>
+            </ul>
+        </div>
+
+        <main>
+            <article>
+                <div class="profile">
+                    <!-- Profile Summary -->
+                    <div class="profile-summary">
+                        <h3>Hi, <span id="username">[username]</span>!</h3>
+                        <form>
+                            <h2>Profile Summary <button type="button" id="edit-button">Edit</button></h2>
+                            <div class="form-group">
+                                <label for="cool-froggy-id">Cool Froggy Member ID:</label>
+                                <input type="text" id="cool-froggy-id" name="cool-froggy-id" value="[member ID]"
+                                    disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="idusername" name="username" value="[username]" disabled>
+                            </div>
+                            <div class="form-group club-group">
+                                <label for="club">Club:</label>
+                                <div class="club-joined">
+                                    <ul class="club-list">
+                                        <li>Club 1</li>
+                                        <li>Club 2</li>
+                                        <li>Club 3</li>
+                                        <li>Club 4</li>
+                                        <li>Club 5</li>
+                                        <li>Club 6</li>
+                                        <li>Club 7</li>
+                                        <li>Club 8</li>
+                                        <li>Club 9</li>
+                                        <li>Club 10</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Clubs Update -->
+                    <div class="clubs-update">
+                        <h2>Clubs Update</h2>
+                        <div class="clubs-update-content">
+                            <ul>
+                                <li>Club Update 1</li>
+                                <li>Club Update 2</li>
+                                <li>Club Update 3</li>
+                                <li>Club Update 4</li>
+                                <li>Club Update 5</li>
+                                <li>Club Update 6</li>
+                                <li>Club Update 7</li>
+                                <li>Club Update 8</li>
+                                <li>Club Update 9</li>
+                                <li>Club Update 10</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Joined Event and Other Upcoming Events -->
+                    <div class="events">
+                        <div class="joined-event">
+                            <h2>Joined Event</h2>
+                            <div class="joined-event-content">
+                                <ul>
+                                    <li>Joined Event 1</li>
+                                    <li>Joined Event 2</li>
+                                    <li>Joined Event 3</li>
+                                    <li>Joined Event 4</li>
+                                    <li>Joined Event 5</li>
+                                    <li>Joined Event 6</li>
+                                    <li>Joined Event 7</li>
+                                    <li>Joined Event 8</li>
+                                    <li>Joined Event 9</li>
+                                    <li>Joined Event 10</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="upcoming-events">
+                            <h2>Other Upcoming Events</h2>
+                            <div class="upcoming-events-content">
+                                <ul>
+                                    <li>Upcoming Event 1</li>
+                                    <li>Upcoming Event 2</li>
+                                    <li>Upcoming Event 3</li>
+                                    <li>Upcoming Event 4</li>
+                                    <li>Upcoming Event 5</li>
+                                    <li>Upcoming Event 6</li>
+                                    <li>Upcoming Event 7</li>
+                                    <li>Upcoming Event 8</li>
+                                    <li>Upcoming Event 9</li>
+                                    <li>Upcoming Event 10</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <footer class="social-media">
+            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
+            <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
+        </footer>
+    </div>
+</body>
+
+</html>
