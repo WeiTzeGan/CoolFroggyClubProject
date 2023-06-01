@@ -15,6 +15,13 @@ router.get('/', function(req, res, next) {
 // NORMAL LOGIN
 router.post('/login', function(req, res, next){
 
+  // if already logged in, stop logging in again
+  if ('user' in req.session){
+    console.log("user already logged in");
+    res.sendStatus(403);
+    return;
+  }
+
   let login_data = req.body;
 
   if ('username' in login_data && 'password' in login_data && 'type' in login_data){
@@ -30,7 +37,17 @@ router.post('/login', function(req, res, next){
         }
 
         // query part
-        let query = "SELECT first_name, last_name, email FROM USERS WHERE user_id = ? AND user_password = ?";
+        let query;
+
+        if (login_data.type === 'Club Member'){
+          query = "SELECT first_name, last_name, email FROM USERS WHERE user_id = ? AND user_password = ?";
+        }else if (login_data.type === 'Club Manager'){
+          query = "SELECT first_name, last_name, email FROM CLUB_MANAGERS WHERE manager_id = ? AND manager_password = ?";
+        }else if (login_data.type === 'Admin'){
+          // redirect to a an admin route
+          return; // return for now
+        }
+
 
         connection.query(query, [login_data.username, login_data.password], function(qerr, rows, fields){
 
@@ -49,7 +66,7 @@ router.post('/login', function(req, res, next){
             // store the necessary user info (name, email, user_type)
             [req.session.user] = rows;
             req.session.user_type = login_data.type;
-
+            console.log(JSON.stringify(req.session.user));
             res.json(req.session.user);
 
           } else {
@@ -68,18 +85,19 @@ router.post('/login', function(req, res, next){
 });
 
 router.get('/checkLogin', function(req, res, next) {
-  if (req.session.user) {
-    res.json(req.session.user);
+  if ('user' in req.session) {
+    res.sendStatus(200);
   } else {
     res.sendStatus(401);
   }
+  res.end();
 });
 
 // LOG OUT FOR NORMAL LOGIN
 router.post('/logout', function (req, res, next) {
 
-  if ('username' in req.session) {
-    delete req.session.username;
+  if ('user' in req.session) {
+    delete req.session.user;
     delete req.session.user_type;
     res.end();
   } else {
@@ -90,6 +108,15 @@ router.post('/logout', function (req, res, next) {
 
 // GOOGLE LOGIN
 router.post('/google-login', async function (req, res, next) {
+
+  // if already logged in, stop logging in again
+  if ('user' in req.session){
+    console.log("user already logged in");
+    res.sendStatus(403);
+    return;
+  }
+
+  let type = req.body.type;
 
   const ticket = await client.verifyIdToken({
     idToken: req.body.google_login_info.credential,
@@ -114,7 +141,16 @@ router.post('/google-login', async function (req, res, next) {
     }
 
     // query part
-    let query = "SELECT first_name, last_name, email FROM USERS WHERE email = ?";
+    let query;
+
+    if (type === 'Club Member'){
+      query = "SELECT first_name, last_name, email FROM USERS WHERE email = ?";
+    }else if (type === 'Club Manager'){
+      query = "SELECT first_name, last_name, email, manager_id FROM CLUB_MANAGERS WHERE email = ?";
+    }else if (type === 'Admin'){
+      // redirect to a an admin route
+      return; // return for now
+    }
 
     connection.query(query, [email], function(qerr, rows, fields){
 
@@ -136,7 +172,7 @@ router.post('/google-login', async function (req, res, next) {
 
         console.log(JSON.stringify(req.session.user));
 
-        // res.json(req.session.user);
+        res.json(req.session.user);
 
       } else {
         // No user
