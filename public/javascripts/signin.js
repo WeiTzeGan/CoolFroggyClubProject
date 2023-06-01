@@ -1,23 +1,3 @@
-function formatDate(dateString) {
-    var parts = dateString.split('-');
-    var day = parts[0];
-    var month = parts[1];
-    var year = parts[2];
-
-    // Create a new Date object using the parsed values
-    var dateObject = new Date(year, month - 1, day);
-
-    // Get the year, month, and day from the date object
-    var formattedYear = dateObject.getFullYear();
-    var formattedMonth = ('0' + (dateObject.getMonth() + 1)).slice(-2);
-    var formattedDay = ('0' + dateObject.getDate()).slice(-2);
-
-    // Combine the formatted values into a new date string
-    var formattedDate = formattedYear + '-' + formattedMonth + '-' + formattedDay;
-
-    return formattedDate;
-}
-
 const vueinst = Vue.createApp({
     data() {
         return {
@@ -84,21 +64,12 @@ const vueinst = Vue.createApp({
         },
 
         signup() {
-            // this sign up tries to sign you in immediately after signup
-            // outer req checks if can sign up
-            // inner req does the sign up if outer req return 200
-
             let req = new XMLHttpRequest();
 
-            let date_of_birth;
-            if (vueinst.dob !== '') {
-                date_of_birth = formatDate(vueinst.dob);
-
-            }
             let signup_data = {
                 first_name: vueinst.first_name,
                 last_name: vueinst.last_name,
-                dob: date_of_birth,
+                dob: vueinst.dob,
                 password: vueinst.password,
                 mobile: vueinst.mobile,
                 email: vueinst.email
