@@ -8,7 +8,7 @@ CREATE TABLE ADMINS (
     last_name CHAR(255) NOT NULL,
     date_of_birth DATE,
     admin_password VARCHAR(60) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     mobile VARCHAR(20),
     PRIMARY KEY (admin_id)
 );
@@ -19,25 +19,18 @@ CREATE TABLE USERS (
     last_name CHAR(255) NOT NULL,
     date_of_birth DATE,
     user_password VARCHAR(60) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
     mobile VARCHAR(20),
-    PRIMARY KEY (user_id)
+    PRIMARY KEY (user_id, email)
 );
 
 SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE TABLE CLUB_MANAGERS (
     manager_id SMALLINT NOT NULL,
-    first_name CHAR(255),
-    last_name CHAR(255),
-    email VARCHAR(255),
-    manager_password VARCHAR(60),
     club_id SMALLINT,
+    PRIMARY KEY(manager_id, club_id),
     FOREIGN KEY (manager_id) REFERENCES USERS(user_id) ON DELETE CASCADE
-    -- FOREIGN KEY (first_name) REFERENCES USERS(first_name) ON DELETE SET NULL
-    -- FOREIGN KEY (manager_last_name) REFERENCES USERS(last_name) ON DELETE SET NULL,
-    -- FOREIGN KEY (manager_email) REFERENCES USERS(email) ON DELETE SET NULL
-    -- FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE SET NULL
 );
 
 CREATE TABLE CLUBS (
@@ -54,6 +47,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE CLUB_MEMBERS (
     club_id SMALLINT NOT NULL,
     user_id SMALLINT NOT NULL,
+    PRIMARY KEY (club_id, user_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE
 );
@@ -72,6 +66,7 @@ CREATE TABLE EVENTS (
 CREATE TABLE EVENTGOERS (
     event_id SMALLINT NOT NULL,
     participant_id SMALLINT NOT NULL,
+    PRIMARY KEY (event_id, participant_id),
     FOREIGN KEY (event_id) REFERENCES EVENTS(event_id) ON DELETE CASCADE,
     FOREIGN KEY (participant_id) REFERENCES USERS(user_id) ON DELETE CASCADE
 );
@@ -108,14 +103,14 @@ VALUES
 
 
 INSERT INTO CLUB_MANAGERS
-(manager_id, first_name, last_name, email, manager_password, club_id)
+(manager_id, club_id)
 VALUES
-('1', 'ShinYi', 'G', 'sygoh2014@gmail.com', 'password123', '1');
+('1', '1');
 
 INSERT INTO CLUB_MANAGERS
-(manager_id, first_name, last_name, email, manager_password, club_id)
+(manager_id, club_id)
 VALUES
-('2', 'janson', 'vu', 'thosvu2@gmail.com', 'password123', '2');
+('2', '2');
 
 INSERT INTO CLUBS
 (club_name, club_description, club_manager_id)

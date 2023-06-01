@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/signup.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<script src="javascripts/CoolFroggyClub.js"></script>
+	<!-- <script src="javascripts/CoolFroggyClub.js"></script> -->
     <script src="javascripts/signin.js" defer></script>
 </head>
 
@@ -43,30 +43,30 @@
             <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
             <form>
                 <label for="first-name">First Name:</label>
-                <input type="text" id="first-name" name="first-name">
+                <input type="text" id="first-name" name="first-name" v-model="first_name">
 
                 <label for="last-name">Last Name:</label>
-                <input type="text" id="last-name" name="last-name">
+                <input type="text" id="last-name" name="last-name" v-model="last_name">
 
                 <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob">
+                <input type="date" id="dob" name="dob" v-model="dob">
 
                 <label for="memberID">Cool Froggy Member ID:</label> <!-- VUE + ROUTER ???? -->
                 <input type="text" id="memberID" name="memberID" placeholder="* Auto Generated" value="" readonly>
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" v-model="password">
 
                 <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="confirm-password">
+                <input type="password" id="confirm-password" name="confirm-password" v-model="confirm_password">
 
                 <label for="phone">Mobile Phone:</label>
-                <input type="tel" id="phone" name="phone">
+                <input type="tel" id="phone" name="phone" v-model="mobile">
 
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
+                <input type="email" id="email" name="email" v-model="email">
 
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" v-on:click="signup()">
             </form>
 
         </article>
