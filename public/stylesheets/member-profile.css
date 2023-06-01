@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    position: sticky;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    /* box-shadow: 0 0 3px #609966; */
+    z-index: 999;
+}
+
+/* Style the navigation menu */
+nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #EDF1D6;
+}
+
+.logo {
+    margin-right: 20px;
+    list-style: none;
+}
+
+.logo img {
+    height: 100px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    /* max-width: 1000px; */
+}
+
+nav li {
+    margin: 0 20px;
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+nav a {
+    color: #40513B;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: #609966;
+}
+
+.login {
+    margin-left: auto;
+    list-style: none;
+}
+
+.login a {
+    background-color: #609966;
+    color: #EDF1D6;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    /* to make sure the button won't change when window resized */
+}
+
+.login a:hover {
+    background-color: #9DC08B;
+}
+
+.login button {
+    background-color: #609966;
+    color: #EDF1D6;
+    padding: 10px 20px;
+    border-style: none;
+    border-color: #609966;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    /* to make sure the button won't change when window resized */
+}
+
+.login button:hover {
+    background-color: #9DC08B;
+}
+
+/* ----------------- for nav bar breadcrumbing --------------------*/
+div.breadcrumb {
+    padding: 1 .5rem;
+    background-color: white;
+    display: block;
+    font-size: small;
+    padding-top: 20px;
+    padding-left: 50px;
+}
+
+div.breadcrumb ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.breadcrumb li:not(:last-child)::after {
+    margin: 0 .25rem;
+    content: "→";
+}
+
+/* Set default font and background color */
+body {
+    /* display: inline-flexbox; */
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+main {
+    margin: auto;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* -------------------------------- PROFILE ------------------------------------ */
+div.profile {
+    margin: 1rem auto;
+    padding: 2rem;
+    max-width: 70%;
+    border: 1px solid #ccc;
+    background-color: #daebd1;
+  }
+
+  input[type="text"] {
+    width: 20rem;
+    height: 3rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .club-joined,
+  .clubs-update-content,
+  .joined-event-content,
+  .upcoming-events-content {
+    height: 200px;
+    overflow-y: scroll;
+  }
+
+  .club-list,
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .club-list li,
+  .club-list ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  div.profile-summary {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    background-color: #f3f6e0;
+    padding: 1rem;
+  }
+
+  .club-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .clubs-update,
+  .events {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .clubs-update {
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    background-color: #f3f6e0;
+    padding: 1rem;
+  }
+
+  .clubs-update h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .joined-event,
+  .upcoming-events {
+    width: 50%;
+    border: 1px solid #ccc;
+    background-color: #f3f6e0;
+    padding: 1rem;
+  }
+
+  .joined-event h2,
+  .upcoming-events h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .clubs-update,
+    .joined-event,
+    .upcoming-events {
+      width: 100%;
+    }
+  }
+
+/* ---------------- USE VUE TO HIDE EITHER BUTTON ---------------------- */
+div.left-news-nav {
+    width: 90%;
+}
+
+/* --------------------------------------------------------------------- */
+
+footer {
+    position: static;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #40513B;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+footer img {
+    height: 30px;
+    margin: 0 10px;
+}
