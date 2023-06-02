@@ -16,7 +16,14 @@ const vueinst = Vue.createApp({
             password: '',
             confirm_password: '',
             mobile: '',
-            email: ''
+            email: '',
+
+            // details for original user details
+            originFirstName: '',
+            originLastName: '',
+            originDOB: '',
+            originMobile: '',
+            originEmail: ''
         };
     },
 
