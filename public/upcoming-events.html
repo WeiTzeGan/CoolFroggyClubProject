@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Events</title>
     <meta charset="UTF-8">
@@ -7,76 +8,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/upcoming-events.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<script src="javascripts/CoolFroggyClub.js"></script>
-    <script src="javascripts/signin.js" defer></script>
-    <script src="javascripts/events.js" defer></script>
+    <script src="javascripts/CoolFroggyClub.js"></script>
+    <!-- <script src="javascripts/signin.js" defer></script> -->
+    <script src="javascripts/event_news_club.js" defer></script>
 </head>
 
 <body>
     <div id="coolfroggyclub">
-    <header>
-        <nav>
+        <header>
+            <nav>
+                <ul>
+                    <li class="logo">
+                        <a href="home-page-new.html"><img src="images/CoolFroggyLogo.png"
+                                alt="Cool Froggy Club logo"></a>
+                    </li>
+                    <li><a href="about-us.html">About us</a></li>
+                    <li><a href="upcoming-events.html">Upcoming Events</a></li>
+                    <li><a href="latest-news.html">Latest News</a></li>
+                    <li><a href="join-a-club.html">Join A Club</a></li>
+                    <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
+                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false; logout()">Sign
+                            Out</button></li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
-                <li class="logo">
-                    <a href="home-page-new.html"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a>
-                </li>
-                <li><a href="about-us.html">About us</a></li>
-                <li><a href="upcoming-events.html">Upcoming Events</a></li>
-                <li><a href="latest-news.html">Latest News</a></li>
-                <li><a href="join-a-club.html">Join A Club</a></li>
-                <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
-                <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false; logout()">Sign Out</button></li>
+                <li><a href="home-page-new.html">Home</a></li>
+                <li><span aria-current="page">Upcoming Events</span></li>
             </ul>
-        </nav>
-	</header>
-    </div>
+        </div>
 
-    <div aria-label="Breadcrumb" class="breadcrumb">
-        <ul>
-            <li><a href="home-page-new.html">Home</a></li>
-            <li><span aria-current="page">Upcoming Events</span></li>
-        </ul>
-    </div>
-
-    <main>
-        <article>
-            <div class="events-collection">
-                <!-- Events Nav Bar-->
-                <div class="events-nav">
-                    <div class="left-events-nav">
-                        <h1>Upcoming Events</h1>
-                    </div>
-                    <div class="right-events-nav">
-                        <button class="login" type="button" onclick="myFunction()">Past</button> <!-- FILTER PAST EVENTS -->
-                        <button class="login" type="button" onclick="myFunction()">Upcoming</button> <!-- FILTER UPCOMING EVENTS -->
-                    </div>
-                </div>
-
-                <!-- Events List -->
-                <div class="events-list" id="events">
-
-                    <div class="indv-event" v-for="event in all_events" v-bind:key="event.event_id">
-                        <div class="left-event-side">
-                            <h2>{{ event.event_name }}</h2>
-                            <h3>{{ event.club_name }}</h3>
-                            <h3>{{ formatDate(event.event_date) }}</h3>
-                            <h3>{{ event.event_location }}</h3>
+        <main>
+            <article>
+                <div class="events-collection">
+                    <!-- Events Nav Bar-->
+                    <div class="events-nav">
+                        <div class="left-events-nav">
+                            <h1>Upcoming Events</h1>
                         </div>
-                        <div class="right-event-side">
-                            <button class="login" type="button" onclick="myFunction()">RSVP</button> <!-- CREATE FUNCTION TO RSVP -->
+                        <div class="right-events-nav">
+                            <button class="login" type="button" onclick="myFunction()">Past</button>
+                            <!-- FILTER PAST EVENTS -->
+                            <button class="login" type="button" onclick="myFunction()">Upcoming</button>
+                            <!-- FILTER UPCOMING EVENTS -->
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </article>
-    </main>
+                    <!-- Events List -->
+                    <div class="events-list" id="events">
 
-    <footer class="social-media">
-          <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
-          <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
-          <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
-    </footer>
+                        <div class="indv-event" v-for="event in all_events" v-bind:key="event.event_id">
+                            <div class="left-event-side">
+                                <h2>{{ event.event_name }}</h2>
+                                <h3>{{ event.club_name }}</h3>
+                                <h3>{{ formatDate(event.event_date) }}</h3>
+                                <h3>{{ event.event_location }}</h3>
+                            </div>
+                            <div class="right-event-side">
+                                <button class="login" type="button" onclick="myFunction()">RSVP</button>
+                                <!-- CREATE FUNCTION TO RSVP -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <footer class="social-media">
+            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
+            <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
+        </footer>
+    </div>
 </body>
 
 </html>

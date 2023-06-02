@@ -127,6 +127,21 @@ INSERT INTO EVENTS
 VALUES
 ('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
 
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock Paper Scissors tournament', 'Jan ken pon!', '2023-06-22', 'EM bulding', '2');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock and RickRoll', 'We will rock you!', '2023-03-12', 'EM bulding', '2');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock and RickRoll', 'We will rock you!', '2023-02-09', 'EM bulding', '2');
+
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)
 VALUES

@@ -7,5 +7,21 @@ router.get('/', function(req, res, next) {
 });
 
 
+// User join clubs
+router.post('/join-club', function(req, res, next){
+  
+});
+
+
+// User view updates from clubs
+
+
+
+// User RSVP for events
+
+
+
+
+// User edit personal details
 
 module.exports = router;
