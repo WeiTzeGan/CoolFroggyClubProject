@@ -229,7 +229,7 @@ router.post('/google-login', async function (req, res, next) {
   let email = payload['email'];
   //console.log(payload['email']);
 
-  if ('type' in req.body === false && req.body.type === '') {
+  if ('type' in req.body === false || req.body.type === '') {
     res.sendStatus(401);
     return;
   }
@@ -301,6 +301,29 @@ router.get('/getEvents', function (req, res, next) {
     }
 
     let query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+/* Route to get announcements table */
+router.get('/getAnnouncements', function(req, res, next) {
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT ANNOUNCEMENTS.*, CLUBS.club_name FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id";
 
     connection.query(query, function (error, rows, fields) {
       connection.release();

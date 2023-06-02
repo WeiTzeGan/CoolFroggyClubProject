@@ -15,6 +15,7 @@ router.post('/updateInfo', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "UPDATE USERS SET user_password = ?, email = ?, mobile = ? WHERE user_id = ?";
@@ -24,6 +25,7 @@ router.post('/updateInfo', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
       }
 
       res.sendStatus(200);
@@ -38,6 +40,7 @@ router.get('/viewMembers', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "SELECT CLUB_MEMBERS.user_id, USERS.first_name, USERS.last_name FROM CLUB_MEMBERS INNER JOIN USERS ON CLUB_MEMBERS.user_id = USERS.user_id WHERE CLUB_MEMBERS.club_id = ?";
@@ -47,6 +50,7 @@ router.get('/viewMembers', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
       }
 
       res.json(rows);
@@ -61,6 +65,7 @@ router.delete('/deleteMembers', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "DELETE FROM CLUB_MEMBERS WHERE user_id = ?";
@@ -70,6 +75,35 @@ router.delete('/deleteMembers', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
+    });
+  });
+});
+
+/* Route to post updates to members */
+router.post('/newAnnouncement', function(req, res, next) {
+  var postTitle = req.body.title;
+  var postMessage = req.body.post_message;
+  var privateMessage = req.body.private_message;
+  var clubID = req.body.club_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "INSERT INTO ANNOUNCEMENTS (title, post_message, private_message, club_id) VALUES (?, ?, ?, ?)";
+
+    connection.query(query, function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
       }
 
       res.sendStatus(200);
@@ -88,6 +122,7 @@ router.post('/addEvent', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "INSERT INTO EVENTS (event_name, event_message, event_date, event_location, club_id) VALUES (?, ?, ?, ?, ?)";
@@ -97,6 +132,7 @@ router.post('/addEvent', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
       }
 
       res.sendStatus(200);
@@ -115,6 +151,7 @@ router.post('/updateEvent', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "UPDATE EVENTS SET event_name = ?, event_message = ?, event_date = ? event_location = ? WHERE event_id = ?";
@@ -124,6 +161,7 @@ router.post('/updateEvent', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
       }
 
       res.sendStatus(200);
@@ -138,6 +176,7 @@ router.get('/viewEventgoers', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
+      return;
     }
 
     let query = "SELECT EVENTGOERS.participant_id, USERS.first_name, USERS.last_name FROM EVENTGOERS INNER JOIN USERS ON EVENTGOERS.participant_id = USERS.user_id WHERE EVENTGOERS.event_id = ?";
@@ -147,6 +186,7 @@ router.get('/viewEventgoers', function(req, res, next) {
 
       if (error) {
         res.sendStatus(500);
+        return;
       }
 
       res.sendStatus(200);
