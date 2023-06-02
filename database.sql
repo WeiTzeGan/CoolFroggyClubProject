@@ -41,7 +41,7 @@ CREATE TABLE CLUBS (
     phone VARCHAR(20),
     email VARCHAR(255),
     PRIMARY KEY (club_id),
-    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL,
+    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -79,7 +79,7 @@ CREATE TABLE ANNOUNCEMENTS (
     post_message CHAR(255),
     private_message TINYINT(1) NOT NULL,
     club_id SMALLINT NOT NULL,
-    post_date DATE DEFAULT CURRENT_DATE,
+    post_date DATE DEFAULT(CURDATE()),
     PRIMARY KEY (post_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
@@ -93,7 +93,7 @@ CREATE TABLE PENDING_CLUBS (
     email VARCHAR(255),
     PRIMARY KEY (pending_club_id),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
-)
+);
 
 INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)

@@ -316,19 +316,21 @@ router.get('/getEvents', function (req, res, next) {
 });
 
 /* Route to get announcements table */
-router.get('/getAnnouncements', function(req, res, next) {
+router.get('/view-news', function(req, res, next) {
   req.pool.getConnection(function (err, connection) {
     if (err) {
+      console.log("Connection error");
       res.sendStatus(500);
       return;
     }
 
-    let query = "SELECT ANNOUNCEMENTS.*, CLUBS.club_name FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id";
+    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
 
     connection.query(query, function (error, rows, fields) {
       connection.release();
 
       if (error) {
+        console.log("Query error");
         res.sendStatus(500);
         return;
       }

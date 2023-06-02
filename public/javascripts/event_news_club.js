@@ -4,7 +4,10 @@ const vueinst = Vue.createApp({
             signedIn: false,
             buttonHover: false,
             all_events: [],
-            all_clubs: []
+            all_clubs: [],
+            all_news: [],
+            show_news: -1 // only show 1 news at a time (this refers to the index of the news in all_news)
+
         };
     },
 
@@ -86,7 +89,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_clubs = JSON.parse(req.response);
+                    vueinst.all_news = JSON.parse(req.response);
                 }
             };
 
@@ -124,9 +127,9 @@ window.onload = function () {
         vueinst.view_club();
     }
     // show public clubs' news even when user has not logged in
-    // if (window.location.href === "http://localhost:8080/latest-news.html"){
-    //     vueinst.view_news();
-    // }
+    if (window.location.href === "http://localhost:8080/latest-news.html"){
+        vueinst.view_news();
+    }
 
     /*
         This checks if user has logged in to
