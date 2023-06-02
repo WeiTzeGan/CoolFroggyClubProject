@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
 
 // set up database
 var dbConnectionPool = mysql.createPool({

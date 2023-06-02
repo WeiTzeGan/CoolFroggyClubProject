@@ -254,6 +254,58 @@ router.get('/viewEventgoers', function(req, res, next) {
 });
 
 /* Route to make new club */
+router.post('/addClubRequest', function(req, res, next) {
+  var clubName = req.body.club_name;
+  var clubDescription = req.body.club_description;
+  var clubManager = req.body.user_id;
+  var clubPhone = req.body.phone;
+  var clubEmail = req.body.email;
 
+  // To check if club already exists
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT * FROM CLUBS WHERE club_name = ?";
+
+    connection.query(query, [clubName], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      if (rows.length > 0) {
+        console.log("Club already exists");
+        res.sendStatus(403);
+        return;
+      }
+
+      // If passes above, add to pending_clubs table
+      req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2 = "INSERT INTO PENDING_CLUBS (club_name, club_description, club_manager_id, phone, email) VALUES (?, ?, ?, ?, ?)";
+
+        connection.query(query2, [clubName, clubDescription, clubManager, clubPhone, clubEmail], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            res.sendStatus(500);
+            return;
+          }
+
+          res.sendStatus(200);
+        });
+      });
+    });
+  });
+});
 
 module.exports = router;

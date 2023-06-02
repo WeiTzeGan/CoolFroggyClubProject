@@ -41,7 +41,7 @@ CREATE TABLE CLUBS (
     phone VARCHAR(20),
     email VARCHAR(255),
     PRIMARY KEY (club_id),
-    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
+    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL,
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -89,6 +89,8 @@ CREATE TABLE PENDING_CLUBS (
     club_name CHAR(255) NOT NULL,
     club_description VARCHAR(1000),
     club_manager_id SMALLINT,
+    phone VARCHAR(20),
+    email VARCHAR(255),
     PRIMARY KEY (pending_club_id),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 )
