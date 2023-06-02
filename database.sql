@@ -146,3 +146,13 @@ INSERT INTO EVENTGOERS
 (event_id, participant_id)
 VALUES
 ('1', '2');
+
+INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id)
+VALUES
+('Study Session', 'We are having a study session on 16th June, Friday!', '1', '1');
+
+INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id)
+VALUES
+('Welcome Night', 'We are having a games night for newcomers on 4th August, Friday!', '0', '1');
