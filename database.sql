@@ -81,6 +81,15 @@ CREATE TABLE ANNOUNCEMENTS (
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
 
+CREATE TABLE PENDING_CLUBS (
+    pending_club_id SMALLINT NOT NULL AUTO_INCREMENT,
+    club_name CHAR(255) NOT NULL,
+    club_description VARCHAR(1000),
+    club_manager_id SMALLINT,
+    PRIMARY KEY (pending_club_id),
+    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
+)
+
 INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)
 VALUES
