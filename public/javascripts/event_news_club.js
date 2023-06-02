@@ -3,7 +3,8 @@ const vueinst = Vue.createApp({
         return {
             signedIn: false,
             buttonHover: false,
-            all_events: []
+            all_events: [],
+            all_clubs: []
         };
     },
 
@@ -27,7 +28,7 @@ const vueinst = Vue.createApp({
     },
 
     methods: {
-        showEvents: function() {
+        view_event: function() {
             let xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = function() {
@@ -50,8 +51,63 @@ const vueinst = Vue.createApp({
             return new Date(date).toLocaleDateString(undefined, options);
         },
 
-        join_club(){
-            
+        view_club: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.all_clubs = JSON.parse(req.response);
+                }
+            };
+
+            req.open("GET", "/view-clubs", true);
+            req.send();
+        },
+
+        join_club: function(id){
+
+            let join_info = { club_id : id };
+
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function(){
+                if (req.readyState === 4 && req.status === 200){
+                    alert("Join club sucessfully");
+                }
+            };
+
+            req.open('POST', '/users/join-club', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+            req.send(JSON.stringify(join_info));
+        },
+
+        view_news: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.all_clubs = JSON.parse(req.response);
+                }
+            };
+
+            req.open("GET", "/view-news", true);
+            req.send();
+        },
+
+        logout() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert('Logged out');
+                    vueinst.signedIn = false;
+                } else if (this.readyState == 4 && this.status == 403) {
+                    alert('Not logged out');
+                }
+            };
+
+            req.open('POST', '/logout', true);
+            req.send();
         }
 
     }
@@ -60,7 +116,17 @@ const vueinst = Vue.createApp({
 
 window.onload = function () {
     // show events even when user has not logged in
-    vueinst.showEvents();
+    if (window.location.href === "http://localhost:8080/upcoming-events.html"){
+        vueinst.view_event();
+    }
+    // show clubs even when user has not logged in
+    if (window.location.href === "http://localhost:8080/join-a-club.html"){
+        vueinst.view_club();
+    }
+    // show public clubs' news even when user has not logged in
+    // if (window.location.href === "http://localhost:8080/latest-news.html"){
+    //     vueinst.view_news();
+    // }
 
     /*
         This checks if user has logged in to

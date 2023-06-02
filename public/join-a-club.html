@@ -45,56 +45,18 @@
                 <br><br>
                 <div class="clubs-list">
 
-                    <div class="indv-club">
+                    <div class="indv-club" v-for="club in all_clubs">
                         <div class="left-club-side">
-                            <h2>Adelaide Uni Comedy Club</h2>
-                            <h3>Phone: 0123456789</h3>
-                            <h3>Website: xxx.com</h3>
-                            <h3>Email: xxx.gmail.com</h3>
+                            <h2> {{ club.club_name }} </h2>
+                            <h3> {{ club.club_description }} </h3>
+                            <h3> {{ club.phone }} </h3>
+                            <h3> {{ club.email }} </h3>
                         </div>
                         <div class="right-club-side">
-                            <button class="login" type="button" v-on:click="join_club">Join</button> <!-- CREATE FUNCTION TO ALLOW AUTOMATIC ENROL INTO CLUB AS MEMBER -->
+                            <button class="login" type="button" v-on:click="join_club(club.club_id)">Join</button> <!-- CREATE FUNCTION TO ALLOW AUTOMATIC ENROL INTO CLUB AS MEMBER -->
                         </div>
                     </div>
 
-                    <div class="indv-club">
-                        <div class="left-club-side">
-                            <h2>Adelaide Uni Drama Club</h2>
-                            <h3>Phone: 0123456789</h3>
-                            <h3>Website: xxx.com</h3>
-                            <h3>Email: xxx.gmail.com</h3>
-                        </div>
-
-                        <div class="right-club-side">
-                            <button class="login" type="button" onclick="myFunction()">Join</button> <!-- CREATE FUNCTION TO ALLOW AUTOMATIC ENROL INTO CLUB AS MEMBER -->
-                        </div>
-                    </div>
-
-                    <div class="indv-club">
-                        <div class="left-club-side">
-                            <h2>Adelaide Uni Party Club</h2>
-                            <h3>Phone: 0123456789</h3>
-                            <h3>Website: xxx.com</h3>
-                            <h3>Email: xxx.gmail.com</h3>
-                        </div>
-
-                        <div class="right-club-side">
-                            <button class="login" type="button" onclick="myFunction()">Join</button> <!-- CREATE FUNCTION TO ALLOW AUTOMATIC ENROL INTO CLUB AS MEMBER -->
-                        </div>
-                    </div>
-
-                    <div class="indv-club">
-                        <div class="left-club-side">
-                            <h2>Adelaide Uni Comedy Club</h2>
-                            <h3>Phone: 0123456789</h3>
-                            <h3>Website: xxx.com</h3>
-                            <h3>Email: xxx.gmail.com</h3>
-                        </div>
-
-                        <div class="right-club-side">
-                            <button class="login" type="button" onclick="myFunction()">Join</button> <!-- CREATE FUNCTION TO ALLOW AUTOMATIC ENROL INTO CLUB AS MEMBER -->
-                        </div>
-                    </div>
                 </div>
             </div>
         </article>
