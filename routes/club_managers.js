@@ -6,11 +6,12 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-/* Route to manage own user information */
-router.post('/updateInfo', function(req, res, next) {
+/* Route to manage own user information */ /* Should go to users.js */
+/* router.post('/updateInfo', function(req, res, next) {
   var newPassword = req.body.new_password;
   var newEmail = req.body.new_email;
   var newMobile = req.body.new_mobile;
+  var userID = req.body.user_id;
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
@@ -20,7 +21,7 @@ router.post('/updateInfo', function(req, res, next) {
 
     let query = "UPDATE USERS SET user_password = ?, email = ?, mobile = ? WHERE user_id = ?";
 
-    connection.query(query, [newPassword, newEmail, newMobile], function(error, rows, fields) {
+    connection.query(query, [newPassword, newEmail, newMobile, userID], function(error, rows, fields) {
       connection.release();
 
       if (error) {
@@ -31,7 +32,7 @@ router.post('/updateInfo', function(req, res, next) {
       res.sendStatus(200);
     });
   });
-});
+}); */
 
 /* Route to view club members */
 router.get('/viewMembers', function(req, res, next) {
@@ -39,16 +40,18 @@ router.get('/viewMembers', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
+      console.log("Connection error");
       res.sendStatus(500);
       return;
     }
 
-    let query = "SELECT CLUB_MEMBERS.user_id, USERS.first_name, USERS.last_name FROM CLUB_MEMBERS INNER JOIN USERS ON CLUB_MEMBERS.user_id = USERS.user_id WHERE CLUB_MEMBERS.club_id = ?";
+    let query = "SELECT CLUB_MEMBERS.user_id, USERS.first_name, USERS.last_name, USERS.email, USERS.mobile FROM CLUB_MEMBERS INNER JOIN USERS ON CLUB_MEMBERS.user_id = USERS.user_id WHERE CLUB_MEMBERS.club_id = ?";
 
     connection.query(query, [clubID], function(error, rows, fields) {
       connection.release();
 
       if (error) {
+        console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -249,5 +252,8 @@ router.get('/viewEventgoers', function(req, res, next) {
     });
   });
 });
+
+/* Route to make new club */
+
 
 module.exports = router;
