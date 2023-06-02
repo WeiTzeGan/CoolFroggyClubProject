@@ -90,15 +90,17 @@ router.post('/newAnnouncement', function(req, res, next) {
   var privateMessage = req.body.private_message;
   var clubID = req.body.club_id;
 
+  // To check if announcement title already exists
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
 
-    let query = "INSERT INTO ANNOUNCEMENTS (title, post_message, private_message, club_id) VALUES (?, ?, ?, ?)";
+    let query = "SELECT * FROM ANNOUNCEMENTS WHERE title = ?";
 
-    connection.query(query, function(error, rows, fields) {
+    connection.query(query, [postTitle], function(error, rows, fields) {
+      console.log("Announcements was checked");
       connection.release();
 
       if (error) {
@@ -106,7 +108,32 @@ router.post('/newAnnouncement', function(req, res, next) {
         return;
       }
 
-      res.sendStatus(200);
+      if (rows.length > 0) {
+        console.log("Announcement title already exists");
+        res.sendStatus(403);
+        return;
+      }
+
+      // If passes above, add to announcements table
+      req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2 = "INSERT INTO ANNOUNCEMENTS (title, post_message, private_message, club_id) VALUES (?, ?, ?, ?)";
+
+        connection.query(query2, [postTitle, postMessage, privateMessage, clubID], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            res.sendStatus(500);
+            return;
+          }
+
+          res.sendStatus(200);
+      });
+      });
     });
   });
 });
@@ -119,23 +146,52 @@ router.post('/addEvent', function(req, res, next) {
   var eventLocation = req.body.event_location;
   var clubID = req.body.club_id;
 
+  // To check if event name already exists
   req.pool.getConnection(function(err, connection) {
     if (err) {
+      console.log("Connection error");
       res.sendStatus(500);
       return;
     }
 
-    let query = "INSERT INTO EVENTS (event_name, event_message, event_date, event_location, club_id) VALUES (?, ?, ?, ?, ?)";
+    let query = "SELECT * FROM EVENTS WHERE event_name = ? AND (event_location = ? OR event_date = ?)";
 
-    connection.query(query, [eventName, eventMessage, eventDate, eventLocation, clubID], function(error, rows, fields) {
+    connection.query(query, [eventName, eventLocation, eventDate], function(error, rows, fields) {
       connection.release();
 
       if (error) {
+        console.log("First query error");
         res.sendStatus(500);
         return;
       }
 
-      res.sendStatus(200);
+      if (rows.length > 0) {
+        console.log("Event name already exists, or event location already booked at this time");
+        res.sendStatus(403);
+        return;
+      }
+
+      // If passes all above, insert into events table
+      req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+          console.log("Second query error");
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2 = "INSERT INTO EVENTS (event_name, event_message, event_date, event_location, club_id) VALUES (?, ?, ?, ?, ?)";
+
+        connection.query(query2, [eventName, eventMessage, eventDate, eventLocation, clubID], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            res.sendStatus(500);
+            return;
+          }
+
+          res.sendStatus(200);
+        });
+      });
     });
   });
 });
