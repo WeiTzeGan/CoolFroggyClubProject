@@ -146,9 +146,9 @@ router.post('/login', function (req, res, next) {
     // query part
     let query;
     if (login_data.type === 'Club Member') {
-      query = "SELECT first_name, last_name, email FROM USERS WHERE email = ? AND user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email FROM USERS WHERE email = ? AND user_password = ?";
     } else if (login_data.type === 'Club Manager') {
-      query = "SELECT first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ? AND USERS.user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ? AND USERS.user_password = ?";
     } else if (login_data.type === 'Admin') {
       // redirect to a an admin route
       return; // return for now
@@ -249,9 +249,9 @@ router.post('/google-login', async function (req, res, next) {
     let query;
 
     if (type === 'Club Member') {
-      query = "SELECT first_name, last_name, email FROM USERS WHERE email = ?";
+      query = "SELECT user_id, first_name, last_name, email FROM USERS WHERE email = ?";
     } else if (type === 'Club Manager') {
-      query = "SELECT first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
+      query = "SELECT user_id, first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
     } else if (type === 'Admin') {
       // redirect to a an admin route
       return; // return for now
@@ -337,5 +337,28 @@ router.get('/getAnnouncements', function(req, res, next) {
     });
   });
 });
+
+router.get('/view-clubs', function(req, res, next) {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT * FROM CLUBS";
+
+    connection.query(query, function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+      //console.log(rows);
+      res.json(rows);
+    });
+  });
+});
+
 
 module.exports = router;

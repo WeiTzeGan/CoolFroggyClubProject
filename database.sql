@@ -38,6 +38,8 @@ CREATE TABLE CLUBS (
     club_name CHAR(255) NOT NULL,
     club_description VARCHAR(1000),
     club_manager_id SMALLINT,
+    phone VARCHAR(20),
+    email VARCHAR(255),
     PRIMARY KEY (club_id),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
@@ -77,6 +79,7 @@ CREATE TABLE ANNOUNCEMENTS (
     post_message CHAR(255),
     private_message TINYINT(1) NOT NULL,
     club_id SMALLINT NOT NULL,
+    post_date DATE DEFAULT CURRENT_DATE,
     PRIMARY KEY (post_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
@@ -122,19 +125,34 @@ VALUES
 ('2', '2');
 
 INSERT INTO CLUBS
-(club_name, club_description, club_manager_id)
+(club_name, club_description, club_manager_id, phone, email)
 VALUES
-('OCF', 'AAAA', '1');
+('OCF', 'AAAA', '1', 123456899, 'ocf@gmail.com');
 
 INSERT INTO CLUBS
-(club_name, club_description, club_manager_id)
+(club_name, club_description, club_manager_id, phone, email)
 VALUES
-('AVA', 'BBBB', '2');
+('AVA', 'BBBB', '2', 123456899, 'ava@gmail.com');
 
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
 VALUES
 ('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock Paper Scissors tournament', 'Jan ken pon!', '2023-06-22', 'EM bulding', '2');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock and RickRoll', 'We will rock you!', '2023-03-12', 'EM bulding', '2');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Rock and RickRoll', 'We will rock you!', '2023-02-09', 'EM bulding', '2');
 
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)
