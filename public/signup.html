@@ -66,7 +66,8 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" v-model="email">
 
-                <input type="submit" value="Submit" v-on:click="signup()">
+                <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
+                <input type="button" value="Submit" v-on:click="signup()">
             </form>
 
         </article>
