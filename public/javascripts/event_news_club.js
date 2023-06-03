@@ -7,7 +7,7 @@ const vueinst = Vue.createApp({
             all_clubs: [],
             all_news: [],
             show_news: [], // only show 1 news at a time (this refers to the index of the news in all_news)
-            //news_freshness: ''
+            search_target: ''
         };
     },
 
@@ -44,7 +44,7 @@ const vueinst = Vue.createApp({
             xhttp.send();
         },
 
-        formatDate(date) {
+        formatDate: function(date) {
             const options = {
                 year: "numeric",
                 month: "long",
@@ -103,7 +103,7 @@ const vueinst = Vue.createApp({
 
         count_news: function(freshness){
             let news_freshness = {type: freshness};
-            
+
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function() {
@@ -119,19 +119,48 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(news_freshness));
         },
 
-        show_full_message(index){
+        show_full_message: function(index){
             if (vueinst.show_news[index] === false){
                 vueinst.show_news[index] = true;
             }
         },
 
-        hide_full_message(index){
+        hide_full_message: function(index){
             if (vueinst.show_news[index] === true){
                 vueinst.show_news[index] = false;
             }
         },
 
-        logout() {
+        // somehow, search_news and count_search_news don't update all_news and show_news
+        search_news: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if ( req.readyState === 4  && req.status === 200) {
+                    vueinst.all_news = JSON.parse(req.response);
+                }
+            };
+
+            req.open('GET', "/search-news?target=" + encodeURIComponent(vueinst.search_target), true);
+            req.send();
+        },
+
+        count_search_news: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // get the number of news that is public
+                    let length = JSON.parse(req.response)[0].length;
+                    vueinst.show_news = Array(length).fill(false);
+                }
+            };
+
+            req.open('GET', "/count-search-news?target=" + encodeURIComponent(vueinst.search_target), true);
+            req.send();
+        },
+
+        logout: function() {
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function () {

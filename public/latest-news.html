@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/latest-news.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<script src="javascripts/CoolFroggyClub.js"></script>
     <!-- <script src="javascripts/signin.js" defer></script> -->
     <script src="javascripts/event_news_club.js" defer></script>
 </head>
@@ -46,6 +45,7 @@
                         <h1>Latest News</h1>
                     </div>
                     <div class="right-events-nav">
+                        <button class="login" type="button" v-on:click="count_news('all'); view_news('all')">All</button>
                         <button class="login" type="button" v-on:click="count_news('past'); view_news('past')">Past</button> <!-- FILTER PAST EVENTS -->
                         <button class="login" type="button" v-on:click="count_news('upcoming'); view_news('upcoming')">Upcoming</button> <!-- FILTER UPCOMING EVENTS -->
                     </div>
@@ -55,8 +55,8 @@
                 <div class="events-list">
 
                     <form>
-                        <input type="text" placeholder="Search...">
-                        <button type="submit">Search</button>
+                        <input type="text" placeholder="Search..." v-model="search_target">
+                        <button type="button" v-on:click="count_search_news(); search_news()">Search</button>
                       </form>
 
                     <div class="indv-news" v-for="(news, index) in all_news">
@@ -68,9 +68,9 @@
                             <br>
                             <div>
                                 <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                <button type="submit" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
                                 <p v-show="show_news[index]"> {{ news.post_message }}</p>
-                                <button type="submit" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                                <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
                             </div>
 
                         </div>

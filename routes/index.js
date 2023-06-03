@@ -333,6 +333,7 @@ router.post('/view-news', function(req, res, next) {
     }else if ('type' in req.body && req.body.type === 'upcoming'){
       query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
     }else{
+      //connection.release();
       res.sendStatus(403);
     }
 
@@ -373,7 +374,8 @@ router.post('/count-news', function(req, res, next){
     }else if ('type' in req.body && req.body.type === 'upcoming'){
       query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
     }else{
-      res.sendStatus(404);
+      //connection.release();
+      res.sendStatus(403);
     }
 
     connection.query(query, function (error, rows, fields) {
@@ -388,6 +390,80 @@ router.post('/count-news', function(req, res, next){
         res.sendStatus(404);
       }
 
+      res.json(rows);
+    });
+  });
+});
+
+router.get('/search-news', function(req, res, next){
+
+  // if no target field in req.body OR target is empty
+  if ( !('target' in req.query) || req.query.target === ''){
+    res.sendStatus(403);
+    return;
+  }
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.title LIKE ?";
+    let pattern = '%' + req.query.target + '%';
+    connection.query(query, [pattern], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+      //console.log(rows);
+      res.json(rows);
+    });
+  });
+
+});
+
+
+router.get('/count-search-news', function(req, res, next){
+
+  // if no target field in req.body OR target is empty
+  if ( !('target' in req.query) || req.query.target === ''){
+    res.sendStatus(403);
+    return;
+  }
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT COUNT(ANNOUNCEMENTS.title) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.title LIKE ?";
+    let pattern = '%' + req.query.target + '%';
+    connection.query(query, [pattern], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+      //console.log(rows);
       res.json(rows);
     });
   });
