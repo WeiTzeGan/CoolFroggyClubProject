@@ -293,20 +293,45 @@ router.post('/google-login', async function (req, res, next) {
 });
 
 /* Route to get events table */
-router.get('/getEvents', function (req, res, next) {
+router.get('/view-events', function (req, res, next) {
+
+  // if no target field in req.body OR target is empty
+  if ( !('type' in req.query) || req.query.type === ''){
+    console.log("type invalid");
+    res.sendStatus(403);
+    return;
+  }
+
   req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
 
-    let query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if (req.query.type === 'all'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+    }else if (req.query.type === 'past'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date < CURDATE()";
+    }else if (req.query.type === 'upcoming'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date >= CURDATE()";
+    }else{
+      connection.release();
+      res.sendStatus(403);
+      return;
+    }
 
     connection.query(query, function (error, rows, fields) {
       connection.release();
 
       if (error) {
         res.sendStatus(500);
+        return;
+      }
+
+      if (rows.length === 0){
+        res.sendStatus(404);
         return;
       }
 
@@ -333,8 +358,9 @@ router.post('/view-news', function(req, res, next) {
     }else if ('type' in req.body && req.body.type === 'upcoming'){
       query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
     }else{
-      //connection.release();
+      connection.release();
       res.sendStatus(403);
+      return;
     }
 
     connection.query(query, function (error, rows, fields) {
@@ -374,8 +400,9 @@ router.post('/count-news', function(req, res, next){
     }else if ('type' in req.body && req.body.type === 'upcoming'){
       query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
     }else{
-      //connection.release();
+      connection.release();
       res.sendStatus(403);
+      return;
     }
 
     connection.query(query, function (error, rows, fields) {
@@ -467,7 +494,6 @@ router.get('/count-search-news', function(req, res, next){
       res.json(rows);
     });
   });
-
 });
 
 router.get('/view-clubs', function(req, res, next) {

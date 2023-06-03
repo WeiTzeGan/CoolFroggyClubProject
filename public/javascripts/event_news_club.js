@@ -7,7 +7,7 @@ const vueinst = Vue.createApp({
             all_clubs: [],
             all_news: [],
             show_news: [], // only show 1 news at a time (this refers to the index of the news in all_news)
-            search_target: ''
+            search_target: '',
         };
     },
 
@@ -31,7 +31,8 @@ const vueinst = Vue.createApp({
     },
 
     methods: {
-        view_event: function() {
+        // upcoming-events.html functions
+        view_event: function(event_type) {
             let xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = function() {
@@ -40,9 +41,11 @@ const vueinst = Vue.createApp({
                 }
             };
 
-            xhttp.open("GET", "/getEvents", true);
+            xhttp.open("GET", "/view-events?type=" + encodeURIComponent(event_type), true);
             xhttp.send();
         },
+
+
 
         formatDate: function(date) {
             const options = {
@@ -54,6 +57,8 @@ const vueinst = Vue.createApp({
             return new Date(date).toLocaleDateString(undefined, options);
         },
 
+
+        // join-a-club.html functions
         view_club: function(){
             let req = new XMLHttpRequest();
 
@@ -84,6 +89,7 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(join_info));
         },
 
+        // latest-news.html functions
         view_news: function(freshness){
 
             let news_freshness = {type: freshness};
@@ -131,7 +137,6 @@ const vueinst = Vue.createApp({
             }
         },
 
-        // somehow, search_news and count_search_news don't update all_news and show_news
         search_news: function(){
             let req = new XMLHttpRequest();
 
@@ -160,6 +165,7 @@ const vueinst = Vue.createApp({
             req.send();
         },
 
+
         logout: function() {
             let req = new XMLHttpRequest();
 
@@ -183,7 +189,7 @@ const vueinst = Vue.createApp({
 window.onload = function () {
     // show events even when user has not logged in
     if (window.location.href === "http://localhost:8080/upcoming-events.html"){
-        vueinst.view_event();
+        vueinst.view_event('all');
     }
     // show clubs even when user has not logged in
     if (window.location.href === "http://localhost:8080/join-a-club.html"){

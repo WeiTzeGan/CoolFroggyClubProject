@@ -48,12 +48,15 @@
                         <div class="left-events-nav">
                             <h1>Upcoming Events</h1>
                         </div>
+
                         <div class="right-events-nav">
-                            <button class="login" type="button" onclick="myFunction()">Past</button>
+                            <button class="login" type="button" v-on:click="view_event('all')">All</button>
+                            <button class="login" type="button" v-on:click="view_event('past')">Past</button>
                             <!-- FILTER PAST EVENTS -->
-                            <button class="login" type="button" onclick="myFunction()">Upcoming</button>
+                            <button class="login" type="button" v-on:click="view_event('upcoming')">Upcoming</button>
                             <!-- FILTER UPCOMING EVENTS -->
                         </div>
+
                     </div>
 
                     <!-- Events List -->
