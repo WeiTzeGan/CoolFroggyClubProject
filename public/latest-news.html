@@ -46,8 +46,8 @@
                         <h1>Latest News</h1>
                     </div>
                     <div class="right-events-nav">
-                        <button class="login" type="button" onclick="myFunction()">Past</button> <!-- FILTER PAST EVENTS -->
-                        <button class="login" type="button" onclick="myFunction()">Upcoming</button> <!-- FILTER UPCOMING EVENTS -->
+                        <button class="login" type="button" v-on:click="count_news('past'); view_news('past')">Past</button> <!-- FILTER PAST EVENTS -->
+                        <button class="login" type="button" v-on:click="count_news('upcoming'); view_news('upcoming')">Upcoming</button> <!-- FILTER UPCOMING EVENTS -->
                     </div>
                 </div>
 
@@ -59,33 +59,22 @@
                         <button type="submit">Search</button>
                       </form>
 
-                    <div class="indv-news" v-for="news in all_news">
+                    <div class="indv-news" v-for="(news, index) in all_news">
                         <div class="left-news-side">
                             <h3> {{ news.title }} </h3>
                             <br>
                             <p>Author: {{ news.author }}</p>
-                            <p>Published On: {{ news.post_date }}</p>
+                            <p>Published On: {{ formatDate(news.post_date) }}</p>
+                            <br>
+                            <div>
+                                <!-- this should appear like WDC prac task (aka only appear after click show) -->
+                                <button type="submit" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                <p v-show="show_news[index]"> {{ news.post_message }}</p>
+                                <button type="submit" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                            </div>
+
                         </div>
                     </div>
-
-                    <!-- <div class="indv-news">
-                        <div class="left-news-side">
-                            <h3><a href="www.news3.html">Women in Business Club hosts panel discussion with successful female entrepreneurs</a></h3>
-                            <br>
-                            <p>Author: Cool Froggy Woman in STEM</p>
-                            <p>Published On: 7 May 2023</p>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="indv-news">
-                        <div class="left-news-side">
-                            <h3><a href="www.news4.html">Music Club showcases talented student musicians in annual concert series</a></h3>
-                            <br>
-                            <p>Author: Cool Froggy Music Club</p>
-                            <p>Published On: 1 May 2023</p>
-                        </div>
-                    </div> -->
-
                 </div>
             </div>
         </article>

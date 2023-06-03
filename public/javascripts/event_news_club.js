@@ -6,8 +6,8 @@ const vueinst = Vue.createApp({
             all_events: [],
             all_clubs: [],
             all_news: [],
-            show_news: -1 // only show 1 news at a time (this refers to the index of the news in all_news)
-
+            show_news: [], // only show 1 news at a time (this refers to the index of the news in all_news)
+            //news_freshness: ''
         };
     },
 
@@ -84,7 +84,10 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(join_info));
         },
 
-        view_news: function(){
+        view_news: function(freshness){
+
+            let news_freshness = {type: freshness};
+
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function() {
@@ -93,8 +96,39 @@ const vueinst = Vue.createApp({
                 }
             };
 
-            req.open("GET", "/view-news", true);
-            req.send();
+            req.open("POST", "/view-news", true);
+            req.setRequestHeader('Content-Type', 'application/json');
+            req.send(JSON.stringify(news_freshness));
+        },
+
+        count_news: function(freshness){
+            let news_freshness = {type: freshness};
+            
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // get the number of news that is public
+                    let length = JSON.parse(req.response)[0].length;
+                    vueinst.show_news = Array(length).fill(false);
+                }
+            };
+
+            req.open("POST", "/count-news", true);
+            req.setRequestHeader('Content-Type', 'application/json');
+            req.send(JSON.stringify(news_freshness));
+        },
+
+        show_full_message(index){
+            if (vueinst.show_news[index] === false){
+                vueinst.show_news[index] = true;
+            }
+        },
+
+        hide_full_message(index){
+            if (vueinst.show_news[index] === true){
+                vueinst.show_news[index] = false;
+            }
         },
 
         logout() {
@@ -128,7 +162,8 @@ window.onload = function () {
     }
     // show public clubs' news even when user has not logged in
     if (window.location.href === "http://localhost:8080/latest-news.html"){
-        vueinst.view_news();
+        vueinst.count_news('all');
+        vueinst.view_news('all');
     }
 
     /*

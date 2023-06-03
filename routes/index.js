@@ -316,7 +316,7 @@ router.get('/getEvents', function (req, res, next) {
 });
 
 /* Route to get announcements table */
-router.get('/view-news', function(req, res, next) {
+router.post('/view-news', function(req, res, next) {
   req.pool.getConnection(function (err, connection) {
     if (err) {
       console.log("Connection error");
@@ -324,7 +324,17 @@ router.get('/view-news', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if ('type' in req.body && req.body.type === 'all'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
+    }else if ('type' in req.body && req.body.type === 'past'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date < CURDATE()";
+    }else if ('type' in req.body && req.body.type === 'upcoming'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
+    }else{
+      res.sendStatus(403);
+    }
 
     connection.query(query, function (error, rows, fields) {
       connection.release();
@@ -335,9 +345,53 @@ router.get('/view-news', function(req, res, next) {
         return;
       }
 
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+
       res.json(rows);
     });
   });
+});
+
+router.post('/count-news', function(req, res, next){
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if ('type' in req.body && req.body.type === 'all'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
+    }else if ('type' in req.body && req.body.type === 'past'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date < CURDATE()";
+    }else if ('type' in req.body && req.body.type === 'upcoming'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
+    }else{
+      res.sendStatus(404);
+    }
+
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+
+      res.json(rows);
+    });
+  });
+
 });
 
 router.get('/view-clubs', function(req, res, next) {
