@@ -50,8 +50,8 @@ router.post('/signup', function(req, res, next){
     }
     // query part
     let query1 = "SELECT first_name, last_name, email FROM USERS WHERE email = ?";
-    // check if user already exist in database (based on first name, last name, password, EMAIL)
-    connection.query(query1, [data.email, data.password], function(qerr, rows, fileds){
+    // check if user already exist in database (based on EMAIL)
+    connection.query(query1, [data.email], function(qerr, rows, fileds){
 
       // release connection after query
       connection.release();
@@ -64,7 +64,7 @@ router.post('/signup', function(req, res, next){
       }
 
       if (rows.length > 0){
-        console.log("User with password/email already exists");
+        console.log("User with email already exists");
         res.sendStatus(403);
         return;
       }
@@ -107,7 +107,7 @@ router.post('/signup', function(req, res, next){
 
           }); // connection.query2
         }); // req.pool.getConnection
-      })
+      });
 
     }); // connection.query1
 
@@ -177,7 +177,7 @@ router.post('/login', function (req, res, next) {
 
       if (rows.length > 0) {
         // There is a user
-        
+
         // Compare the hashed password with login password
         bcrypt.compare(login_data.password, rows[0].user_password, function(err, result) {
           if (err) {

@@ -166,6 +166,11 @@ INSERT INTO CLUB_MEMBERS
 VALUES
 ('1', '2');
 
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('2', '2');
+
 INSERT INTO EVENTGOERS
 (event_id, participant_id)
 VALUES
@@ -182,6 +187,11 @@ VALUES
 ('Study Session', 'We are having a study session on 16th June, Friday!', '1', '1');
 
 INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id)
+VALUES
+('Bible Study', 'We are having a study session on 10th March, Friday!', '1', '1');
+
+INSERT INTO ANNOUNCEMENTS
 (title, post_message, private_message, club_id, post_date)
 VALUES
 ('Welcome Night', 'We are having a games night for newcomers on 4th August, Friday!', '0', '1', '2023-03-21');
@@ -196,3 +206,13 @@ INSERT INTO ANNOUNCEMENTS
 (title, post_message, private_message, club_id, post_date)
 VALUES
 ('The Voice talent', 'We are having a singing showdown Fellas!', '0', '2', '2023-08-12');
+
+INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id, post_date)
+VALUES
+('Meeting 1', 'We are having meeting 1', '1', '2', '2023-09-12');
+
+INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id, post_date)
+VALUES
+('Meeting 2', 'We are having meeting 2', '1', '2', '2023-02-12');

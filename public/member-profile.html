@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/member-profile.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/CoolFroggyClub.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/dashboard.js" defer></script>
+
 </head>
 
 <body>
@@ -45,17 +45,17 @@
                 <div class="profile">
                     <!-- Profile Summary -->
                     <div class="profile-summary">
-                        <h3>Hi, <span id="username">[username]</span>!</h3>
+                        <h3>Hi, <span id="username"> {{ first_name + ' ' + last_name}}</span>!</h3>
                         <form>
-                            <h2>Profile Summary <button type="button" id="edit-button">Edit</button></h2>
-                            <div class="form-group">
+                            <h2>Profile Summary  <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h2>
+                            <!-- <div class="form-group">
                                 <label for="cool-froggy-id">Cool Froggy Member ID:</label>
                                 <input type="text" id="cool-froggy-id" name="cool-froggy-id" value="[member ID]"
                                     disabled>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="username">Username:</label>
-                                <input type="text" id="idusername" name="username" value="[username]" disabled>
+                                <input type="text" id="idusername" name="username" v-bind:value="first_name + ' ' + last_name" disabled>
                             </div>
                             <div class="form-group club-group">
                                 <label for="club">Club:</label>
@@ -82,16 +82,23 @@
                         <h2>Clubs Update</h2>
                         <div class="clubs-update-content">
                             <ul>
-                                <li>Club Update 1</li>
-                                <li>Club Update 2</li>
-                                <li>Club Update 3</li>
-                                <li>Club Update 4</li>
-                                <li>Club Update 5</li>
-                                <li>Club Update 6</li>
-                                <li>Club Update 7</li>
-                                <li>Club Update 8</li>
-                                <li>Club Update 9</li>
-                                <li>Club Update 10</li>
+                                <li>
+                                    <div class="left-news-side" v-for="(news, index) in all_news">
+                                        <h3> {{ news.title }} </h3>
+                                        <br>
+                                        <p>Author: {{ news.author }}</p>
+                                        <p>Published On: {{ formatDate(news.post_date) }}</p>
+                                        <br>
+                                        <div>
+                                            <!-- this should appear like WDC prac task (aka only appear after click show) -->
+                                            <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                            <p v-show="show_news[index]"> {{ news.post_message }}</p>
+                                            <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                                        </div>
+                                        <hr>
+                                        <br>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
