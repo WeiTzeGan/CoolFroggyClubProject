@@ -45,7 +45,26 @@ const vueinst = Vue.createApp({
             xhttp.send();
         },
 
+        join_event: function(id){
 
+            let join_info = {event_id: id};
+
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function(){
+                if (req.readyState === 4 && req.status === 200){
+                    alert("Join Event sucessfully");
+                }else if(req.readyState === 4 && req.status === 403){
+                    alert("Event already joined, cannot do it again");
+                }else if(req.readyState === 4 && req.status === 401){
+                    alert("Please log in to join the event");
+                }
+            };
+
+            req.open('POST', '/users/join-event', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+            req.send(JSON.stringify(join_info));
+        },
 
         formatDate: function(date) {
             const options = {
@@ -81,6 +100,10 @@ const vueinst = Vue.createApp({
             req.onreadystatechange = function(){
                 if (req.readyState === 4 && req.status === 200){
                     alert("Join club sucessfully");
+                }else if(req.readyState === 4 && req.status === 403){
+                    alert("Club already joined, cannot do it again");
+                }else if(req.readyState === 4 && req.status === 401){
+                    alert("Please log in to join the club");
                 }
             };
 
@@ -171,10 +194,10 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    alert('Logged out');
+                    alert('Logged out Sucessfully');
                     vueinst.signedIn = false;
                 } else if (this.readyState == 4 && this.status == 403) {
-                    alert('Not logged out');
+                    alert('You have not logged in yet');
                 }
             };
 

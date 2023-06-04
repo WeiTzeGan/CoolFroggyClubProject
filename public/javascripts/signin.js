@@ -62,7 +62,10 @@ const vueinst = Vue.createApp({
                     vueinst.userPassword = '';
                     vueinst.userType = '';
 
-                    window.location.href = "home-page-new.html";
+                    if (window.location.href === "http://localhost:8080/login-new.html"){
+                        window.location.href = "home-page-new.html";
+                    }
+
                 }
             };
             req.open('POST', '/login', true);
