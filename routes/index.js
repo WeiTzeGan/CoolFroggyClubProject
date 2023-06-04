@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 var express = require('express');
 var router = express.Router();
 const { redirect } = require('express/lib/response');
@@ -5,7 +6,6 @@ const { redirect } = require('express/lib/response');
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = '732733926826-h9vfvft404fo0i5eel2713ojb4iflhaq.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
-
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -71,34 +71,43 @@ router.post('/signup', function(req, res, next){
 
        //////////////////////////////////////////////////////////////
 
-      // if no user with the given email and password exists, redirect back to '/signup'
-      req.pool.getConnection(function(cerr2, connection2){
-         // handle connection error
+      // Hash the password with 10 salt rounds
+      bcrypt.hash(data.password, 10, function(err, hashedPassword) {
+        if (err) {
+          console.log("Password hashing error");
+          res.sendStatus(500);
+          return;
+        }
+
+        // if no user with the given email and password exists, redirect back to '/signup'
+        req.pool.getConnection(function(cerr2, connection2){
+          // handle connection error
           if (cerr2){
             console.log("Connection2 error");
             res.sendStatus(500);
             return;
           }
 
-        // after checking and no errors raised, insert new user into USERS table
-        let query2 = "INSERT INTO USERS(first_name, last_name, date_of_birth, user_password, email, mobile) VALUES(?, ?, ?, ?, ?, ?)";
-        connection2.query(query2,
-          [data.first_name, data.last_name, data.dob, data.password, data.email, data.mobile],
-          function(qerr2, rows, fileds){
+          // after checking and no errors raised, insert new user into USERS table
+          let query2 = "INSERT INTO USERS(first_name, last_name, date_of_birth, user_password, email, mobile) VALUES(?, ?, ?, ?, ?, ?)";
+          connection2.query(query2,
+            [data.first_name, data.last_name, data.dob, hashedPassword, data.email, data.mobile],
+            function(qerr2, rows, fileds){
 
-            connection2.release();
+              connection2.release();
 
-            if (qerr2){
-              console.log("Query2 error");
-              res.sendStatus(401);
-              return;
-            }
+              if (qerr2){
+                console.log("Query2 error");
+                res.sendStatus(401);
+                return;
+              }
 
-            // if insert sucess
-            res.sendStatus(200);
+              // if insert sucess
+              res.sendStatus(200);
 
           }); // connection.query2
-      }); // req.pool.getConnection
+        }); // req.pool.getConnection
+      })
 
     }); // connection.query1
 
@@ -146,15 +155,15 @@ router.post('/login', function (req, res, next) {
     // query part
     let query;
     if (login_data.type === 'Club Member') {
-      query = "SELECT user_id, first_name, last_name, email FROM USERS WHERE email = ? AND user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email, user_password FROM USERS WHERE email = ?";
     } else if (login_data.type === 'Club Manager') {
-      query = "SELECT user_id, first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ? AND USERS.user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email, manager_id, user_password FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
     } else if (login_data.type === 'Admin') {
       // redirect to a an admin route
       return; // return for now
     }
 
-    connection.query(query, [login_data.email, login_data.password], function (qerr, rows, fields) {
+    connection.query(query, [login_data.email], function (qerr, rows, fields) {
 
       // release connection after query (sucessful or not)
       connection.release();
@@ -168,12 +177,32 @@ router.post('/login', function (req, res, next) {
 
       if (rows.length > 0) {
         // There is a user
+        
+        // Compare the hashed password with login password
+        bcrypt.compare(login_data.password, rows[0].user_password, function(err, result) {
+          if (err) {
+            console.log("Password comparison error");
+            res.sendStatus(500);
+            return;
+          }
 
-        // store the necessary user info (name, email, user_type)
-        [req.session.user] = rows;
-        req.session.user_type = login_data.type;
-        console.log(JSON.stringify(req.session.user));
-        res.json(req.session.user);
+          // If passwords match
+          if (result) {
+
+            // store the necessary user info (name, email, user_type)
+            [req.session.user] = rows;
+            req.session.user_type = login_data.type;
+            console.log(JSON.stringify(req.session.user));
+            res.json(req.session.user);
+            return;
+
+          } else {
+            //Passwords don't match
+            console.log("Invalid password");
+            res.sendStatus(403);
+            return;
+          }
+        })
 
       } else {
         // No user
