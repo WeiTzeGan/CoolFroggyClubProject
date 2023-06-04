@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
 router.use('/', function(req, res, next){
   if (!('user' in req.session)){
-    console.log("User has not logged in");
+    // console.log("User has not logged in");
     res.sendStatus(401);
   }else{
     next();
@@ -24,7 +24,7 @@ router.post('/join-club', function (req, res, next) {
   req.pool.getConnection(function (cerr, connection) {
     // handle connection error
     if (cerr) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -38,13 +38,13 @@ router.post('/join-club', function (req, res, next) {
 
       // handle query error
       if (qerr) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
 
       if (rows.length > 0) {
-        console.log("Club Member already exists");
+        // console.log("Club Member already exists");
         res.sendStatus(403);
         return;
       }
@@ -55,7 +55,7 @@ router.post('/join-club', function (req, res, next) {
       req.pool.getConnection(function (cerr2, connection2) {
         // handle connection error
         if (cerr2) {
-          console.log("Connection2 error");
+          // console.log("Connection2 error");
           res.sendStatus(500);
           return;
         }
@@ -68,7 +68,7 @@ router.post('/join-club', function (req, res, next) {
             connection2.release();
 
             if (qerr2) {
-              console.log("Query2 error");
+              // console.log("Query2 error");
               res.sendStatus(401);
               return;
             }
@@ -89,35 +89,57 @@ router.post('/join-club', function (req, res, next) {
 // User view updates from clubs
 
 //STILL IN PROGRESS, NOT DONE YET
-router.get('/view-club-updates', function(req, res, next){
+router.get('/view-member-news', function(req, res, next){
+
+  let userID = req.session.user.user_id;
 
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
 
-    // // check for which type of new we want to see (all, past or upcoming news)
-    // if (req.body.type === 'all'){
-    //   query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
-    // }else if ('type' in req.body && req.body.type === 'past'){
-    //   query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date < CURDATE()";
-    // }else if ('type' in req.body && req.body.type === 'upcoming'){
-    //   query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
-    // }else{
-    //   connection.release();
-    //   res.sendStatus(403);
-    //   return;
-    // }
+    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id INNER JOIN CLUB_MEMBERS ON CLUB_MEMBERS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 1 AND CLUB_MEMBERS.user_id = ?";
 
-    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
-
-    connection.query(query, function (error, rows, fields) {
+    connection.query(query, [userID], function (error, rows, fields) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+// count number of member news
+router.get('/count-member-news', function(req, res, next){
+
+  let userID = req.session.user.user_id;
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT COUNT(ANNOUNCEMENTS.post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id INNER JOIN CLUB_MEMBERS ON CLUB_MEMBERS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 1 AND CLUB_MEMBERS.user_id = ?";
+
+    connection.query(query, [userID], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -141,7 +163,7 @@ router.post('/join-event', function(req, res, next){
   req.pool.getConnection(function (cerr, connection) {
     // handle connection error
     if (cerr) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -155,13 +177,13 @@ router.post('/join-event', function(req, res, next){
 
       // handle query error
       if (qerr) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(401);
         return;
       }
 
       if (rows.length > 0) {
-        console.log("Event already registered");
+        // console.log("Event already registered");
         res.sendStatus(403);
         return;
       }
@@ -172,7 +194,7 @@ router.post('/join-event', function(req, res, next){
       req.pool.getConnection(function (cerr2, connection2) {
         // handle connection error
         if (cerr2) {
-          console.log("Connection2 error");
+          // console.log("Connection2 error");
           res.sendStatus(500);
           return;
         }
@@ -185,7 +207,7 @@ router.post('/join-event', function(req, res, next){
             connection2.release();
 
             if (qerr2) {
-              console.log("Query2 error");
+              // console.log("Query2 error");
               res.sendStatus(401);
               return;
             }
@@ -209,7 +231,7 @@ router.get('/info', function(req, res, next){
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -220,7 +242,7 @@ router.get('/info', function(req, res, next){
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(401);
         return;
       }
@@ -250,14 +272,14 @@ router.post('/update-info', function(req, res, next) {
   // Hash the password with 10 salt rounds
   bcrypt.hash(newPassword, 10, function(err, hashedPassword) {
     if (err) {
-      console.log("Password hashing error");
+      // console.log("Password hashing error");
       res.sendStatus(500);
       return;
     }
 
     req.pool.getConnection(function(err, connection) {
       if (err) {
-        console.log("Connection error");
+        // console.log("Connection error");
         res.sendStatus(500);
         return;
       }
@@ -268,7 +290,7 @@ router.post('/update-info', function(req, res, next) {
         connection.release();
 
         if (error) {
-          console.log("Query error");
+          // console.log("Query error");
           res.sendStatus(401);
           return;
         }

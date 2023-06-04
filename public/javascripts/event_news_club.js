@@ -6,7 +6,7 @@ const vueinst = Vue.createApp({
             all_events: [],
             all_clubs: [],
             all_news: [],
-            show_news: [], // only show 1 news at a time (this refers to the index of the news in all_news)
+            show_news: [], 
             search_target: '',
         };
     },

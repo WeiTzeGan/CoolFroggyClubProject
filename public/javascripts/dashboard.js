@@ -4,6 +4,7 @@ const vueinst = Vue.createApp({
             signedIn: false,
             buttonHover: false,
 
+            // details needed for editing user details
             first_name: '',
             last_name: '',
             dob: null,
@@ -12,12 +13,16 @@ const vueinst = Vue.createApp({
             mobile: '',
             email: '',
 
-            // details for original user details
+            // details for original user details (details needed for editing user details)
             originFirstName: '',
             originLastName: '',
             originDOB: '',
             originMobile: '',
-            originEmail: ''
+            originEmail: '',
+
+            // personalized news/announcement (coming from clubs user has joined)
+            all_news: [],
+            show_news: [],
         };
     },
 
@@ -51,6 +56,7 @@ const vueinst = Vue.createApp({
             return new Date(date).toLocaleDateString(undefined, options);
         },
 
+        // functions to edit user details
         view_old_info: function(){
             let req = new XMLHttpRequest();
 
@@ -112,6 +118,47 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(new_info));
         },
 
+        // functions to help get personalized news from joined clubs
+        view_member_news: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.all_news = JSON.parse(req.response);
+                }
+            };
+
+            req.open('GET', "/users/view-member-news", true);
+            req.send();
+        },
+
+        count_member_news: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // get the number of news that is public
+                    let length = JSON.parse(req.response)[0].length;
+                    vueinst.show_news = Array(length).fill(false);
+                }
+            };
+
+            req.open('GET', 'users/count-member-news', true);
+            req.send();
+        },
+
+        show_full_message: function(index){
+            if (vueinst.show_news[index] === false){
+                vueinst.show_news[index] = true;
+            }
+        },
+
+        hide_full_message: function(index){
+            if (vueinst.show_news[index] === true){
+                vueinst.show_news[index] = false;
+            }
+        },
+
         logout: function() {
             let req = new XMLHttpRequest();
 
@@ -136,8 +183,13 @@ window.onload = function () {
         This checks if user has logged in to
         display the "sign out" and "account" OR "log in/ signup"
     */
+
     vueinst.view_old_info();
 
+    if (window.location.href === "http://localhost:8080/member-profile.html"){
+        vueinst.view_member_news();
+        vueinst.count_member_news();
+    }
 
     let req = new XMLHttpRequest();
 

@@ -82,16 +82,23 @@
                         <h2>Clubs Update</h2>
                         <div class="clubs-update-content">
                             <ul>
-                                <li>Club Update 1</li>
-                                <li>Club Update 2</li>
-                                <li>Club Update 3</li>
-                                <li>Club Update 4</li>
-                                <li>Club Update 5</li>
-                                <li>Club Update 6</li>
-                                <li>Club Update 7</li>
-                                <li>Club Update 8</li>
-                                <li>Club Update 9</li>
-                                <li>Club Update 10</li>
+                                <li>
+                                    <div class="left-news-side" v-for="(news, index) in all_news">
+                                        <h3> {{ news.title }} </h3>
+                                        <br>
+                                        <p>Author: {{ news.author }}</p>
+                                        <p>Published On: {{ formatDate(news.post_date) }}</p>
+                                        <br>
+                                        <div>
+                                            <!-- this should appear like WDC prac task (aka only appear after click show) -->
+                                            <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                            <p v-show="show_news[index]"> {{ news.post_message }}</p>
+                                            <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                                        </div>
+                                        <hr>
+                                        <br>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
