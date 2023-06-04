@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/upcoming-events.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/signin.js" defer></script> <!-- ELLIE UNCOMMENTED -->
     <script src="javascripts/event_news_club.js" defer></script>
 </head>
 
@@ -74,11 +74,11 @@
                             <h1>Upcoming Events</h1>
                         </div>
 
-                        <!-- ---------------- USE VUE TO HIDE EITHER BUTTON ----------------------  -->
                         <div class="right-events-nav">
-                            <button class="login" type="button" onclick="myFunction()">Past</button>
+                            <button class="login" type="button" v-on:click="view_event('all')">All</button>
+                            <button class="login" type="button" v-on:click="view_event('past')">Past</button>
                             <!-- FILTER PAST EVENTS -->
-                            <button class="login" type="button" onclick="myFunction()">Upcoming</button>
+                            <button class="login" type="button" v-on:click="view_event('upcoming')">Upcoming</button>
                             <!-- FILTER UPCOMING EVENTS -->
                         </div>
 
@@ -96,10 +96,13 @@
                                 <h3>{{ event.event_location }}</h3>
                             </div>
                             <div class="right-event-side">
+                                <!---------------------------- ASK JANSONNNNNNNNNNNNN --------------------------------------------->
                                 <button class="show-deets" type="button" onclick="">more details</button>
                                 <!-- CREATE FUNCTION TO SHOW EVENTS DESC -->
-                                <button class="login" type="button" onclick="myFunction()">RSVP</button>
+
+                                <button class="login" type="button" v-on:click="join_event(event.event_id)">RSVP</button>
                                 <!-- CREATE FUNCTION TO RSVP -->
+                              
                             </div>
 
                             <div class="event-desc" >

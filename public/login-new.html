@@ -60,7 +60,9 @@
                         <option value="Club Manager">Club Manager</option>
                         <option value="Admin">Admin</option>
                     </select>
-                    <input type="submit" value="Log in" v-on:click="login()">
+
+                    <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
+                    <input type="button" value="Log in" v-on:click="login()">
 
                     <!-- where google login is -->
                     <div id="g_id_onload"

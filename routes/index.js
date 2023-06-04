@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 var express = require('express');
 var router = express.Router();
 const { redirect } = require('express/lib/response');
@@ -5,7 +6,6 @@ const { redirect } = require('express/lib/response');
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = '732733926826-h9vfvft404fo0i5eel2713ojb4iflhaq.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
-
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -50,8 +50,8 @@ router.post('/signup', function(req, res, next){
     }
     // query part
     let query1 = "SELECT first_name, last_name, email FROM USERS WHERE email = ?";
-    // check if user already exist in database (based on first name, last name, password, EMAIL)
-    connection.query(query1, [data.email, data.password], function(qerr, rows, fileds){
+    // check if user already exist in database (based on EMAIL)
+    connection.query(query1, [data.email], function(qerr, rows, fileds){
 
       // release connection after query
       connection.release();
@@ -64,41 +64,50 @@ router.post('/signup', function(req, res, next){
       }
 
       if (rows.length > 0){
-        console.log("User with password/email already exists");
+        console.log("User with email already exists");
         res.sendStatus(403);
         return;
       }
 
        //////////////////////////////////////////////////////////////
 
-      // if no user with the given email and password exists, redirect back to '/signup'
-      req.pool.getConnection(function(cerr2, connection2){
-         // handle connection error
+      // Hash the password with 10 salt rounds
+      bcrypt.hash(data.password, 10, function(err, hashedPassword) {
+        if (err) {
+          console.log("Password hashing error");
+          res.sendStatus(500);
+          return;
+        }
+
+        // if no user with the given email and password exists, redirect back to '/signup'
+        req.pool.getConnection(function(cerr2, connection2){
+          // handle connection error
           if (cerr2){
             console.log("Connection2 error");
             res.sendStatus(500);
             return;
           }
 
-        // after checking and no errors raised, insert new user into USERS table
-        let query2 = "INSERT INTO USERS(first_name, last_name, date_of_birth, user_password, email, mobile) VALUES(?, ?, ?, ?, ?, ?)";
-        connection2.query(query2,
-          [data.first_name, data.last_name, data.dob, data.password, data.email, data.mobile],
-          function(qerr2, rows, fileds){
+          // after checking and no errors raised, insert new user into USERS table
+          let query2 = "INSERT INTO USERS(first_name, last_name, date_of_birth, user_password, email, mobile) VALUES(?, ?, ?, ?, ?, ?)";
+          connection2.query(query2,
+            [data.first_name, data.last_name, data.dob, hashedPassword, data.email, data.mobile],
+            function(qerr2, rows, fileds){
 
-            connection2.release();
+              connection2.release();
 
-            if (qerr2){
-              console.log("Query2 error");
-              res.sendStatus(401);
-              return;
-            }
+              if (qerr2){
+                console.log("Query2 error");
+                res.sendStatus(401);
+                return;
+              }
 
-            // if insert sucess
-            res.sendStatus(200);
+              // if insert sucess
+              res.sendStatus(200);
 
           }); // connection.query2
-      }); // req.pool.getConnection
+        }); // req.pool.getConnection
+      });
 
     }); // connection.query1
 
@@ -146,15 +155,15 @@ router.post('/login', function (req, res, next) {
     // query part
     let query;
     if (login_data.type === 'Club Member') {
-      query = "SELECT user_id, first_name, last_name, email FROM USERS WHERE email = ? AND user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email, user_password FROM USERS WHERE email = ?";
     } else if (login_data.type === 'Club Manager') {
-      query = "SELECT user_id, first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ? AND USERS.user_password = ?";
+      query = "SELECT user_id, first_name, last_name, email, manager_id, user_password FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
     } else if (login_data.type === 'Admin') {
       // redirect to a an admin route
       return; // return for now
     }
 
-    connection.query(query, [login_data.email, login_data.password], function (qerr, rows, fields) {
+    connection.query(query, [login_data.email], function (qerr, rows, fields) {
 
       // release connection after query (sucessful or not)
       connection.release();
@@ -169,11 +178,31 @@ router.post('/login', function (req, res, next) {
       if (rows.length > 0) {
         // There is a user
 
-        // store the necessary user info (name, email, user_type)
-        [req.session.user] = rows;
-        req.session.user_type = login_data.type;
-        console.log(JSON.stringify(req.session.user));
-        res.json(req.session.user);
+        // Compare the hashed password with login password
+        bcrypt.compare(login_data.password, rows[0].user_password, function(err, result) {
+          if (err) {
+            console.log("Password comparison error");
+            res.sendStatus(500);
+            return;
+          }
+
+          // If passwords match
+          if (result) {
+
+            // store the necessary user info (name, email, user_type)
+            [req.session.user] = rows;
+            req.session.user_type = login_data.type;
+            console.log(JSON.stringify(req.session.user));
+            res.json(req.session.user);
+            return;
+
+          } else {
+            //Passwords don't match
+            console.log("Invalid password");
+            res.sendStatus(403);
+            return;
+          }
+        })
 
       } else {
         // No user
@@ -293,20 +322,45 @@ router.post('/google-login', async function (req, res, next) {
 });
 
 /* Route to get events table */
-router.get('/getEvents', function (req, res, next) {
+router.get('/view-events', function (req, res, next) {
+
+  // if no target field in req.body OR target is empty
+  if ( !('type' in req.query) || req.query.type === ''){
+    console.log("type invalid");
+    res.sendStatus(403);
+    return;
+  }
+
   req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
 
-    let query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if (req.query.type === 'all'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+    }else if (req.query.type === 'past'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date < CURDATE()";
+    }else if (req.query.type === 'upcoming'){
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date >= CURDATE()";
+    }else{
+      connection.release();
+      res.sendStatus(403);
+      return;
+    }
 
     connection.query(query, function (error, rows, fields) {
       connection.release();
 
       if (error) {
         res.sendStatus(500);
+        return;
+      }
+
+      if (rows.length === 0){
+        res.sendStatus(404);
         return;
       }
 
@@ -316,23 +370,156 @@ router.get('/getEvents', function (req, res, next) {
 });
 
 /* Route to get announcements table */
-router.get('/getAnnouncements', function(req, res, next) {
+router.post('/view-news', function(req, res, next) {
   req.pool.getConnection(function (err, connection) {
     if (err) {
+      console.log("Connection error");
       res.sendStatus(500);
       return;
     }
 
-    let query = "SELECT ANNOUNCEMENTS.*, CLUBS.club_name FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id";
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if ('type' in req.body && req.body.type === 'all'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
+    }else if ('type' in req.body && req.body.type === 'past'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date < CURDATE()";
+    }else if ('type' in req.body && req.body.type === 'upcoming'){
+      query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
+    }else{
+      connection.release();
+      res.sendStatus(403);
+      return;
+    }
 
     connection.query(query, function (error, rows, fields) {
       connection.release();
 
       if (error) {
+        console.log("Query error");
         res.sendStatus(500);
         return;
       }
 
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+router.post('/count-news', function(req, res, next){
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query;
+    // check for which type of new we want to see (all, past or upcoming news)
+    if ('type' in req.body && req.body.type === 'all'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0";
+    }else if ('type' in req.body && req.body.type === 'past'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date < CURDATE()";
+    }else if ('type' in req.body && req.body.type === 'upcoming'){
+      query = "SELECT COUNT(post_id) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.post_date >= CURDATE()";
+    }else{
+      connection.release();
+      res.sendStatus(403);
+      return;
+    }
+
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+router.get('/search-news', function(req, res, next){
+
+  // if no target field in req.body OR target is empty
+  if ( !('target' in req.query) || req.query.target === ''){
+    res.sendStatus(403);
+    return;
+  }
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT ANNOUNCEMENTS.title, ANNOUNCEMENTS.post_message, ANNOUNCEMENTS.post_date, CLUBS.club_name AS author FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.title LIKE ?";
+    let pattern = '%' + req.query.target + '%';
+    connection.query(query, [pattern], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+      //console.log(rows);
+      res.json(rows);
+    });
+  });
+
+});
+
+
+router.get('/count-search-news', function(req, res, next){
+
+  // if no target field in req.body OR target is empty
+  if ( !('target' in req.query) || req.query.target === ''){
+    res.sendStatus(403);
+    return;
+  }
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT COUNT(ANNOUNCEMENTS.title) AS length FROM ANNOUNCEMENTS INNER JOIN CLUBS ON ANNOUNCEMENTS.club_id = CLUBS.club_id WHERE ANNOUNCEMENTS.private_message = 0 AND ANNOUNCEMENTS.title LIKE ?";
+    let pattern = '%' + req.query.target + '%';
+    connection.query(query, [pattern], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+      }
+      //console.log(rows);
       res.json(rows);
     });
   });

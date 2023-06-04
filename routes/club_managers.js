@@ -6,6 +6,17 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.use('/', function(req, res, next){
+  // if not logged in or
+  // NOT logged in as club manager
+  if (!('user' in req.session) || !('manager_id' in req.session.user)){
+    console.log("Not logged in OR not logged in as club manager");
+    res.sendStatus(403);
+  }else{
+    next();
+  }
+});
+
 /* Route to manage own user information */ /* Should go to users.js */
 /* router.post('/updateInfo', function(req, res, next) {
   var newPassword = req.body.new_password;
@@ -33,6 +44,8 @@ router.get('/', function(req, res, next) {
     });
   });
 }); */
+
+
 
 /* Route to view club members */
 router.get('/viewMembers', function(req, res, next) {

@@ -37,7 +37,7 @@ const vueinst = Vue.createApp({
             if (this.signedIn === false) {
                 return "login-new.html";
             } else {
-                return 'account.html';
+                return 'member-profile.html';
             }
         },
         buttonName: function () {
@@ -66,7 +66,10 @@ const vueinst = Vue.createApp({
                     vueinst.userPassword = '';
                     vueinst.userType = '';
 
-                    window.location.href = "home-page-new.html";
+                    if (window.location.href === "http://localhost:8080/login-new.html"){
+                        window.location.href = "home-page-new.html";
+                    }
+
                 }
             };
             req.open('POST', '/login', true);

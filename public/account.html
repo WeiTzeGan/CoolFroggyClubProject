@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/signup.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/signin.js" defer></script> <!-- ellie's added changes ASK JANSONNNN -->
+    <script src="javascripts/dashboard.js" defer></script>
 </head>
 
 <body>
@@ -41,8 +42,8 @@
 
             <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
             <form>
-                <label for="memberID">Cool Froggy Member ID:</label> <!-- VUE + ROUTER ???? -->
-                <input type="text" id="memberID" name="memberID" placeholder="* Auto Generated" value="" readonly>
+                <!-- <label for="memberID">Cool Froggy Member ID:</label> VUE + ROUTER ???? -->
+                <!-- <input type="text" id="memberID" name="memberID" placeholder="* Auto Generated" value="" readonly> -->
 
                 <label for="first-name">First Name:</label>
                 <input type="text" id="first-name" name="first-name" v-bind:placeholder="originFirstName" v-model="first_name">
@@ -50,14 +51,14 @@
                 <label for="last-name">Last Name:</label>
                 <input type="text" id="last-name" name="last-name" v-bind:placeholder="originLastName" v-model="last_name">
 
-                <label for="dob">Date of Birth:</label>
+                <label for="dob">Date of Birth: {{ formatDate(originDOB) }}</label>
                 <input type="date" id="dob" name="dob" v-bind:placeholder="originDOB" v-model="dob">
 
-                <label for="password">Password:</label>
+                <label for="password">New Password:</label>
                 <input type="password" id="password" name="password" v-model="password">
 
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="confirm-password" v-model="confirm_password">
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" name="confirm-new-password" v-model="confirm_password">
 
                 <label for="phone">Mobile Phone:</label>
                 <input type="tel" id="phone" name="phone" v-bind:placeholder="originMobile" v-model="mobile">
@@ -65,7 +66,7 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" v-bind:placeholder="originEmail" v-model="email">
 
-                <input type="submit" value="Confirm" v-on:click="confirmChange()">
+                <input type="button" value="Confirm" v-on:click="update_info()">
             </form>
 
         </article>
