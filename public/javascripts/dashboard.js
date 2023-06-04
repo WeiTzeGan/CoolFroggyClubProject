@@ -166,6 +166,7 @@ const vueinst = Vue.createApp({
                 if (this.readyState == 4 && this.status == 200) {
                     alert('Logged out');
                     vueinst.signedIn = false;
+                    window.location.href = "home-page-new.html";
                 } else if (this.readyState == 4 && this.status == 403) {
                     alert('Not logged out');
                 }
