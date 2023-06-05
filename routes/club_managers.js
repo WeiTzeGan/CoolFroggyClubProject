@@ -44,6 +44,8 @@ router.get('/viewMembers', function(req, res, next) {
   });
 });
 
+// view events that the club manager is managing
+
 /* Router to remove club members */
 router.delete('/deleteMembers', function(req, res, next) {
   var memberID = req.body.user_id;

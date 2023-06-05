@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin Profile</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="stylesheets/admin-profile.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!--<script src="javascripts/signin.js" defer></script>     ellie's added changes ASK JANSONNNN  -->
+    <script src="javascripts/dashboard-manager.js" defer></script>
+</head>
+
+<body>
+    <div id="coolfroggyclub">
+        <header>
+            <nav>
+                <ul>
+                    <li class="logo">
+                        <a href="home-page-new.html"><img src="images/CoolFroggyLogo.png"
+                                alt="Cool Froggy Club logo"></a>
+                    </li>
+                    <li><a href="about-us.html">About us</a></li>
+                    <li><a href="upcoming-events.html">Upcoming Events</a></li>
+                    <li><a href="latest-news.html">Latest News</a></li>
+                    <li><a href="join-a-club.html">Join A Club</a></li>
+                    <li class="login"><a v-bind:href="URL">{{ buttonName }}</a></li>
+                    <li class="login" v-show="signedIn"><button type="button" v-on:click="signedIn=false; logout()">Sign
+                            Out</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div aria-label="Breadcrumb" class="breadcrumb">
+            <ul>
+                <li><a href="home-page-new.html">Home</a></li>
+                <li><a href="account-page.html">Account</a></li>
+                <li><span aria-current="page">Profile</span></li>
+            </ul>
+        </div>
+
+        <main>
+            <article>
+                <div class="profile">
+                    <!-- Admin Profile Summary -->
+                    <div class="admin-information">
+                        <form>
+                            <h2>Admin Profile <button type="button" id="edit-button"
+                                    onclick="location.href ='account.html';"> Edit</button> </h2>
+                            <div class="form-group">
+                                <label for="admin-username">Username: </label>
+                                <input type="text" id="adminusernameid" name="adminusername"
+                                    v-bind:value="first_name + ' ' + last_name" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email: </label>
+                                <input type="text" id="emailid" name="email" v-bind:value="first_name + ' ' + last_name"
+                                    disabled>
+                            </div>
+                            <button type="button" id="sign-up-admin-button">Sign-Up Admin</button>
+                        </form>
+                    </div>
+
+                    <!-- Clubs -->
+                    <div class="admin-club-member">
+                        <div class="clubs">
+                            <h2>Clubs</h2>
+                            <div class="club-content">
+                                <div class="club-list">
+                                    <div class="indv-member">
+                                        <span class="member-name">Club 1</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <div class="indv-member">
+                                        <span class="member-name">Club 2</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <!-- Add more members here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clubs Member -->
+                        <div class="members">
+                            <h2>Members</h2>
+                            <div class="member-content">
+                                <div class="member-list">
+                                    <div class="indv-member">
+                                        <span class="member-name">Member 1</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <div class="indv-member">
+                                        <span class="member-name">Member 2</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <!-- Add more members here -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <footer class="social-media">
+            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="https://www.instagram.com"><img src="images/instagram-icon.png" alt="Instagram"></a>
+            <a href="https://twitter.com"><img src="images/twitter-icon.png" alt="Twitter"></a>
+        </footer>
+    </div>
+</body>
+
+</html>
