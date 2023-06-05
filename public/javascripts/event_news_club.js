@@ -1,34 +1,39 @@
 const vueinst1 = Vue.createApp({
     data() {
         return {
-            // signedIn: false,
-            // buttonHover: false,
+            signedIn: false,
+            buttonHover: false,
+
             all_events: [],
             all_clubs: [],
             all_news: [],
             show_news: [],
             search_target: '',
+
+            // to toggle menu bar
+            menu: 'hamburger',
+            dropdown: 'dropdown-menu'
         };
     },
 
-    // computed: {
-    //     URL: function () {
-    //         // If user is signed in, change log in button to account button
-    //         if (this.signedIn === false) {
-    //             return "login-new.html";
-    //         } else {
-    //             return 'account.html';
-    //         }
-    //     },
-    //     buttonName: function () {
-    //         // If user is signed in
-    //         if (this.signedIn === true) {
-    //             return "Account";
-    //         } else {
-    //             return "Log in/Sign up";
-    //         }
-    //     }
-    // },
+    computed: {
+        URL: function () {
+            // If user is signed in, change log in button to account button
+            if (this.signedIn === false) {
+                return "login-new.html";
+            } else {
+                return 'account.html';
+            }
+        },
+        buttonName: function () {
+            // If user is signed in
+            if (this.signedIn === true) {
+                return "Account";
+            } else {
+                return "Log in/Sign up";
+            }
+        }
+    },
 
     methods: {
         // upcoming-events.html functions
@@ -203,6 +208,17 @@ const vueinst1 = Vue.createApp({
 
             req.open('POST', '/logout', true);
             req.send();
+        },
+
+        // to toggle menu in nav bar
+        toggleMenu: function() {
+            if (this.menu === 'hamburger') {
+                this.menu = 'hamburger is-active';
+                this.dropdown = 'dropdown-menu open';
+            } else {
+                this.menu = 'hamburger';
+                this.dropdown = 'dropdown-menu';
+            }
         }
 
     }
@@ -211,7 +227,7 @@ const vueinst1 = Vue.createApp({
 
 window.onload = function () {
     // show events even when user has not logged in
-    if (window.location.href === "http://localhost:8080/upcoming-events.html"){
+    if (window.location.href === "http://localhost:8080/upcoming-events.html" || window.location.href === "http://localhost:8080/index.html"){
         vueinst1.view_event('all');
     }
     // show clubs even when user has not logged in
@@ -219,27 +235,26 @@ window.onload = function () {
         vueinst1.view_club();
     }
     // show public clubs' news even when user has not logged in
-    if (window.location.href === "http://localhost:8080/latest-news.html"){
+    if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
         vueinst1.count_news('all');
         vueinst1.view_news('all');
     }
-};
 
     /*
         This checks if user has logged in to
         display the "sign out" and "account" OR "log in/ signup"
     */
-//     let req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
 
-//     req.onreadystatechange = function () {
-//         if (req.readyState === 4 && req.status === 200) {
-//             vueinst1.signedIn = true;
-//         } else {
-//             vueinst1.signedIn = false;
-//         }
-//     };
+    req.onreadystatechange = function () {
+        if (req.readyState === 4 && req.status === 200) {
+            vueinst1.signedIn = true;
+        } else {
+            vueinst1.signedIn = false;
+        }
+    };
 
-//     req.open('GET', '/checkLogin', true);
-//     req.send();
-// };
+    req.open('GET', '/checkLogin', true);
+    req.send();
+};
 
