@@ -67,7 +67,7 @@ const vueinst = Vue.createApp({
                     vueinst.userType = '';
 
                     if (window.location.href === "http://localhost:8080/login-new.html"){
-                        window.location.href = "home-page-new.html";
+                        window.location.href = "index.html";
                     }
 
                 }
@@ -91,7 +91,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (req.readyState === 4 && req.status === 200) {
-                    window.location.href = "home-page-new.html";
+                    window.location.href = "index.html";
                 }
             };
 
@@ -145,7 +145,7 @@ function google_login(response) {
     req.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             alert('Logged in with Google Sucessfully');
-            window.location.href = "home-page-new.html";
+            window.location.href = "index.html";
         } else if (this.readyState === 4 && this.status === 401) {
             alert('Login FAILED');
         }
@@ -165,6 +165,7 @@ window.onload = function () {
 
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
+            console.log("signed already");
             vueinst.signedIn = true;
         } else {
             vueinst.signedIn = false;

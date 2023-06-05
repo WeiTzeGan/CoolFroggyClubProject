@@ -94,6 +94,9 @@
                                 <h3>{{ event.club_name }}</h3>
                                 <h3>{{ formatDate(event.event_date) }}</h3>
                                 <h3>{{ event.event_location }}</h3>
+                                <div class="event-desc" >
+                                    <p>come and celebrate with us bla bla bla..........</p>
+                                </div>
                             </div>
                             <div class="right-event-side">
                                 <!---------------------------- ASK JANSONNNNNNNNNNNNN --------------------------------------------->
@@ -102,12 +105,9 @@
 
                                 <button class="login" type="button" v-on:click="join_event(event.event_id)">RSVP</button>
                                 <!-- CREATE FUNCTION TO RSVP -->
-                              
+
                             </div>
 
-                            <div class="event-desc" >
-                                <p>come and celebrate with us bla bla bla..........</p>
-                            </div>
                         </div>
 
                     </div>

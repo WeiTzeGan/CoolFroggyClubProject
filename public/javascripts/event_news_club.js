@@ -1,34 +1,34 @@
-const vueinst = Vue.createApp({
+const vueinst1 = Vue.createApp({
     data() {
         return {
-            signedIn: false,
-            buttonHover: false,
+            // signedIn: false,
+            // buttonHover: false,
             all_events: [],
             all_clubs: [],
             all_news: [],
-            show_news: [], 
+            show_news: [],
             search_target: '',
         };
     },
 
-    computed: {
-        URL: function () {
-            // If user is signed in, change log in button to account button
-            if (this.signedIn === false) {
-                return "login-new.html";
-            } else {
-                return 'account.html';
-            }
-        },
-        buttonName: function () {
-            // If user is signed in
-            if (this.signedIn === true) {
-                return "Account";
-            } else {
-                return "Log in/Sign up";
-            }
-        }
-    },
+    // computed: {
+    //     URL: function () {
+    //         // If user is signed in, change log in button to account button
+    //         if (this.signedIn === false) {
+    //             return "login-new.html";
+    //         } else {
+    //             return 'account.html';
+    //         }
+    //     },
+    //     buttonName: function () {
+    //         // If user is signed in
+    //         if (this.signedIn === true) {
+    //             return "Account";
+    //         } else {
+    //             return "Log in/Sign up";
+    //         }
+    //     }
+    // },
 
     methods: {
         // upcoming-events.html functions
@@ -37,7 +37,7 @@ const vueinst = Vue.createApp({
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_events = JSON.parse(this.response);
+                    vueinst1.all_events = JSON.parse(this.response);
                 }
             };
 
@@ -83,7 +83,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_clubs = JSON.parse(req.response);
+                    vueinst1.all_clubs = JSON.parse(req.response);
                 }
             };
 
@@ -121,7 +121,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_news = JSON.parse(req.response);
+                    vueinst1.all_news = JSON.parse(req.response);
                 }
             };
 
@@ -139,7 +139,7 @@ const vueinst = Vue.createApp({
                 if (this.readyState === 4 && this.status === 200) {
                     // get the number of news that is public
                     let length = JSON.parse(req.response)[0].length;
-                    vueinst.show_news = Array(length).fill(false);
+                    vueinst1.show_news = Array(length).fill(false);
                 }
             };
 
@@ -149,14 +149,14 @@ const vueinst = Vue.createApp({
         },
 
         show_full_message: function(index){
-            if (vueinst.show_news[index] === false){
-                vueinst.show_news[index] = true;
+            if (vueinst1.show_news[index] === false){
+                vueinst1.show_news[index] = true;
             }
         },
 
         hide_full_message: function(index){
-            if (vueinst.show_news[index] === true){
-                vueinst.show_news[index] = false;
+            if (vueinst1.show_news[index] === true){
+                vueinst1.show_news[index] = false;
             }
         },
 
@@ -165,11 +165,11 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function() {
                 if ( req.readyState === 4  && req.status === 200) {
-                    vueinst.all_news = JSON.parse(req.response);
+                    vueinst1.all_news = JSON.parse(req.response);
                 }
             };
 
-            req.open('GET', "/search-news?target=" + encodeURIComponent(vueinst.search_target), true);
+            req.open('GET', "/search-news?target=" + encodeURIComponent(vueinst1.search_target), true);
             req.send();
         },
 
@@ -180,11 +180,11 @@ const vueinst = Vue.createApp({
                 if (this.readyState === 4 && this.status === 200) {
                     // get the number of news that is public
                     let length = JSON.parse(req.response)[0].length;
-                    vueinst.show_news = Array(length).fill(false);
+                    vueinst1.show_news = Array(length).fill(false);
                 }
             };
 
-            req.open('GET', "/count-search-news?target=" + encodeURIComponent(vueinst.search_target), true);
+            req.open('GET', "/count-search-news?target=" + encodeURIComponent(vueinst1.search_target), true);
             req.send();
         },
 
@@ -195,7 +195,7 @@ const vueinst = Vue.createApp({
             req.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     alert('Logged out Sucessfully');
-                    vueinst.signedIn = false;
+                    vueinst1.signedIn = false;
                 } else if (this.readyState == 4 && this.status == 403) {
                     alert('You have not logged in yet');
                 }
@@ -212,33 +212,34 @@ const vueinst = Vue.createApp({
 window.onload = function () {
     // show events even when user has not logged in
     if (window.location.href === "http://localhost:8080/upcoming-events.html"){
-        vueinst.view_event('all');
+        vueinst1.view_event('all');
     }
     // show clubs even when user has not logged in
     if (window.location.href === "http://localhost:8080/join-a-club.html"){
-        vueinst.view_club();
+        vueinst1.view_club();
     }
     // show public clubs' news even when user has not logged in
     if (window.location.href === "http://localhost:8080/latest-news.html"){
-        vueinst.count_news('all');
-        vueinst.view_news('all');
+        vueinst1.count_news('all');
+        vueinst1.view_news('all');
     }
+};
 
     /*
         This checks if user has logged in to
         display the "sign out" and "account" OR "log in/ signup"
     */
-    let req = new XMLHttpRequest();
+//     let req = new XMLHttpRequest();
 
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
-            vueinst.signedIn = true;
-        } else {
-            vueinst.signedIn = false;
-        }
-    };
+//     req.onreadystatechange = function () {
+//         if (req.readyState === 4 && req.status === 200) {
+//             vueinst1.signedIn = true;
+//         } else {
+//             vueinst1.signedIn = false;
+//         }
+//     };
 
-    req.open('GET', '/checkLogin', true);
-    req.send();
-};
+//     req.open('GET', '/checkLogin', true);
+//     req.send();
+// };
 
