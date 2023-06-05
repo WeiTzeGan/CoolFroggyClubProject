@@ -5,6 +5,7 @@ const vueinst1 = Vue.createApp({
             buttonHover: false,
 
             all_events: [],
+            show_events: [],
             all_clubs: [],
             all_news: [],
             show_news: [],
@@ -43,11 +44,24 @@ const vueinst1 = Vue.createApp({
             xhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
                     vueinst1.all_events = JSON.parse(this.response);
+                    vueinst1.show_events = Array(vueinst1.all_events.length).fill(false);
                 }
             };
 
             xhttp.open("GET", "/view-events?type=" + encodeURIComponent(event_type), true);
             xhttp.send();
+        },
+
+        show_full_event: function(index){
+            if (vueinst1.show_events[index] === false){
+                vueinst1.show_events[index] = true;
+            }
+        },
+
+        hide_full_event: function(index){
+            if (vueinst1.show_events[index] === true){
+                vueinst1.show_events[index] = false;
+            }
         },
 
         join_event: function(id){
@@ -127,28 +141,11 @@ const vueinst1 = Vue.createApp({
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
                     vueinst1.all_news = JSON.parse(req.response);
+                    vueinst1.show_news = Array(vueinst1.all_news.length).fill(false);
                 }
             };
 
             req.open("POST", "/view-news", true);
-            req.setRequestHeader('Content-Type', 'application/json');
-            req.send(JSON.stringify(news_freshness));
-        },
-
-        count_news: function(freshness){
-            let news_freshness = {type: freshness};
-
-            let req = new XMLHttpRequest();
-
-            req.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // get the number of news that is public
-                    let length = JSON.parse(req.response)[0].length;
-                    vueinst1.show_news = Array(length).fill(false);
-                }
-            };
-
-            req.open("POST", "/count-news", true);
             req.setRequestHeader('Content-Type', 'application/json');
             req.send(JSON.stringify(news_freshness));
         },
@@ -171,25 +168,11 @@ const vueinst1 = Vue.createApp({
             req.onreadystatechange = function() {
                 if ( req.readyState === 4  && req.status === 200) {
                     vueinst1.all_news = JSON.parse(req.response);
+                    vueinst1.show_news = Array(vueinst1.all_news.length).fill(false);
                 }
             };
 
             req.open('GET', "/search-news?target=" + encodeURIComponent(vueinst1.search_target), true);
-            req.send();
-        },
-
-        count_search_news: function(){
-            let req = new XMLHttpRequest();
-
-            req.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // get the number of news that is public
-                    let length = JSON.parse(req.response)[0].length;
-                    vueinst1.show_news = Array(length).fill(false);
-                }
-            };
-
-            req.open('GET', "/count-search-news?target=" + encodeURIComponent(vueinst1.search_target), true);
             req.send();
         },
 
@@ -236,7 +219,6 @@ window.onload = function () {
     }
     // show public clubs' news even when user has not logged in
     if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
-        vueinst1.count_news('all');
         vueinst1.view_news('all');
     }
 

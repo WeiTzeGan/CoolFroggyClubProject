@@ -404,6 +404,7 @@ router.post('/view-news', function(req, res, next) {
       // if there is no rows that match query
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
 
       res.json(rows);
@@ -444,6 +445,7 @@ router.post('/count-news', function(req, res, next){
       }
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
 
       res.json(rows);

@@ -81,12 +81,12 @@
 
                         <div class="right-events-nav">
                             <button class="login" type="button"
-                                v-on:click="count_news('all'); view_news('all')">All</button>
+                                v-on:click="view_news('all')">All</button>
                             <button class="login" type="button"
-                                v-on:click="count_news('past'); view_news('past')">Past</button>
+                                v-on:click="view_news('past')">Past</button>
                             <!-- FILTER PAST EVENTS -->
                             <button class="login" type="button"
-                                v-on:click="count_news('upcoming'); view_news('upcoming')">Upcoming</button>
+                                v-on:click="view_news('upcoming')">Upcoming</button>
                             <!-- FILTER UPCOMING EVENTS -->
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="news-list">
                         <form>
                             <input type="text" placeholder="Search..." v-model="search_target">
-                            <button type="button" v-on:click="count_search_news(); search_news()">Search</button>
+                            <button type="button" v-on:click="search_news()">Search</button>
                         </form>
 
                         <div class="indv-news" v-for="(news, index) in all_news">

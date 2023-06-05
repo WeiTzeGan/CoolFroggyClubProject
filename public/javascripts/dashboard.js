@@ -129,6 +129,7 @@ const vueinst = Vue.createApp({
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
                     vueinst.all_news = JSON.parse(req.response);
+                    vueinst.show_news = Array(vueinst.all_news.length).fill(false);
                 }
             };
 
@@ -136,20 +137,6 @@ const vueinst = Vue.createApp({
             req.send();
         },
 
-        count_member_news: function(){
-            let req = new XMLHttpRequest();
-
-            req.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // get the number of news that is public
-                    let length = JSON.parse(req.response)[0].length;
-                    vueinst.show_news = Array(length).fill(false);
-                }
-            };
-
-            req.open('GET', 'users/count-member-news', true);
-            req.send();
-        },
 
         show_full_message: function(index){
             if (vueinst.show_news[index] === false){
@@ -168,11 +155,11 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    alert('Logged out');
+                    alert('Logged out sucessfully');
                     vueinst.signedIn = false;
                     window.location.href = "index.html";
                 } else if (this.readyState == 4 && this.status == 403) {
-                    alert('Not logged out');
+                    alert('Logout FAILED');
                 }
             };
 
@@ -193,10 +180,6 @@ const vueinst = Vue.createApp({
     }
 }).mount('#coolfroggyclub');
 
-function change_to_account() {
-    window.location.href = 'account.html';
-}
-
 
 window.onload = function () {
     /*
@@ -206,16 +189,15 @@ window.onload = function () {
 
     vueinst.view_old_info();
 
-    /* ---------------------------------- BUUUUUUUGGGYYYYYYY ----------------------------------------- */
-    // if (window.location.href === "http://localhost:8080/member-profile.html"){
-    //     vueinst.view_member_news();
-    //     vueinst.count_member_news();
-    // }
+    /* ---------------------------------- ELLIE, THIS ONE DID NOT CAUSE PROBLEM FOR ME  ----------------------------------------- */
+    if (window.location.href === "http://localhost:8080/member-profile.html"){
+        vueinst.view_member_news();
+    }
 
     let req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
+        if (req.readyState === 4 && req.status === 200 ) {
             vueinst.signedIn = true;
         } else if (req.readyState === 4 && req.status === 401) {
             vueinst.signedIn = false;

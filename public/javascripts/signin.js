@@ -67,7 +67,7 @@ const vueinst = Vue.createApp({
                     vueinst.userType = '';
 
                     if (window.location.href === "http://localhost:8080/login-new.html"){
-                        window.location.href = "index.html";
+                        window.location.href = "member-profile.html";
                     }
 
                 }
@@ -91,7 +91,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (req.readyState === 4 && req.status === 200) {
-                    window.location.href = "index.html";
+                    window.location.href = "login-new.html";
                 }
             };
 
