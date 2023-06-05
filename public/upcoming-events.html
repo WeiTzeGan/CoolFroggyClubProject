@@ -91,20 +91,21 @@
 
                     <div class="events-list" id="events">
 
-                        <div class="indv-event" v-for="event in all_events" v-bind:key="event.event_id">
+                        <div class="indv-event" v-for="(event, index) in all_events" v-bind:key="event.event_id">
                             <div class="left-event-side">
                                 <h2>{{ event.event_name }}</h2>
                                 <h3>{{ event.club_name }}</h3>
                                 <h3>{{ formatDate(event.event_date) }}</h3>
                                 <h3>{{ event.event_location }}</h3>
-                                <div class="event-desc" >
+                                <div class="event-desc" v-show="show_events[index]">
                                     <p>come and celebrate with us bla bla bla..........</p>
                                 </div>
                             </div>
                             <div class="right-event-side">
-                                <!---------------------------- ASK JANSONNNNNNNNNNNNN --------------------------------------------->
-                                <button class="show-deets" type="button" onclick="">more details</button>
+                                <button class="show-deets" type="button" v-show="!show_events[index]" v-on:click="show_full_event(index)">More details</button>
                                 <!-- CREATE FUNCTION TO SHOW EVENTS DESC -->
+                                <button class="show-deets" type="button" v-show="show_events[index]" v-on:click="hide_full_event(index)">See less</button>
+                                <!-- CREATE FUNCTION TO HIDE EVENTS DESC -->
 
                                 <button class="login" type="button" v-on:click="join_event(event.event_id)">RSVP</button>
                                 <!-- CREATE FUNCTION TO RSVP -->

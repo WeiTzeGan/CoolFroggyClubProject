@@ -9,8 +9,9 @@ router.get('/', function (req, res, next) {
 
 router.use('/', function(req, res, next){
   if (!('user' in req.session)){
-    // console.log("User has not logged in");
+    console.log("Message at the top of users.js: User has not logged in");
     res.sendStatus(401);
+    return;
   }else{
     next();
   }
@@ -85,10 +86,11 @@ router.post('/join-club', function (req, res, next) {
 
 }); // router
 
+// User view joined clubs
+
+
 
 // User view updates from clubs
-
-//STILL IN PROGRESS, NOT DONE YET
 router.get('/view-member-news', function(req, res, next){
 
   let userID = req.session.user.user_id;
@@ -223,8 +225,14 @@ router.post('/join-event', function(req, res, next){
     }); // connection.query1
 
   }); // req.pool.getConnection
-
 });
+
+// User view joined events
+
+
+
+// User view upcoming events from join club
+
 
 // User get personal details
 router.get('/info', function(req, res, next){
