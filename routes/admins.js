@@ -6,6 +6,17 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.use('/', function(req, res, next){
+  // if not logged in or
+  // NOT logged in as admin
+  if (!('user' in req.session) || !('admin_id' in req.session.user)){
+    console.log("Not logged in OR not logged in as admin");
+    res.sendStatus(403);
+  }else{
+    next();
+  }
+});
+
 /* Route to view all users */
 router.get('/viewUsers', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {

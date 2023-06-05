@@ -17,36 +17,6 @@ router.use('/', function(req, res, next){
   }
 });
 
-/* Route to manage own user information */ /* Should go to users.js */
-/* router.post('/updateInfo', function(req, res, next) {
-  var newPassword = req.body.new_password;
-  var newEmail = req.body.new_email;
-  var newMobile = req.body.new_mobile;
-  var userID = req.body.user_id;
-
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      res.sendStatus(500);
-      return;
-    }
-
-    let query = "UPDATE USERS SET user_password = ?, email = ?, mobile = ? WHERE user_id = ?";
-
-    connection.query(query, [newPassword, newEmail, newMobile, userID], function(error, rows, fields) {
-      connection.release();
-
-      if (error) {
-        res.sendStatus(500);
-        return;
-      }
-
-      res.sendStatus(200);
-    });
-  });
-}); */
-
-
-
 /* Route to view club members */
 router.get('/viewMembers', function(req, res, next) {
   var clubID = req.body.club_id;
