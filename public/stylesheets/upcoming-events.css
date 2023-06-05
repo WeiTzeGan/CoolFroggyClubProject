@@ -341,9 +341,9 @@ div.events-list {
 }
 
 div.indv-event {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-between; */
     background-color: #ffffff;
     border: 1px solid #ccc;
     margin-top: .5rem;
