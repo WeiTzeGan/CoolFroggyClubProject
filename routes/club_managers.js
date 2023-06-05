@@ -1,5 +1,15 @@
 var express = require('express');
+var nodemailer = require('nodemailer');
 var router = express.Router();
+
+// set up nodemailer
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'coolfroggyclub@gmail.com',
+    pass: 'cooLfroggYcluBkick@$$'
+  }
+});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -117,9 +127,41 @@ router.post('/newAnnouncement', function(req, res, next) {
             return;
           }
 
-          res.sendStatus(200);
+          req.app.locals.tempData = {title: postTitle, club_id: clubID};
+
+          res.redirect('/newsEmail');
+
+          //res.sendStatus(200);
       });
       });
+    });
+  });
+});
+
+/* Route to send out announcements email notifications */
+router.post('/newsEmail', function(req, res, next) {
+  var data = req.app.locals.tempData;
+  console.log('Received data: ', data);
+
+  // Check if announcement exists
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT USERS.email FROM USERS INNER JOIN CLUB_MEMBERS ON USERS.user_id = CLUB_MEMBERS.user_id INNER JOIN EMAIL_NOTIF ON USERS.user_id = EMAIL_NOTIF.user_id WHERE CLUB_MEMBERS.club_id = ? AND EMAIL_NOTIF.news_notif = ?;";
+
+    connection.query(query, [data.clubID, '1'], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+      console.log(rows);
+      res.sendStatus(200);
     });
   });
 });
