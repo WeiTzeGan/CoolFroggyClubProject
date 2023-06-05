@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/club-manager-profile.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!--<script src="javascripts/signin.js" defer></script>     ellie's added changes ASK JANSONNNN  -->
-    <script src="javascripts/dashboard.js" defer></script>
+    <script src="javascripts/dashboard-manager.js" defer></script>
 </head>
 
 <body>
@@ -46,83 +46,103 @@
                     <!-- Club-Manager Profile Summary -->
                     <div class="club-information">
                         <form>
-                            <h2>Club Information  <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h2>
+                            <h2>Club Information <button type="button" id="edit-button"
+                                    onclick="location.href ='account.html';"> Edit</button> </h2>
                             <div class="form-group">
-                                <label for="club-name">Club Name:</label>
-                                <span id="club-name">[Club Name]</span>
+                                <label for="club-name">Club Name: </label>
+                                <input type="text" id="clubnameid" name="clubname"
+                                    v-bind:value="first_name + ' ' + last_name" disabled class="text-box">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email:</label>
-                                <span id="email">[Email]</span>
+                                <label for="email">Email: </label>
+                                <input type="text" id="emailid" name="email" v-bind:value="first_name + ' ' + last_name"
+                                    disabled class="text-box">
                             </div>
                             <div class="form-group">
-                                <label for="avatar">Avatar:</label>
-                                <span id="avatar">[Avatar]</span>
+                                <label for="avatar">Avatar: </label>
+                                <input type="text" id="avatarid" name="avatar"
+                                    v-bind:value="first_name + ' ' + last_name" disabled class="text-box">
                             </div>
                         </form>
+                    </div>
+
+                    <!-- Clubs Member -->
+                    <div class="member-events">
+                        <div class="club-member">
+                            <h2>Member of Club</h2>
+                            <div class="club-member-content">
+                                <div class="member-list">
+                                    <div class="indv-member">
+                                        <span class="member-name">Member 1</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <div class="indv-member">
+                                        <span class="member-name">Member 2</span>
+                                        <button type="button" class="delete-button" title="Remove Member">
+                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
+                                        </button>
+                                    </div>
+                                    <!-- Add more members here -->
+                                </div>
+                            </div>
                         </div>
 
-                    <!-- Clubs Update -->
-                    <div class="clubs-update">
-                        <h2>Clubs Update</h2>
-                        <div class="clubs-update-content">
-                            <ul class="club-update-list">
-                                <li>
-                                    <div class="left-news-side" v-for="(news, index) in all_news">
-                                        <h3> {{ news.title }} </h3>
-                                        <br>
-                                        <p>Author: {{ news.author }}</p>
-                                        <p>Published On: {{ formatDate(news.post_date) }}</p>
-                                        <br>
-                                        <div>
-                                            <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                            <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
-                                            <p v-show="show_news[index]"> {{ news.post_message }}</p>
-                                            <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                        <!-- Clubs Events -->
+                        <div class="club-events">
+                            <h2>Club Events</h2>
+                            <div class="club-events-content">
+                                <ul class="event-list">
+                                    <li>
+                                        <div class="event-details">
+                                            <h3 class="event-title">Event 1</h3>
+                                            <p class="event-date">Date: [Date]</p>
+                                            <p class="event-time">Time: [Time]</p>
+                                            <p class="numOfRSVP">Number of RSVP: [numofRSVP]</p>
                                         </div>
-                                        <hr>
-                                        <br>
-                                    </div>
-                                </li>
-                            </ul>
+                                        <button type="button" class="more-info-button">More Info</button>
+                                    </li>
+                                    <li>
+                                        <div class="event-details">
+                                            <h3 class="event-title">Event 2</h3>
+                                            <p class="event-date">Date: [Date]</p>
+                                            <p class="event-time">Time: [Time]</p>
+                                        </div>
+                                        <button type="button" class="more-info-button">More Info</button>
+                                    </li>
+                                    <!-- Add more events here -->
+                                </ul>
+                            </div>
+                            <button type="button" class="add-event-button">Add Event</button>
                         </div>
                     </div>
 
-                    <!-- Joined Event and Other Upcoming Events -->
-                    <div class="events">
-                        <div class="joined-event">
-                            <h2>Joined Event</h2>
-                            <div class="joined-event-content">
-                                <ul class="club-event-list">
-                                    <li>Joined Event 1</li>
-                                    <li>Joined Event 2</li>
-                                    <li>Joined Event 3</li>
-                                    <li>Joined Event 4</li>
-                                    <li>Joined Event 5</li>
-                                    <li>Joined Event 6</li>
-                                    <li>Joined Event 7</li>
-                                    <li>Joined Event 8</li>
-                                    <li>Joined Event 9</li>
-                                    <li>Joined Event 10</li>
-                                </ul>
+
+                    <!-- Club Latest News -->
+                    <div class="club-news">
+                        <h2>Club News</h2>
+                        <div class="club-news-content">
+                            <div class="left-news-side" v-for="(news, index) in all_news">
+                                <h3> {{ news.title }} </h3>
+                                <br>
+                                <p>Author: {{ news.author }}</p>
+                                <p>Published On: {{ formatDate(news.post_date) }}</p>
+                                <br>
+                                <div>
+                                    <!-- this should appear like WDC prac task (aka only appear after click show) -->
+                                    <button type="button" v-show="!show_news[index]"
+                                        v-on:click="show_full_message(index);">
+                                        See full message </button>
+                                    <p v-show="show_news[index]"> {{ news.post_message }}</p>
+                                    <button type="button" v-show="show_news[index]"
+                                        v-on:click="hide_full_message(index);">
+                                        See less </button>
+                                </div>
+                                <hr>
+                                <br>
                             </div>
-                        </div>
-                        <div class="upcoming-events">
-                            <h2>Other Upcoming Events</h2>
-                            <div class="upcoming-events-content">
-                                <ul class="club-upcoming-event-list">
-                                    <li>Upcoming Event 1</li>
-                                    <li>Upcoming Event 2</li>
-                                    <li>Upcoming Event 3</li>
-                                    <li>Upcoming Event 4</li>
-                                    <li>Upcoming Event 5</li>
-                                    <li>Upcoming Event 6</li>
-                                    <li>Upcoming Event 7</li>
-                                    <li>Upcoming Event 8</li>
-                                    <li>Upcoming Event 9</li>
-                                    <li>Upcoming Event 10</li>
-                                </ul>
-                            </div>
+                            <button type="button" class="add-news-button">Add News</button>
                         </div>
                     </div>
                 </div>

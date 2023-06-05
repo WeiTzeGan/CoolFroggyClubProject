@@ -1,5 +1,15 @@
 var express = require('express');
+var nodemailer = require('nodemailer');
 var router = express.Router();
+
+// set up nodemailer
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'coolfroggyclub@gmail.com',
+    pass: 'qucfpwkhsjkegvoy'
+  }
+});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -43,6 +53,8 @@ router.get('/viewMembers', function(req, res, next) {
     });
   });
 });
+
+// view events that the club manager is managing
 
 /* Router to remove club members */
 router.delete('/deleteMembers', function(req, res, next) {
@@ -108,7 +120,7 @@ router.post('/newAnnouncement', function(req, res, next) {
         }
 
         let query2 = "INSERT INTO ANNOUNCEMENTS (title, post_message, private_message, club_id) VALUES (?, ?, ?, ?)";
-
+        console.log("sending data");
         connection.query(query2, [postTitle, postMessage, privateMessage, clubID], function(error, rows, fields) {
           connection.release();
 
@@ -117,11 +129,90 @@ router.post('/newAnnouncement', function(req, res, next) {
             return;
           }
 
+          req.app.locals.tempData = {title: postTitle, post_message: postMessage, club_id: clubID};
+
+          res.redirect(307,'/club_managers/newsEmail');
+
+          //res.sendStatus(200);
+      });
+      });
+    });
+  });
+});
+
+/* Route to send out announcements email notifications */
+router.post('/newsEmail', function(req, res, next) {
+  var data = req.app.locals.tempData;
+  console.log('Received data: ', data);
+
+  // Check if announcement exists
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT * FROM ANNOUNCEMENTS WHERE title = ?";
+
+    connection.query(query, [data.postTitle], function(error, rows, fields) {
+      console.log("Announcements was checked");
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      if (rows.length > 0) {
+        console.log("Announcement title already exists");
+        res.sendStatus(403);
+        return;
+      }
+
+      // If passes above, send email
+      req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2 = "SELECT USERS.email, EMAIL_NOTIF.club_id FROM USERS INNER JOIN EMAIL_NOTIF ON USERS.user_id = EMAIL_NOTIF.user_id WHERE EMAIL_NOTIF.club_id = ? AND EMAIL_NOTIF.news_notif = 1";
+
+        connection.query(query2, [data.club_id], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            res.sendStatus(500);
+            return;
+          }
+
+          var emails = 'gohshinyi03@gmail.com';
+
+          const mailOptions = {
+            from: 'coolfroggyclub@gmail.com',
+            to: emails,
+            subject: data.title,
+            text: data.post_message
+          };
+
+          transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+              console.log(error);
+              console.log('Error sending email');
+              res.sendStatus(500);
+            } else {
+              console.log('mail send', info);
+              console.log('Email sent successfully');
+            }
+          });
+
+          console.log("Email successfully sent");
           res.sendStatus(200);
       });
       });
     });
   });
+
 });
 
 /* Router to create new club events */

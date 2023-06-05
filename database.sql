@@ -181,6 +181,11 @@ INSERT INTO CLUB_MEMBERS
 VALUES
 ('2', '2');
 
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('2', '1');
+
 INSERT INTO EVENTGOERS
 (event_id, participant_id)
 VALUES
@@ -226,3 +231,15 @@ INSERT INTO ANNOUNCEMENTS
 (title, post_message, private_message, club_id, post_date)
 VALUES
 ('Meeting 2', 'We are having meeting 2', '1', '2', '2023-02-12');
+
+INSERT INTO EMAIL_NOTIF
+VALUES
+('1', '1', '1', '1');
+
+INSERT INTO EMAIL_NOTIF
+VALUES
+('2', '2', '1', '1');
+
+INSERT INTO EMAIL_NOTIF
+VALUES
+('1', '2', '1', '1');

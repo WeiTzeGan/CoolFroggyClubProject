@@ -306,4 +306,32 @@ router.post('/update-info', function(req, res, next) {
   }); // bcrypt.hash
 });
 
+// Route to quit a club
+router.delete('/quitClub', function(req, res, next) {
+  var userID = req.body.user_id;
+  var clubID = req.body.club_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "DELETE FROM CLUB_MEMBERS WHERE user_id = ? AND club_id = ?";
+
+    connection.query(query, [userID, clubID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
+    });
+  });
+});
+
+// Route for email notifications
+
 module.exports = router;
