@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <title>Member Profile</title>
+    <title>Club Manager Profile</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="stylesheets/member-profile.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/club-manager-profile.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!--<script src="javascripts/signin.js" defer></script>     ellie's added changes ASK JANSONNNN  -->
     <script src="javascripts/dashboard.js" defer></script>
@@ -43,39 +43,24 @@
         <main>
             <article>
                 <div class="profile">
-                    <!-- Profile Summary -->
-                    <div class="profile-summary">
-                        <h3>Hi, <span id="username"> {{ first_name + ' ' + last_name}}</span>!</h3>
+                    <!-- Club-Manager Profile Summary -->
+                    <div class="club-information">
                         <form>
-                            <h2>Profile Summary  <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h2>
-                            <!-- <div class="form-group">
-                                <label for="cool-froggy-id">Cool Froggy Member ID:</label>
-                                <input type="text" id="cool-froggy-id" name="cool-froggy-id" value="[member ID]"
-                                    disabled>
-                            </div> -->
+                            <h2>Club Information  <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h2>
                             <div class="form-group">
-                                <label for="username">Username:</label>
-                                <input type="text" id="idusername" name="username" v-bind:value="first_name + ' ' + last_name" disabled>
+                                <label for="club-name">Club Name:</label>
+                                <span id="club-name">[Club Name]</span>
                             </div>
-                            <div class="form-group club-group">
-                                <label for="club">Club:</label>
-                                <div class="club-joined">
-                                    <ul class="club-list">
-                                        <li>Club 1</li>
-                                        <li>Club 2</li>
-                                        <li>Club 3</li>
-                                        <li>Club 4</li>
-                                        <li>Club 5</li>
-                                        <li>Club 6</li>
-                                        <li>Club 7</li>
-                                        <li>Club 8</li>
-                                        <li>Club 9</li>
-                                        <li>Club 10</li>
-                                    </ul>
-                                </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <span id="email">[Email]</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="avatar">Avatar:</label>
+                                <span id="avatar">[Avatar]</span>
                             </div>
                         </form>
-                    </div>
+                        </div>
 
                     <!-- Clubs Update -->
                     <div class="clubs-update">
