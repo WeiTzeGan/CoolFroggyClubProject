@@ -95,6 +95,16 @@ CREATE TABLE PENDING_CLUBS (
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
 
+CREATE TABLE EMAIL_NOTIF (
+    user_id SMALLINT NOT NULL,
+    club_id SMALLINT NOT NULL,
+    news_notif TINYINT(1) NOT NULL,
+    event_notif TINYINT(1) NOT NULL,
+    PRIMARY KEY (user_id, club_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
+);
+
 INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)
 VALUES
