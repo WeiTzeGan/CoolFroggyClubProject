@@ -23,6 +23,10 @@ const vueinst = Vue.createApp({
             // personalized news/announcement (coming from clubs user has joined)
             all_news: [],
             show_news: [],
+
+            // to toggle menu bar
+            menu: 'hamburger',
+            dropdown: 'dropdown-menu'
         };
     },
 
@@ -32,7 +36,7 @@ const vueinst = Vue.createApp({
             if (this.signedIn === false) {
                 return "login-new.html";
             } else {
-                return 'account.html';
+                return 'member-profile.html';
             }
         },
         buttonName: function () {
@@ -166,7 +170,7 @@ const vueinst = Vue.createApp({
                 if (this.readyState == 4 && this.status == 200) {
                     alert('Logged out');
                     vueinst.signedIn = false;
-                    window.location.href = "home-page-new.html";
+                    window.location.href = "index.html";
                 } else if (this.readyState == 4 && this.status == 403) {
                     alert('Not logged out');
                 }
@@ -174,9 +178,24 @@ const vueinst = Vue.createApp({
 
             req.open('POST', '/logout', true);
             req.send();
+        },
+
+        // to toggle menu in nav bar
+        toggleMenu: function() {
+            if (this.menu === 'hamburger') {
+                this.menu = 'hamburger is-active';
+                this.dropdown = 'dropdown-menu open';
+            } else {
+                this.menu = 'hamburger';
+                this.dropdown = 'dropdown-menu';
+            }
         }
     }
 }).mount('#coolfroggyclub');
+
+function change_to_account() {
+    window.location.href = 'account.html';
+}
 
 
 window.onload = function () {
@@ -187,10 +206,11 @@ window.onload = function () {
 
     vueinst.view_old_info();
 
-    if (window.location.href === "http://localhost:8080/member-profile.html"){
-        vueinst.view_member_news();
-        vueinst.count_member_news();
-    }
+    /* ---------------------------------- BUUUUUUUGGGYYYYYYY ----------------------------------------- */
+    // if (window.location.href === "http://localhost:8080/member-profile.html"){
+    //     vueinst.view_member_news();
+    //     vueinst.count_member_news();
+    // }
 
     let req = new XMLHttpRequest();
 
@@ -205,3 +225,5 @@ window.onload = function () {
     req.open('GET', '/checkLogin', true);
     req.send();
 };
+
+

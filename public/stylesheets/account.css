@@ -298,73 +298,56 @@ main {
     padding: 20px 0px 60px 0px;
 }
 
-/* -------------------------------- EVENTS ------------------------------------ */
-div.news-collection {
+/* -------------------------------- ACCOUNT DETAILS ------------------------------------ */
+.account-details {
+    /* display: flex; */
+    max-width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+form {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    margin: 1rem auto;
-    padding: 1.5rem;
-    max-width: 700px;
-    border: 1px solid #ccc;
-    background-color: #daebd1;
-    font-size: 0.8rem;
 }
 
-div.input[type="text"] {
-    width: 20rem;
-    height: 3rem;
-    border: 2px solid #ccc;
+label {
+    margin-bottom: 10px;
+    font-family: sans-serif;
+    font-size: 20;
+    color: grey;
+    font-weight: 550;
+}
+
+input, select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 1rem;
-    font-size: 1rem;
+    font-family: sans-serif;
+    font-size: medium;
+}
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
 }
 
 
-div.news-nav {
-    /* border-bottom: 1px solid #ccc; */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-div.left-news-nav {
-    margin-bottom: 10px;
-    align-self: center;
-}
-
-div.news-nav button {
-    padding: 1rem;
-}
-
-/* --------------------------------------------------------------------- */
-
-div.news-list {
-    /* margin-top: 1rem;
-    border: 1px solid #ccc; */
-    background-color: #f3f6e0;
-    padding: 1rem;
-}
-
-div.indv-news {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
-    padding: 1.2rem;
-}
-
-/* div.left-news-side {
-    width: 80%;
-} */
-
-/* div.left-news-side h3, p {
-    margin-bottom: .5em;
-} */
+/* -------------------------------- FOOTER ------------------------------------ */
 
 footer {
     position: static;
