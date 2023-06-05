@@ -171,7 +171,8 @@ div.profile {
   .clubs-update-content,
   .joined-event-content,
   .upcoming-events-content {
-    height: 200px;
+    height: 180px;
+    width: 100%;
     overflow-y: scroll;
   }
 
@@ -185,7 +186,6 @@ div.profile {
   }
 
   .club-list li,
-  .club-update-list li,
   .club-event-list li,
   .club-upcoming-event-list li {
     padding: 10px;
