@@ -114,6 +114,7 @@ router.get('/view-member-news', function(req, res, next){
       // if there is no rows that match query
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
 
       res.json(rows);
@@ -147,6 +148,7 @@ router.get('/count-member-news', function(req, res, next){
       // if there is no rows that match query
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
 
       res.json(rows);

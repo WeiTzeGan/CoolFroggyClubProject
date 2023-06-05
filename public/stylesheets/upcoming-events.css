@@ -295,7 +295,7 @@ body {
 
 main {
     margin: auto;
-    padding: 40px 0px 60px 0px;
+    padding: 20px 0px 60px 0px;
 }
 
 /* -------------------------------- EVENTS ------------------------------------ */
@@ -303,7 +303,7 @@ div.events-collection {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    margin: auto;
+    margin: 1rem auto;
     padding: 1.5rem;
     max-width: 700px;
     border: 1px solid #ccc;
