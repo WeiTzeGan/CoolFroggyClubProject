@@ -10,6 +10,16 @@ INNER JOIN CLUB_MEMBERS ON CLUB_MEMBERS.club_id = CLUBS.club_id
 
 WHERE ANNOUNCEMENTS.private_message = 1 AND CLUB_MEMBERS.user_id = ?;
 
-SELECT USERS.email, EMAIL_NOTIF.club_id FROM USERS
--- INNER JOIN EMAIL_NOTIF ON USERS.user_id = EMAIL_NOTIF.user_id
-WHERE EMAIL_NOTIF.club_id = '2' AND EMAIL_NOTIF.news_notif = '1';
+SELECT USERS.email, EMAIL_NOTIF.club_id, CLUBS.club_name
+FROM ((EMAIL_NOTIF
+INNER JOIN USERS
+ON USERS.user_id = EMAIL_NOTIF.user_id)
+INNER JOIN CLUBS
+ON EMAIL_NOTIF.club_id = CLUBS.club_id)
+WHERE EMAIL_NOTIF.club_id = ? AND EMAIL_NOTIF.news_notif = 1;
+
+SELECT E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id, COUNT(EG.participant_id) AS participant_count
+FROM EVENTS E
+LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id
+WHERE E.club_id = 1
+GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id;

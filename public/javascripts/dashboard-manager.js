@@ -23,6 +23,11 @@ const vueinst = Vue.createApp({
             // personalized news/announcement (coming from clubs user has joined)
             all_news: [],
             show_news: [],
+
+            // details for club manager profile
+            club_id: '',
+            club_members: [],
+            all_events: []
         };
     },
 
@@ -159,8 +164,21 @@ const vueinst = Vue.createApp({
             }
         },
 
-        get_club_event: function(){
-            
+        get_club_event(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.all_events = JSON.parse(this.response);
+                }
+            };
+
+            req.open('POST', '/club_managers/viewEvents', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+
+            req.send(JSON.stringify({
+                club_id: vueinst.club_id
+            }));
         },
 
         logout: function() {
@@ -178,12 +196,66 @@ const vueinst = Vue.createApp({
 
             req.open('POST', '/logout', true);
             req.send();
+        },
+
+        getClubID() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.club_id = this.response;
+
+                    // Once club_id is received, call viewMembers and get_club_event
+                    vueinst.viewMembers();
+                    vueinst.get_club_event();
+                }
+            };
+
+            req.open('GET', '/club_managers/getClubID', true);
+            req.send();
+        },
+
+        viewMembers() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.club_members = JSON.parse(this.response);
+                }
+            };
+
+            req.open('POST', '/club_managers/viewMembers', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+
+            req.send(JSON.stringify({
+                club_id: vueinst.club_id
+            }));
+        },
+
+        deleteMember: function(userID) {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    vueinst.viewMembers();
+                }
+            };
+
+            req.open('DELETE', '/club_managers/deleteMembers', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+
+            req.send(JSON.stringify({
+                user_id: userID
+            }));
         }
     }
 }).mount('#coolfroggyclub');
 
-
 window.onload = function () {
+    // Show club members
+    if (window.location.href === "http://localhost:8080/club-manager-profile.html") {
+        vueinst.getClubID();
+    }
     /*
         This checks if user has logged in to
         display the "sign out" and "account" OR "log in/ signup"

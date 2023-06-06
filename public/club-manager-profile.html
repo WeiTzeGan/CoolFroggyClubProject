@@ -35,8 +35,8 @@
         <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
                 <li><a href="home-page-new.html">Home</a></li>
-                <li><a href="account-page.html">Account</a></li>
-                <li><span aria-current="page">Profile</span></li>
+                <li><a href="member-profile.html">Account</a></li>
+                <li><span aria-current="page">Club Profile</span></li>
             </ul>
         </div>
 
@@ -69,18 +69,14 @@
                     <!-- Clubs Member -->
                     <div class="member-events">
                         <div class="club-member">
-                            <h2>Member of Club</h2>
+                            <h2>Members of Club</h2>
                             <div class="club-member-content">
-                                <div class="member-list">
+                                <div class="member-list" v-for="(member, index) in club_members" v-bind:key="member.user_id">
                                     <div class="indv-member">
-                                        <span class="member-name">Member 1</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
-                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
-                                        </button>
-                                    </div>
-                                    <div class="indv-member">
-                                        <span class="member-name">Member 2</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
+                                        <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
+                                        <span class="member-name">{{member.email}}</span><br />
+                                        <span class="member-name">{{member.mobile}}</span><br />
+                                        <button type="button" v-on:click="deleteMember(member.user_id)" class="delete-button" title="Remove Member">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
                                     </div>
@@ -93,21 +89,13 @@
                         <div class="club-events">
                             <h2>Club Events</h2>
                             <div class="club-events-content">
-                                <ul class="event-list">
+                                <ul class="event-list" v-for="(event, index) in all_events" v-bind:key="event.event_id">
                                     <li>
                                         <div class="event-details">
-                                            <h3 class="event-title">Event 1</h3>
-                                            <p class="event-date">Date: [Date]</p>
-                                            <p class="event-time">Time: [Time]</p>
-                                            <p class="numOfRSVP">Number of RSVP: [numofRSVP]</p>
-                                        </div>
-                                        <button type="button" class="more-info-button">More Info</button>
-                                    </li>
-                                    <li>
-                                        <div class="event-details">
-                                            <h3 class="event-title">Event 2</h3>
-                                            <p class="event-date">Date: [Date]</p>
-                                            <p class="event-time">Time: [Time]</p>
+                                            <h3 class="event-title">{{event.event_name}}</h3>
+                                            <p class="event-date">Date: {{formatDate(event.event_date)}}</p>
+                                            <p class="event-time">Location: {{event.event_location}}</p>
+                                            <p class="numOfRSVP">Number of RSVP: {{event.participant_count}}</p>
                                         </div>
                                         <button type="button" class="more-info-button">More Info</button>
                                     </li>
