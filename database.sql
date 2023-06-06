@@ -125,7 +125,6 @@ INSERT INTO USERS
 VALUES
 ('janson', 'vu', '2003-04-23', 'password123', 'thosvu2@gmail.com', '9999999999');
 
-
 INSERT INTO CLUB_MANAGERS
 (manager_id, club_id)
 VALUES

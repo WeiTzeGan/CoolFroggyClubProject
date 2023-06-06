@@ -17,3 +17,9 @@ ON USERS.user_id = EMAIL_NOTIF.user_id)
 INNER JOIN CLUBS
 ON EMAIL_NOTIF.club_id = CLUBS.club_id)
 WHERE EMAIL_NOTIF.club_id = ? AND EMAIL_NOTIF.news_notif = 1;
+
+SELECT E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id, COUNT(EG.participant_id) AS participant_count
+FROM EVENTS E
+LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id
+WHERE E.club_id = 1
+GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id;

@@ -27,9 +27,38 @@ router.use('/', function(req, res, next){
   }
 });
 
+/* Route to get the manager's club ID */
+router.get('/getClubID', function(req, res, next) {
+  var managerID = req.session.user.user_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT CLUB_MANAGERS.club_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE CLUB_MANAGERS.manager_id = ?";
+
+    connection.query(query, [managerID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      let clubID = rows[0].club_id;
+
+      res.send(clubID.toString());
+    });
+  });
+});
+
 /* Route to view club members */
-router.get('/viewMembers', function(req, res, next) {
-  var clubID = req.body.club_id;
+router.post('/viewMembers', function(req, res, next) {
+  let clubID = req.body.club_id;
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
@@ -55,6 +84,31 @@ router.get('/viewMembers', function(req, res, next) {
 });
 
 // view events that the club manager is managing
+router.post('/viewEvents', function(req, res, next) {
+  let clubID = req.body.club_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id, COUNT(EG.participant_id) AS participant_count FROM EVENTS E LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id WHERE E.club_id = 1 GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id";
+
+    connection.query(query, [clubID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
 
 /* Router to remove club members */
 router.delete('/deleteMembers', function(req, res, next) {
