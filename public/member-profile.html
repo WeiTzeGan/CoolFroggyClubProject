@@ -16,7 +16,8 @@
     <div id="coolfroggyclub">
         <nav>
             <div class="nav-container" onload="check_login()">
-                <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a></span>
+                <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png"
+                            alt="Cool Froggy Club logo"></a></span>
 
                 <div class="nav-menu">
                     <div><a href="about-us.html">About us</a></div>
@@ -29,7 +30,8 @@
                         <a>{{ buttonName }}</a>
                         <ul class="account-dropdown">
                             <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
-                            <li><button class="account-dropdown-item" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                            <li><button class="account-dropdown-item" type="button"
+                                    v-on:click="signedIn=false; logout();">Sign Out</button></li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +53,8 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown-2">
                         <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
-                        <li><button class="account-dropdown-item-2" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                        <li><button class="account-dropdown-item-2" type="button"
+                                v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>
                 </div>
             </div>
@@ -72,7 +75,9 @@
                     <div class="profile-summary">
                         <h3>Hi, <span id="username"> {{ first_name + ' ' + last_name}}</span>!</h3>
                         <form>
-                            <h2>Profile Summary  <button type="button" id="edit-button" onclick="vueinst.view_old_info(); location.href = 'account.html';"> Edit</button> </h2>
+                            <h2>Profile Summary <button type="button" id="edit-button"
+                                    onclick="vueinst.view_old_info(); location.href = 'account.html';"> Edit</button>
+                            </h2>
                             <!-- <div class="form-group">
                                 <label for="cool-froggy-id">Cool Froggy Member ID:</label>
                                 <input type="text" id="cool-froggy-id" name="cool-froggy-id" value="[member ID]"
@@ -80,22 +85,38 @@
                             </div> -->
                             <div class="form-group">
                                 <label for="username">Username:</label>
-                                <input type="text" id="idusername" name="username" v-bind:value="first_name + ' ' + last_name" disabled>
+                                <input type="text" id="idusername" name="username"
+                                    v-bind:value="first_name + ' ' + last_name" disabled>
                             </div>
                             <div class="form-group club-group">
                                 <label for="club">Club:</label>
                                 <div class="club-joined">
                                     <ul class="club-list">
-                                        <li>Club 1</li>
-                                        <li>Club 2</li>
-                                        <li>Club 3</li>
-                                        <li>Club 4</li>
-                                        <li>Club 5</li>
-                                        <li>Club 6</li>
-                                        <li>Club 7</li>
-                                        <li>Club 8</li>
-                                        <li>Club 9</li>
-                                        <li>Club 10</li>
+                                        <li v-for="club in all_clubs">
+                                            <h2>{{ club.club_name }}</h2>
+
+                                            <div>
+                                               <p>Current subscription to email notifications of:</p>
+                                               <ul>
+                                                <li>Club news notifications:     yes/no</li>
+                                                <li>Club events notifications:   yes/no</li>
+                                               </ul>
+                                            </div>
+                                            <br>
+                                            <div>
+                                                <p>Edit subscription to email notifications: </p>
+                                                <input type="checkbox" id="club-news" name="club_news" value="club news">
+                                                <label for="club-news"> Club News notificationss</label>
+                                                <br>
+                                                <input type="checkbox" id="club-events" name="club_events" value="club events">
+                                                <label for="club-events"> Club Events notifications</label>
+                                                <br>
+                                                <br>
+                                                <button type="button">Save changes</button>
+                                             </div>
+
+
+                                         </li>
                                     </ul>
                                 </div>
                             </div>
@@ -114,9 +135,11 @@
                                 <br>
                                 <div>
                                     <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                    <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                    <button type="button" v-show="!show_news[index]"
+                                        v-on:click="show_full_message(index);"> See full message </button>
                                     <p v-show="show_news[index]"> {{ news.post_message }}</p>
-                                    <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                                    <button type="button" v-show="show_news[index]"
+                                        v-on:click="hide_full_message(index);"> See less </button>
                                 </div>
                                 <hr>
                                 <br>
@@ -130,16 +153,27 @@
                             <h2>Joined Event</h2>
                             <div class="joined-event-content">
                                 <ul class="club-event-list">
-                                    <li>Joined Event 1</li>
-                                    <li>Joined Event 2</li>
-                                    <li>Joined Event 3</li>
-                                    <li>Joined Event 4</li>
-                                    <li>Joined Event 5</li>
-                                    <li>Joined Event 6</li>
-                                    <li>Joined Event 7</li>
-                                    <li>Joined Event 8</li>
-                                    <li>Joined Event 9</li>
-                                    <li>Joined Event 10</li>
+                                    <li v-for="(event, index) in joined_events">
+                                        <div>
+                                            <p><strong><u>{{ event.event_name }}</u></strong></p>
+                                            <p><b>{{ event.club_name }}</b></p>
+                                            <div>
+
+                                                <button type="button" v-show="!show_joined_events[index]"
+                                                    v-on:click="show_full_joined_event(index);"> More details </button>
+
+                                                <div v-show="show_joined_events[index]">
+                                                    <br>
+                                                    <p>{{ formatDate(event.event_date) }}</p>
+                                                    <p>{{ event.event_location }}</p>
+                                                    <p>{{ event.event_message }}</p>
+                                                </div>
+
+                                                <button type="button" v-show="show_joined_events[index]"
+                                                    v-on:click="hide_full_joined_event(index);"> See less </button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -147,16 +181,28 @@
                             <h2>Other Upcoming Events</h2>
                             <div class="upcoming-events-content">
                                 <ul class="club-upcoming-event-list">
-                                    <li>Upcoming Event 1</li>
-                                    <li>Upcoming Event 2</li>
-                                    <li>Upcoming Event 3</li>
-                                    <li>Upcoming Event 4</li>
-                                    <li>Upcoming Event 5</li>
-                                    <li>Upcoming Event 6</li>
-                                    <li>Upcoming Event 7</li>
-                                    <li>Upcoming Event 8</li>
-                                    <li>Upcoming Event 9</li>
-                                    <li>Upcoming Event 10</li>
+                                    <li v-for="(event, index) in future_events">
+                                        <div>
+                                            <p><strong><u>{{ event.event_name }}</u></strong></p>
+                                            <p><b>{{ event.club_name }}</b></p>
+                                            <div>
+
+                                                <button type="button" v-show="!show_future_events[index]"
+                                                    v-on:click="show_full_future_event(index);"> More details </button>
+
+                                                <div v-show="show_future_events[index]">
+                                                    <br>
+                                                    <p>{{ formatDate(event.event_date) }}</p>
+                                                    <p>{{ event.event_location }}</p>
+                                                    <p>{{ event.event_message }}</p>
+                                                </div>
+
+                                                <button type="button" v-show="show_future_events[index]"
+                                                    v-on:click="hide_full_future_event(index);"> See less </button>
+                                            </div>
+
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
