@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/admin-profile.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!--<script src="javascripts/signin.js" defer></script>     ellie's added changes ASK JANSONNNN  -->
-    <script src="javascripts/dashboard-manager.js" defer></script>
+    <script src="javascripts/admin_dashboard.js" defer></script>
 </head>
 
 <body>
@@ -18,7 +17,7 @@
             <nav>
                 <ul>
                     <li class="logo">
-                        <a href="home-page-new.html"><img src="images/CoolFroggyLogo.png"
+                        <a href="index.html"><img src="images/CoolFroggyLogo.png"
                                 alt="Cool Froggy Club logo"></a>
                     </li>
                     <li><a href="about-us.html">About us</a></li>
@@ -34,8 +33,8 @@
 
         <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
-                <li><a href="home-page-new.html">Home</a></li>
-                <li><a href="account-page.html">Account</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin-account.html">Account</a></li>
                 <li><span aria-current="page">Profile</span></li>
             </ul>
         </div>
@@ -47,7 +46,7 @@
                     <div class="admin-information">
                         <form>
                             <h2>Admin Profile <button type="button" id="edit-button"
-                                    onclick="location.href ='account.html';"> Edit</button> </h2>
+                                    onclick="location.href ='admin-account.html';"> Edit</button> </h2>
                             <div class="form-group">
                                 <label for="admin-username">Username: </label>
                                 <input type="text" id="adminusernameid" name="adminusername"

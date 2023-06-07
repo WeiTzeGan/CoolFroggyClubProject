@@ -159,8 +159,10 @@ router.post('/login', function (req, res, next) {
     } else if (login_data.type === 'Club Manager') {
       query = "SELECT user_id, first_name, last_name, email, manager_id, user_password FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
     } else if (login_data.type === 'Admin') {
-      // redirect to a an admin route
-      return; // return for now
+      query = "SELECT admin_id, first_name, last_name, email, admin_password FROM ADMINS WHERE email = ?";
+    }else{
+      res.sendStatus(403);
+      return;
     }
 
     connection.query(query, [login_data.email], function (qerr, rows, fields) {
@@ -179,7 +181,14 @@ router.post('/login', function (req, res, next) {
         // There is a user
 
         // Compare the hashed password with login password
-        bcrypt.compare(login_data.password, rows[0].user_password, function(err, result) {
+        let hashedPassword;
+        if ( 'user_password' in rows[0]){
+          hashedPassword = rows[0].user_password;
+        }else if ( 'admin_password' in rows[0]){
+          hashedPassword = rows[0].admin_password;
+        }
+
+        bcrypt.compare(login_data.password, hashedPassword, function(err, result) {
           if (err) {
             console.log("Password comparison error");
             res.sendStatus(500);
@@ -193,6 +202,7 @@ router.post('/login', function (req, res, next) {
             [req.session.user] = rows;
             req.session.user_type = login_data.type;
             console.log(JSON.stringify(req.session.user));
+            // res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
             res.json(req.session.user);
             return;
 
@@ -202,7 +212,7 @@ router.post('/login', function (req, res, next) {
             res.sendStatus(403);
             return;
           }
-        })
+        }); // bcrypt.compare
 
       } else {
         // No user
@@ -215,7 +225,9 @@ router.post('/login', function (req, res, next) {
 
 router.get('/checkLogin', function (req, res, next) {
   if ('user' in req.session) {
-    res.sendStatus(200);
+    // res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
+    let type = req.session.user_type;
+    res.send(type);
     return;
   } else {
     res.sendStatus(401);
@@ -282,8 +294,10 @@ router.post('/google-login', async function (req, res, next) {
     } else if (type === 'Club Manager') {
       query = "SELECT user_id, first_name, last_name, email, manager_id FROM CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id WHERE USERS.email = ?";
     } else if (type === 'Admin') {
-      // redirect to a an admin route
-      return; // return for now
+      query = "SELECT admin_id, first_name, last_name, email FROM ADMINS WHERE email = ?";
+    }else{
+      res.sendStatus(403);
+      return;
     }
 
     connection.query(query, [email], function (qerr, rows, fields) {
@@ -301,12 +315,14 @@ router.post('/google-login', async function (req, res, next) {
       if (rows.length > 0) {
         // There is a user
 
+        console.log(rows);
+
         // store the necessary user info (name, email, user_type)
         [req.session.user] = rows;
         req.session.user_type = req.body.type;
 
         console.log(JSON.stringify(req.session.user));
-
+        res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
         res.json(req.session.user);
 
       } else {

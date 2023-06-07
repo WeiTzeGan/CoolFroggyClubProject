@@ -341,6 +341,8 @@ router.get('/info', function(req, res, next){
         return;
       }
 
+      console.log(rows);
+
       if (rows.length === 0){
         res.sendStatus(404);
         return;
@@ -424,8 +426,44 @@ router.delete('/quitClub', function(req, res, next) {
   });
 });
 
+// User views subscription option to club news and special events
+router.post('/view-club-subscribe', function(req, res,next){
+  let id_of_user = req.session.user.user_id;
+  console.log(req.body);
+
+  req.pool.getConnection(function(cerr, connection){
+
+    if (cerr){
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT news_notif, event_notif FROM EMAIL_NOTIF where club_id = ? AND user_id = ?";
+    connection.query(query, [req.body.club_id, id_of_user], function(qerr, rows, fields){
+      connection.release();
+
+      if (qerr){
+        // console.log("Query error");
+        res.sendStatus(401);
+        return;
+      }
+     
+
+      if (rows.length === 0){
+        // console.log("Cannot subscriptions option of user");
+        res.sendStatus(404);
+        return;
+      }
+
+      res.json(rows);
+    }); // connection.query
+  }); // req.pool.getConnection
+});
+
 // User subscribes/unsubscribes to club news, special events
 router.post('/update-club-subscribe', function(req, res, next){
+  //console.log(req.body);
 
   let id_of_user = req.session.user.user_id;
 

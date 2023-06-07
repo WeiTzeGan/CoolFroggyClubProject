@@ -15,7 +15,7 @@
 <body>
     <div id="coolfroggyclub">
         <nav>
-            <div class="nav-container" onload="check_login()">
+            <div class="nav-container" >
                 <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png"
                             alt="Cool Froggy Club logo"></a></span>
 
@@ -92,27 +92,23 @@
                                 <label for="club">Club:</label>
                                 <div class="club-joined">
                                     <ul class="club-list">
-                                        <li v-for="club in all_clubs">
+                                        <li v-for="(club, index) in all_clubs">
                                             <h2>{{ club.club_name }}</h2>
 
-                                            <div>
-                                               <p>Current subscription to email notifications of:</p>
-                                               <ul>
-                                                <li>Club news notifications:     yes/no</li>
-                                                <li>Club events notifications:   yes/no</li>
-                                               </ul>
-                                            </div>
+                                            <button type="button" v-show="show_view[index]" v-on:click="view_clubs_subscribe(club.club_id, index); show_edit[index] = true; show_view[index] = false">View email subscription</button>
                                             <br>
-                                            <div>
-                                                <p>Edit subscription to email notifications: </p>
-                                                <input type="checkbox" id="club-news" name="club_news" value="club news">
+                                            <div v-show="show_edit[index]">
+                                                <p>Subscription to email notifications: </p>
+                                                <input type="checkbox" id="club-news" name="club_news" value="club news" v-model="news_subs[index]">
                                                 <label for="club-news"> Club News notificationss</label>
                                                 <br>
-                                                <input type="checkbox" id="club-events" name="club_events" value="club events">
+                                                <input type="checkbox" id="club-events" name="club_events" value="club events" v-model="events_subs[index]">
                                                 <label for="club-events"> Club Events notifications</label>
                                                 <br>
                                                 <br>
-                                                <button type="button">Save changes</button>
+                                                <p>Tick the boxes to subscribe, untick or leave empty to unsubscribe</p>
+                                                <button type="button" v-on:click="edit_clubs_subscribe(club.club_id, index); show_edit[index] = false; show_view[index] = true;">Save changes</button>
+
                                              </div>
 
 
@@ -156,7 +152,7 @@
                                     <li v-for="(event, index) in joined_events">
                                         <div>
                                             <p><strong><u>{{ event.event_name }}</u></strong></p>
-                                            <p><b>{{ event.club_name }}</b></p>
+                                            <p>by <b>{{ event.club_name }}</b></p>
                                             <div>
 
                                                 <button type="button" v-show="!show_joined_events[index]"
@@ -184,7 +180,7 @@
                                     <li v-for="(event, index) in future_events">
                                         <div>
                                             <p><strong><u>{{ event.event_name }}</u></strong></p>
-                                            <p><b>{{ event.club_name }}</b></p>
+                                            <p>by <b>{{ event.club_name }}</b></p>
                                             <div>
 
                                                 <button type="button" v-show="!show_future_events[index]"
