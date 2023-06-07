@@ -24,6 +24,32 @@ LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id
 WHERE E.club_id = 1
 GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id;
 
+
+
+SELECT CLUBS.club_name
+FROM CLUBS
+INNER JOIN CLUB_MEMBERS ON CLUBS.club_id = CLUB_MEMBERS.club_id
+WHERE CLUB_MEMBERS.user_id = 2;
+
+SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, CLUBS.club_name
+FROM EVENTS
+INNER JOIN EVENTGOERS ON EVENTS.event_id = EVENTGOERS.event_id
+INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id
+WHERE EVENTGOERS.participant_id = 2;
+
+SELECT *
+FROM EMAIL_NOTIF
+where club_id = 2 AND user_id = 2;
+
+INSERT INTO
+EMAIL_NOTIF(user_id, club_id, news_notif, event_notif)
+VALUES(1,1,1,1);
+
+UPDATE EMAIL_NOTIF
+SET news_notif = 1, event_notif = 0
+WHERE user_id = 1 AND club_id =1;
+
+
 SELECT EVENTGOERS.participant_id, USERS.first_name, USERS.last_name
 FROM EVENTGOERS
 INNER JOIN USERS
@@ -41,3 +67,4 @@ WHERE CLUB_MANAGERS.manager_id = ?;
 SELECT A.post_id, A.title, A.post_message, A.club_id, A.post_date
 FROM ANNOUNCEMENTS A
 WHERE club_id = ?;
+

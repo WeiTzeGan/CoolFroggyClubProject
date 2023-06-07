@@ -10,7 +10,7 @@ CREATE TABLE ADMINS (
     admin_password VARCHAR(60) NOT NULL,
     email VARCHAR(255) UNIQUE,
     mobile VARCHAR(20),
-    PRIMARY KEY (admin_id)
+    PRIMARY KEY (admin_id, email)
 );
 
 CREATE TABLE USERS (
@@ -40,7 +40,7 @@ CREATE TABLE CLUBS (
     club_manager_id SMALLINT,
     phone VARCHAR(20),
     email VARCHAR(255),
-    PRIMARY KEY (club_id),
+    PRIMARY KEY (club_id, club_name),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
 
@@ -242,8 +242,12 @@ VALUES
 
 INSERT INTO EMAIL_NOTIF
 VALUES
+('1', '2', '1', '1');
+
+INSERT INTO EMAIL_NOTIF
+VALUES
 ('2', '2', '1', '1');
 
 INSERT INTO EMAIL_NOTIF
 VALUES
-('1', '2', '1', '1');
+('2', '1', 0, 0);
