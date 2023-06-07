@@ -54,13 +54,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Email: </label>
-                                <input type="text" id="emailid" name="email" v-bind:value="first_name + ' ' + last_name"
+                                <input type="text" id="emailid" name="email" v-bind:value="email"
                                     disabled>
                             </div>
                             <!-- <button type="button" id="sign-up-admin-button">Sign-Up Admin</button> -->
                             <br>
                             <a href="signup-admin.html" id="sign-up-admin-button">Sign Up New Admin</a>
-                            <a href="pending-club-manger.html" id="pending-club-manger-button">Club Manager Approval Pending</a>
+                            <a href="pending-club-manager.html" id="pending-club-manger-button">Club Manager Approval Pending</a>
                         </form>
                     </div>
 
@@ -70,19 +70,16 @@
                             <h2>Clubs</h2>
                             <div class="club-content">
                                 <div class="club-list">
-                                    <div class="indv-member">
-                                        <span class="member-name">Club 1</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
+                                    <div class="indv-member" v-for="(club, index) in all_clubs">
+
+                                        <span class="member-name">{{club.club_id}}. {{ club.club_name }}</span>
+
+                                        <button type="button" class="delete-button" title="Remove Member" v-on:click="delete_club(club.club_id);">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
+
                                     </div>
-                                    <div class="indv-member">
-                                        <span class="member-name">Club 2</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
-                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
-                                        </button>
-                                    </div>
-                                    <!-- Add more members here -->
+
                                 </div>
                             </div>
                         </div>
@@ -92,19 +89,19 @@
                             <h2>Members</h2>
                             <div class="member-content">
                                 <div class="member-list">
-                                    <div class="indv-member">
-                                        <span class="member-name">Member 1</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
+
+                                    <div class="indv-member" v-for="user in all_users">
+
+                                        <span class="member-name"> {{user.user_id}} </span>
+                                        <span class="member-name"> {{user.first_name + ' ' + user.last_name}} </span>
+                                        <span class="member-name"> {{user.email}} </span>
+
+                                        <button type="button" class="delete-button" title="Remove Member" v-on:click="delete_user(user.user_id);">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
+
                                     </div>
-                                    <div class="indv-member">
-                                        <span class="member-name">Member 2</span>
-                                        <button type="button" class="delete-button" title="Remove Member">
-                                            <img src="images/delete-button.png" alt="Delete" class="delete-icon">
-                                        </button>
-                                    </div>
-                                    <!-- Add more members here -->
+
                                 </div>
                             </div>
                         </div>

@@ -37,11 +37,11 @@ CREATE TABLE CLUBS (
     club_id SMALLINT NOT NULL AUTO_INCREMENT,
     club_name CHAR(255) NOT NULL,
     club_description VARCHAR(1000),
-    club_manager_id SMALLINT,
+    manager_id SMALLINT,
     phone VARCHAR(20),
     email VARCHAR(255),
     PRIMARY KEY (club_id, club_name),
-    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
+    FOREIGN KEY (manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -86,17 +86,18 @@ CREATE TABLE ANNOUNCEMENTS (
 
 CREATE TABLE PENDING_CLUBS (
     pending_club_id SMALLINT NOT NULL AUTO_INCREMENT,
+    approve_status TINYINT(1) NOT NULL DEFAULT(0),
     club_name CHAR(255) NOT NULL,
     club_description VARCHAR(1000),
     club_manager_id SMALLINT,
-    club_email VARCHAR(255),
+    club_email VARCHAR(255) NOT NULL,
     manager_first_name CHAR(255) NOT NULL,
     manager_last_name CHAR(255) NOT NULL,
     manager_date_of_birth DATE,
-    manager_password VARCHAR(60) NOT NULL,
+    manager_password VARCHAR(60),
     manager_email VARCHAR(255) NOT NULL,
     manager_phone VARCHAR(20),
-    PRIMARY KEY (pending_club_id),
+    PRIMARY KEY (pending_club_id, club_name),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );
 
@@ -141,12 +142,12 @@ VALUES
 ('2', '2');
 
 INSERT INTO CLUBS
-(club_name, club_description, club_manager_id, phone, email)
+(club_name, club_description, manager_id, phone, email)
 VALUES
 ('OCF', 'AAAA', '1', 123456899, 'ocf@gmail.com');
 
 INSERT INTO CLUBS
-(club_name, club_description, club_manager_id, phone, email)
+(club_name, club_description, manager_id, phone, email)
 VALUES
 ('AVA', 'BBBB', '2', 123456899, 'ava@gmail.com');
 
@@ -251,3 +252,16 @@ VALUES
 INSERT INTO EMAIL_NOTIF
 VALUES
 ('2', '1', 0, 0);
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 1', 'THIS IS NEW CLUB 1', 'newclub1@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 2', 'THIS IS NEW CLUB 2', 'newclub2@gmail.com', 1, 'shinyi', 'G', 'sygoh2014@gmail.com');
+
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 3', 'THIS IS NEW CLUB 3', 'newclub3@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');

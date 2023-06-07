@@ -146,7 +146,7 @@ const vueinst = Vue.createApp({
 
         // to toggle menu in nav bar
         toggleMenu() {
-            if (this.menu == 'hamburger') {
+            if (this.menu === 'hamburger') {
                 this.menu = 'hamburger is-active';
                 this.dropdown = 'dropdown-menu open';
             } else {

@@ -117,7 +117,7 @@ router.get('/viewUsers', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT user_id, first_name, last_name, date_of_birth, email, mobile FROM USERS";
+    let query = "SELECT user_id, first_name, last_name, email FROM USERS";
 
     connection.query(query, function(error, rows, fields) {
       connection.release();
@@ -133,7 +133,7 @@ router.get('/viewUsers', function(req, res, next) {
 });
 
 /* Route to remove users from database */
-router.delete('deleteUsers', function(req, res, next) {
+router.delete('/deleteUsers', function(req, res, next) {
   var userID = req.body.user_id;
 
   req.pool.getConnection(function(err, connection) {
@@ -165,7 +165,7 @@ router.get('/viewClubs', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT club_id, club_name, club_manager_id FROM CLUBS";
+    let query = "SELECT club_id, club_name, manager_id FROM CLUBS";
 
     connection.query(query, function(error, rows, fields) {
       connection.release();
@@ -176,6 +176,30 @@ router.get('/viewClubs', function(req, res, next) {
       }
 
       res.json(rows);
+    });
+  });
+});
+
+router.delete('/deleteClubs', function(req, res, next) {
+  var clubID = req.body.club_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "DELETE FROM CLUBS WHERE club_id = ?";
+
+    connection.query(query, [clubID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
     });
   });
 });
@@ -232,8 +256,8 @@ router.get('/viewAdmins', function(req, res, next) {
 router.post('/registerAdmins', function(req, res, next) {
   var firstName = req.body.first_name;
   var lastName = req.body.last_name;
-  var dob = req.body.date_of_birth;
-  var adminPassword = req.body.admin_password;
+  var dob = req.body.dob;
+  var adminPassword = req.body.password;
   var adminEmail = req.body.email;
   var adminMobile = req.body.mobile;
 
@@ -244,9 +268,9 @@ router.post('/registerAdmins', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT * FROM ADMINS WHERE first_name = ? AND last_name = ?";
+    let query = "SELECT * FROM ADMINS WHERE (first_name = ? AND last_name = ?) OR email = ?";
 
-    connection.query(query, [firstName, lastName], function(error, rows, fields) {
+    connection.query(query, [firstName, lastName, adminEmail], function(error, rows, fields) {
       connection.release();
 
       if (error) {
@@ -260,29 +284,39 @@ router.post('/registerAdmins', function(req, res, next) {
         return;
       }
 
-      // If passes above, add to admins table
-      req.pool.getConnection(function(cerr, connection) {
-        if (cerr) {
+      // Hash the password with 10 salt rounds
+      bcrypt.hash(adminPassword, 10, function(err, hashedPassword) {
+        if (err) {
+          console.log("Password hashing error");
           res.sendStatus(500);
           return;
         }
 
-        let query2 = "INSERT INTO ADMINS (first_name, last_name, date_of_birth, admin_password, email, mobile) VALUES (?, ?, ?, ?, ?, ?)";
-
-        connection.query(query2, [firstName, lastName, dob, adminPassword, adminEmail, adminMobile], function(error, rows, fields) {
-          connection.release();
-
-          if (error) {
+        // if no user with the given email and password exists, redirect back to '/signup'
+        req.pool.getConnection(function(cerr, connection) {
+          if (cerr) {
             res.sendStatus(500);
             return;
           }
 
-          res.sendStatus(200);
-        });
-      });
-    });
-  });
+          let query2 = "INSERT INTO ADMINS (first_name, last_name, date_of_birth, admin_password, email, mobile) VALUES (?, ?, ?, ?, ?, ?)";
+
+          connection.query(query2, [firstName, lastName, dob, hashedPassword, adminEmail, adminMobile], function(error, rows, fields) {
+            connection.release();
+
+            if (error) {
+              res.sendStatus(500);
+              return;
+            }
+
+            res.sendStatus(200);
+          }); // connection.query2
+        }); // req.pool.getConnection2
+      }); // bcrypt.hash
+    }); // connection.query1
+  }); // req.pool.getConnection1
 });
+
 
 /* Route to view pending club */
 router.get("/viewPendingClubs", function(req, res, next) {
@@ -307,13 +341,16 @@ router.get("/viewPendingClubs", function(req, res, next) {
   });
 });
 
+
+
 /* Route to approve pending club */
+// // delete club from pending list and add to official club list
 router.post('/addClub', function(req, res, next) {
   var clubName = req.body.club_name;
   var clubDescription = req.body.club_description;
-  var clubManager = req.body.user_id;
-  var clubPhone = req.body.phone;
-  var clubEmail = req.body.email;
+  var clubManager = req.body.club_manager_id;
+  var clubPhone = req.body.manager_phone;
+  var clubEmail = req.body.club_email;
 
   // To check if club already exists
   req.pool.getConnection(function(err, connection) {
@@ -339,25 +376,73 @@ router.post('/addClub', function(req, res, next) {
       }
 
       // If passes above, add to pending_clubs table
-      req.pool.getConnection(function(cerr, connection) {
+      req.pool.getConnection(function(cerr, connection2) {
         if (cerr) {
+          console.log("Connection error 2");
           res.sendStatus(500);
           return;
         }
 
-        let query2 = "INSERT INTO CLUBS (club_name, club_description, club_manager_id, phone, email) VALUES (?, ?, ?, ?, ?)";
+        let query2 = "INSERT INTO CLUBS (club_name, club_description, manager_id, phone, email) VALUES (?, ?, ?, ?, ?)";
 
-        connection.query(query2, [clubName, clubDescription, clubManager, clubPhone, clubEmail], function(error, rows, fields) {
-          connection.release();
+        connection2.query(query2, [clubName, clubDescription, clubManager, clubPhone, clubEmail], function(error, rows, fields) {
+          connection2.release();
 
           if (error) {
-            res.sendStatus(500);
+            console.log(error);
+            console.log("Query error 2");
+            res.sendStatus(401);
             return;
           }
 
-          res.sendStatus(200);
-        });
-      });
+          req.pool.getConnection(function(cerr2, connection3){
+
+            if (cerr2){
+              console.log("Connection error 3");
+              res.sendStatus(500);
+              return;
+            }
+
+            let query3 = "DELETE FROM PENDING_CLUBS WHERE club_name = ? AND club_email = ?";
+
+            connection3.query(query3, [clubName, clubEmail], function(error2, rows, fields){
+              connection3.release();
+
+              if (error2) {
+                console.log(error2);
+                console.log("Query error 3");
+                res.sendStatus(404);
+                return;
+              }
+
+              res.sendStatus(200);
+            }); // connection.query3
+          }); // req.pool.getConnection3
+        }); // connection.query2
+      }); // req.pool.getConnection2
+    }); // connection.query1
+  }); // req.pool.getConnection1
+});
+
+router.post('/rejectClub', function(req, res, next){
+  let clubName = req.body.club_name;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE PENDING_CLUBS SET approve_status = -1 WHERE club_name = ? AND approve_status = 0";
+
+    connection.query(query, [clubName], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+      res.sendStatus(200);
     });
   });
 });

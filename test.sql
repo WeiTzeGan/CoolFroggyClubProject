@@ -68,3 +68,22 @@ SELECT A.post_id, A.title, A.post_message, A.club_id, A.post_date
 FROM ANNOUNCEMENTS A
 WHERE club_id = ?;
 
+DELETE FROM CLUBS WHERE club_name = 'NEW CLUB 2' OR club_name = 'NEW CLUB 3' OR club_name = 'NEW CLUB 1';
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 1', 'THIS IS NEW CLUB 1', 'newclub1@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 2', 'THIS IS NEW CLUB 2', 'newclub2@gmail.com', 1, 'shinyi', 'G', 'sygoh2014@gmail.com');
+
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 3', 'THIS IS NEW CLUB 3', 'newclub3@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
+
+INSERT INTO
+PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES('NEW CLUB 4', 'THIS IS NEW CLUB 4', 'newclub4@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
+
