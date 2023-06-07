@@ -25,6 +25,7 @@ WHERE E.club_id = 1
 GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id;
 
 
+
 SELECT CLUBS.club_name
 FROM CLUBS
 INNER JOIN CLUB_MEMBERS ON CLUBS.club_id = CLUB_MEMBERS.club_id
@@ -48,4 +49,22 @@ UPDATE EMAIL_NOTIF
 SET news_notif = 1, event_notif = 0
 WHERE user_id = 1 AND club_id =1;
 
+
+SELECT EVENTGOERS.participant_id, USERS.first_name, USERS.last_name
+FROM EVENTGOERS
+INNER JOIN USERS
+ON EVENTGOERS.participant_id = USERS.user_id
+WHERE EVENTGOERS.event_id = 1;
+
+SELECT CLUB_MANAGERS.club_id, CLUBS.club_name, CLUBS.email
+FROM ((CLUB_MANAGERS
+INNER JOIN USERS
+ON CLUB_MANAGERS.manager_id = USERS.user_id)
+INNER JOIN CLUBS
+ON CLUB_MANAGERS.club_id = CLUBS. club_id)
+WHERE CLUB_MANAGERS.manager_id = ?;
+
+SELECT A.post_id, A.title, A.post_message, A.club_id, A.post_date
+FROM ANNOUNCEMENTS A
+WHERE club_id = ?;
 

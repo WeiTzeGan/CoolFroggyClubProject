@@ -252,7 +252,11 @@ input, select {
     font-size: medium;
 }
 
-.submit {
+#club-info {
+    height: 200px;
+}
+
+input[type=button] {
     background-color: #4CAF50;
     color: #fff;
     border: none;
@@ -264,29 +268,8 @@ input, select {
     font-size: larger;
 }
 
-.submit:hover {
+input[type=button]:hover {
     background-color: #45a049;
-}
-
-.sign-up-manager {
-    background-color: #40513B;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: medium;
-    text-decoration: none;
-    position: absolute;
-    top: 160px;
-    right: 30px;
-    z-index: 9999;
-}
-
-.sign-up-manager:hover {
-    background-color:#566d4f;
 }
 
 footer {

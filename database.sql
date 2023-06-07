@@ -89,8 +89,13 @@ CREATE TABLE PENDING_CLUBS (
     club_name CHAR(255) NOT NULL,
     club_description VARCHAR(1000),
     club_manager_id SMALLINT,
-    phone VARCHAR(20),
-    email VARCHAR(255),
+    club_email VARCHAR(255),
+    manager_first_name CHAR(255) NOT NULL,
+    manager_last_name CHAR(255) NOT NULL,
+    manager_date_of_birth DATE,
+    manager_password VARCHAR(60) NOT NULL,
+    manager_email VARCHAR(255) NOT NULL,
+    manager_phone VARCHAR(20),
     PRIMARY KEY (pending_club_id),
     FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
 );

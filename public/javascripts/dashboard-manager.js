@@ -20,14 +20,19 @@ const vueinst = Vue.createApp({
             originMobile: '',
             originEmail: '',
 
-            // personalized news/announcement (coming from clubs user has joined)
-            all_news: [],
+            // personalized news/announcement/events (coming from clubs managed)
+            club_news: [],
             show_news: [],
+            club_events: [],
+            show_events: [],
+            event_participants: [],
+            show_participants: [],
 
             // details for club manager profile
             club_id: '',
+            club_name: '',
+            club_email: '',
             club_members: [],
-            all_events: []
         };
     },
 
@@ -123,33 +128,23 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify(new_info));
         },
 
-        // functions to help get personalized news from joined clubs
-        view_member_news: function(){
+        // functions to help get personalized news from club
+        get_club_news: function(){
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_news = JSON.parse(req.response);
+                    vueinst.club_news = JSON.parse(req.response);
+                    vueinst.show_news = Array(vueinst.club_news.length).fill(false);
                 }
             };
 
-            req.open('GET', "/users/view-member-news", true);
-            req.send();
-        },
+            req.open('POST', '/club_managers/viewNews', true);
+            req.setRequestHeader('Content-Type', 'application/json');
 
-        count_member_news: function(){
-            let req = new XMLHttpRequest();
-
-            req.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // get the number of news that is public
-                    let length = JSON.parse(req.response)[0].length;
-                    vueinst.show_news = Array(length).fill(false);
-                }
-            };
-
-            req.open('GET', 'users/count-member-news', true);
-            req.send();
+            req.send(JSON.stringify({
+                club_id: vueinst.club_id
+            }));
         },
 
         show_full_message: function(index){
@@ -164,12 +159,26 @@ const vueinst = Vue.createApp({
             }
         },
 
+        show_full_event: function(index){
+            if (vueinst.show_events[index] === false){
+                vueinst.show_events[index] = true;
+            }
+        },
+
+        hide_full_event: function(index){
+            if (vueinst.show_events[index] === true){
+                vueinst.show_events[index] = false;
+            }
+        },
+
         get_club_event(){
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.all_events = JSON.parse(this.response);
+                    vueinst.club_events = JSON.parse(this.response);
+                    vueinst.show_events = Array(vueinst.club_events.length).fill(false);
+                    vueinst.show_participants = Array(vueinst.club_events.length).fill(false);
                 }
             };
 
@@ -203,11 +212,16 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    vueinst.club_id = this.response;
+                    let response = JSON.parse(this.responseText);
+
+                    vueinst.club_id = response.clubID;
+                    vueinst.club_name = response.clubName;
+                    vueinst.club_email = response.clubEmail;
 
                     // Once club_id is received, call viewMembers and get_club_event
                     vueinst.viewMembers();
                     vueinst.get_club_event();
+                    vueinst.get_club_news();
                 }
             };
 
@@ -247,12 +261,43 @@ const vueinst = Vue.createApp({
             req.send(JSON.stringify({
                 user_id: userID
             }));
-        }
+        },
+
+        viewRSVPS(eventID) {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    let event_rsvps = JSON.parse(this.response);
+                    vueinst.event_participants = event_rsvps;
+                }
+            };
+
+            req.open('POST', '/club_managers/viewEventgoers', true);
+            req.setRequestHeader('Content-Type', 'application/json');
+
+            req.send(JSON.stringify({
+                event_id: eventID
+            }));
+        },
+
+        show_event_participants: function(index, eventID){
+            vueinst.viewRSVPS(eventID);
+            if (vueinst.show_participants[index] === false){
+                vueinst.show_participants[index] = true;
+            }
+        },
+
+        hide_event_participants: function(index){
+            if (vueinst.show_participants[index] === true){
+                vueinst.show_participants[index] = false;
+            }
+        },
     }
 }).mount('#coolfroggyclub');
 
 window.onload = function () {
-    // Show club members
+    // Gets club ID
     if (window.location.href === "http://localhost:8080/club-manager-profile.html") {
         vueinst.getClubID();
     }
