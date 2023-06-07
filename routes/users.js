@@ -341,6 +341,8 @@ router.get('/info', function(req, res, next){
         return;
       }
 
+      console.log(rows);
+
       if (rows.length === 0){
         res.sendStatus(404);
         return;
@@ -446,7 +448,7 @@ router.post('/view-club-subscribe', function(req, res,next){
         res.sendStatus(401);
         return;
       }
-      console.log(rows);
+     
 
       if (rows.length === 0){
         // console.log("Cannot subscriptions option of user");

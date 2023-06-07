@@ -3,6 +3,7 @@ const vueinst1 = Vue.createApp({
         return {
             signedIn: false,
             buttonHover: false,
+            access_type: '',
 
             all_events: [],
             show_events: [],
@@ -23,6 +24,11 @@ const vueinst1 = Vue.createApp({
             if (this.signedIn === false) {
                 return "login-new.html";
             } else {
+                if (vueinst1.access_type === "Club Member" || vueinst1.access_type === "Club Manager"){
+                    return 'member-profile.html';
+                }else if (vueinst1.access_type === "Admin"){
+                    return 'admin-profile.html';
+                }
                 return 'member-profile.html';
             }
         },
@@ -231,6 +237,8 @@ window.onload = function () {
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
             vueinst1.signedIn = true;
+            console.log(req.responseText);
+            vueinst1.access_type = req.responseText;
         } else {
             vueinst1.signedIn = false;
         }
