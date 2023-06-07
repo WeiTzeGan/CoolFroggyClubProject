@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/pending-club-manger.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/admin_dashboard.js" defer></script>
 </head>
 
 <body>
-    <div id="signin">
+    <div id="coolfroggyclub">
         <nav>
             <div class="nav-container">
                 <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png"
@@ -57,16 +57,21 @@
                 <form>
                     <div class="pending-content">
                         <div class="pending-list">
-                            <div class="indv-message">
-                                <span class="application">Application 1</span>
+                            <div class="indv-message" v-for="(club, index) in pending_clubs">
+                                <span class="application">{{ club.club_name }}</span>
+                                <span class="application">{{ club.manager_first_name + ' ' +  club.manager_last_name}}</span>
+                                <span class="application">{{ club.manager_email }}</span>
+                                <div><span class="application">{{ club.club_description }}</span></div>
+                                <div><span class="application">{{ club.email }}</span></div>
+
                                 <div class="button">
-                                <button type="button" class="approve-button" title="approve=button">
-                                    <img src="images/approve.png" alt="Approve" class="approve-icon">
-                                </button>
-                                <button type="button" class="reject-button" title="reject-button">
-                                    <img src="images/reject.png" alt="Reject" class="reject-icon">
-                                </button>
-                            </div>
+                                    <button type="button" class="approve-button" title="approve=button" v-on:click="approve_club(index)">
+                                        <img src="images/approve.png" alt="Approve" class="approve-icon">
+                                    </button>
+                                    <button type="button" class="reject-button" title="reject-button" v-on:click="reject_club(index)">
+                                        <img src="images/reject.png" alt="Reject" class="reject-icon">
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
