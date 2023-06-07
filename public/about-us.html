@@ -14,7 +14,7 @@
 <body>
 
     <nav id="signin">
-        <div class="nav-container" onload="check_login()">
+        <div class="nav-container">
             <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a></span>
 
             <div class="nav-menu">
@@ -44,7 +44,7 @@
             <div><a href="upcoming-events.html">Upcoming Events</a></div>
             <div><a href="latest-news.html">Latest News</a></div>
             <div><a href="join-a-club.html">Join A Club</a></div>
-            
+
             <div class="login" v-show="!signedIn"><a v-bind:href="URL">{{ buttonName }}</a></div>
             <div class="login" v-show="signedIn">
                 <a>{{ buttonName }}</a>

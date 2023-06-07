@@ -14,8 +14,9 @@
 <body>
     <div id="coolfroggyclub">
         <nav>
-            <div class="nav-container" onload="check_login()">
-                <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a></span>
+            <div class="nav-container" >
+                <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png"
+                            alt="Cool Froggy Club logo"></a></span>
 
                 <div class="nav-menu">
                     <div><a href="about-us.html">About us</a></div>
@@ -28,7 +29,8 @@
                         <a>{{ buttonName }}</a>
                         <ul class="account-dropdown">
                             <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
-                            <li><button class="account-dropdown-item" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                            <li><button class="account-dropdown-item" type="button"
+                                    v-on:click="signedIn=false; logout();">Sign Out</button></li>
                         </ul>
                     </div>
                 </div>
@@ -50,7 +52,8 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown-2">
                         <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
-                        <li><button class="account-dropdown-item-2" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                        <li><button class="account-dropdown-item-2" type="button"
+                                v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>
                 </div>
             </div>
@@ -109,22 +112,31 @@
                         </div>
                         <br>
                         <div class="form-group club-group">
-                            <label for="club">Clubs Joined:</label>
+                            <label for="club">Club:</label>
                             <div class="club-joined">
                                 <ul class="club-list">
-                                    <li>Club 1</li>
-                                    <li>Club 2</li>
-                                    <li>Club 3</li>
-                                    <li>Club 4</li>
-                                    <li>Club 5</li>
-                                    <li>Club 6</li>
-                                    <li>Club 7</li>
-                                    <li>Club 8</li>
-                                    <li>Club 9</li>
-                                    <li>Club 10</li>
+                                    <li v-for="(club, index) in all_clubs">
+                                        <h2>{{ club.club_name }}</h2>
+
+                                        <button type="button" v-show="show_view[index]" v-on:click="view_clubs_subscribe(club.club_id, index); show_edit[index] = true; show_view[index] = false">View email subscription</button>
+                                        <br>
+                                        <div v-show="show_edit[index]">
+                                            <p>Subscription to email notifications: </p>
+                                            <input type="checkbox" id="club-news" name="club_news" value="club news" v-model="news_subs[index]">
+                                            <label for="club-news"> Club News notificationss</label>
+                                            <br>
+                                            <input type="checkbox" id="club-events" name="club_events" value="club events" v-model="events_subs[index]">
+                                            <label for="club-events"> Club Events notifications</label>
+                                            <br>
+                                            <br>
+                                            <p>Tick the boxes to subscribe, untick or leave empty to unsubscribe</p>
+                                            <button type="button" v-on:click="edit_clubs_subscribe(club.club_id, index); show_edit[index] = false; show_view[index] = true;">Save changes</button>
+
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> 
                     </div>
 
                     <!-- Clubs Update -->
@@ -139,9 +151,11 @@
                                 <br>
                                 <div>
                                     <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                    <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);"> See full message </button>
+                                    <button type="button" v-show="!show_news[index]"
+                                        v-on:click="show_full_message(index);"> See full message </button>
                                     <p v-show="show_news[index]"> {{ news.post_message }}</p>
-                                    <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);"> See less </button>
+                                    <button type="button" v-show="show_news[index]"
+                                        v-on:click="hide_full_message(index);"> See less </button>
                                 </div>
                                 <hr>
                                 <br>
@@ -155,16 +169,27 @@
                             <h2>Joined Event</h2>
                             <div class="joined-event-content">
                                 <ul class="club-event-list">
-                                    <li>Joined Event 1</li>
-                                    <li>Joined Event 2</li>
-                                    <li>Joined Event 3</li>
-                                    <li>Joined Event 4</li>
-                                    <li>Joined Event 5</li>
-                                    <li>Joined Event 6</li>
-                                    <li>Joined Event 7</li>
-                                    <li>Joined Event 8</li>
-                                    <li>Joined Event 9</li>
-                                    <li>Joined Event 10</li>
+                                    <li v-for="(event, index) in joined_events">
+                                        <div>
+                                            <p><strong><u>{{ event.event_name }}</u></strong></p>
+                                            <p>by <b>{{ event.club_name }}</b></p>
+                                            <div>
+
+                                                <button type="button" v-show="!show_joined_events[index]"
+                                                    v-on:click="show_full_joined_event(index);"> More details </button>
+
+                                                <div v-show="show_joined_events[index]">
+                                                    <br>
+                                                    <p>{{ formatDate(event.event_date) }}</p>
+                                                    <p>{{ event.event_location }}</p>
+                                                    <p>{{ event.event_message }}</p>
+                                                </div>
+
+                                                <button type="button" v-show="show_joined_events[index]"
+                                                    v-on:click="hide_full_joined_event(index);"> See less </button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -172,16 +197,28 @@
                             <h2>Other Upcoming Events</h2>
                             <div class="upcoming-events-content">
                                 <ul class="club-upcoming-event-list">
-                                    <li>Upcoming Event 1</li>
-                                    <li>Upcoming Event 2</li>
-                                    <li>Upcoming Event 3</li>
-                                    <li>Upcoming Event 4</li>
-                                    <li>Upcoming Event 5</li>
-                                    <li>Upcoming Event 6</li>
-                                    <li>Upcoming Event 7</li>
-                                    <li>Upcoming Event 8</li>
-                                    <li>Upcoming Event 9</li>
-                                    <li>Upcoming Event 10</li>
+                                    <li v-for="(event, index) in future_events">
+                                        <div>
+                                            <p><strong><u>{{ event.event_name }}</u></strong></p>
+                                            <p>by <b>{{ event.club_name }}</b></p>
+                                            <div>
+
+                                                <button type="button" v-show="!show_future_events[index]"
+                                                    v-on:click="show_full_future_event(index);"> More details </button>
+
+                                                <div v-show="show_future_events[index]">
+                                                    <br>
+                                                    <p>{{ formatDate(event.event_date) }}</p>
+                                                    <p>{{ event.event_location }}</p>
+                                                    <p>{{ event.event_message }}</p>
+                                                </div>
+
+                                                <button type="button" v-show="show_future_events[index]"
+                                                    v-on:click="hide_full_future_event(index);"> See less </button>
+                                            </div>
+
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

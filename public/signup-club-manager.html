@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Signup to Cool Froggy Club!</title>
+    <title>Signup as Club Manager</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="stylesheets/signup.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/signup-club-manager.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="javascripts/signin.js" defer></script>
 </head>
@@ -41,19 +41,27 @@
         <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><span aria-current="page">Sign Up</span></li>
+                <li><a href="signup.html">Sign Up</a></li>
+                <li><span aria-current="page">Sign Up (Club Manger)</span></li>
             </ul>
         </div>
 
         <main>
-            <a href="signup-club-manager.html" class="sign-up-manager button">Sign Up as Club Manager</a>
-
             <article class="signuppage">
-                <h1>Sign Up</h1>
+                <h1>Sign Up (Club Manager)</h1>
                 <br>
 
                 <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
                 <form>
+                    <label for="club-name">Club Name:</label>
+                    <input type="text" id="club-name" name="club-name" v-model="club-name">
+
+                    <label for="email">Club Email:</label>
+                    <input type="email" id="club-email" name="club-email" v-model="club-email">
+
+                    <label for="club-info">Club Description:</label>
+                    <input type="text" id="club-info" name="club-info" v-model="club-info">
+
                     <label for="first-name">First Name:</label>
                     <input type="text" id="first-name" name="first-name" v-model="first_name">
 
@@ -75,11 +83,14 @@
                     <label for="phone">Mobile Phone:</label>
                     <input type="tel" id="phone" name="phone" v-model="mobile">
 
-                    <label for="email">Email:</label>
+                    <label for="email">User Email:</label>
                     <input type="email" id="email" name="email" v-model="email">
 
+                    <p><b>*You will receive a confirmation email after approved by Cool Froggy Club Admin. Then you can sign in as a Club Manager.</b></p>
+                    <br>
+
                     <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
-                    <input type="button" class="submit" value="Submit" v-on:click="signup()">
+                    <input type="button" value="Submit" v-on:click="signup()">
                 </form>
 
             </article>

@@ -1,8 +1,25 @@
+// function get_cookie(cname) {
+//     let name = cname + "=";
+//     let decodedCookie = decodeURIComponent(document.cookie);
+//     let ca = decodedCookie.split(';');
+//     for(let i = 0; i <ca.length; i++) {
+//       let c = ca[i];
+//       while (c.charAt(0) == ' ') {
+//         c = c.substring(1);
+//       }
+//       if (c.indexOf(name) == 0) {
+//         return c.substring(name.length, c.length);
+//       }
+//     }
+//     return "";
+// }
+
 const vueinst = Vue.createApp({
     data() {
         return {
             signedIn: false,
             buttonHover: false,
+            access_type: '',
 
             // details for login
             userEmail: '',
@@ -37,6 +54,11 @@ const vueinst = Vue.createApp({
             if (this.signedIn === false) {
                 return "login-new.html";
             } else {
+                if (vueinst.access_type === "Club Member" || vueinst.access_type === "Club Manager"){
+                    return 'member-profile.html';
+                }else if (vueinst.access_type === "Admin"){
+                    return 'admin-profile.html';
+                }
                 return 'member-profile.html';
             }
         },
@@ -64,12 +86,18 @@ const vueinst = Vue.createApp({
                 if (req.readyState === 4 && req.status === 200) {
                     vueinst.userEmail = '';
                     vueinst.userPassword = '';
+                    vueinst.access_type = vueinst.userType;
                     vueinst.userType = '';
 
                     if (window.location.href === "http://localhost:8080/login-new.html"){
-                        window.location.href = "member-profile.html";
+                        if (vueinst.access_type === 'Club Member' || vueinst.access_type === 'Club Manager'){
+                            window.location.href = "member-profile.html";
+                        } else if (vueinst.access_type === 'Admin'){
+                            window.location.href = "admin-profile.html";
+                        }else{
+                            window.location.href = "index.html";
+                        }
                     }
-
                 }
             };
             req.open('POST', '/login', true);
@@ -118,7 +146,7 @@ const vueinst = Vue.createApp({
 
         // to toggle menu in nav bar
         toggleMenu() {
-            if (this.menu == 'hamburger') {
+            if (this.menu === 'hamburger') {
                 this.menu = 'hamburger is-active';
                 this.dropdown = 'dropdown-menu open';
             } else {
@@ -144,8 +172,17 @@ function google_login(response) {
 
     req.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            vueinst.access_type = vueinst.userType;
             alert('Logged in with Google Sucessfully');
-            window.location.href = "index.html";
+
+            if (vueinst.access_type === 'Club Member' || vueinst.access_type === 'Club Manager'){
+                window.location.href = "member-profile.html";
+            } else if (vueinst.access_type === 'Admin'){
+                window.location.href = "admin-profile.html";
+            }else{
+                window.location.href = "index.html";
+            }
+
         } else if (this.readyState === 4 && this.status === 401) {
             alert('Login FAILED');
         }
@@ -156,6 +193,7 @@ function google_login(response) {
     req.send(JSON.stringify(google_login_data));
 }
 
+
 window.onload = function () {
     /*
         This checks if user has logged in to
@@ -165,6 +203,7 @@ window.onload = function () {
 
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
+            vueinst.access_type = req.responseText;
             console.log("signed already");
             vueinst.signedIn = true;
         } else {

@@ -83,11 +83,43 @@ router.post('/join-club', function (req, res, next) {
     }); // connection.query1
 
   }); // req.pool.getConnection
-
 }); // router
 
-// User view joined clubs
 
+
+// User view joined clubs
+router.get('/view-joined-clubs', function(req, res, next){
+  let userID = req.session.user.user_id;
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT CLUBS.club_name, CLUBS.club_id FROM CLUBS INNER JOIN CLUB_MEMBERS ON CLUBS.club_id = CLUB_MEMBERS.club_id WHERE CLUB_MEMBERS.user_id = ?";
+
+    connection.query(query, [userID], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        // console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+
+});
 
 
 // User view updates from clubs
@@ -228,6 +260,58 @@ router.post('/join-event', function(req, res, next){
 });
 
 // User view joined events
+router.get('/view-events', function(req, res, next){
+
+  console.log(req.query.type);
+
+  if ( !('type' in req.query) ){
+    console.log("No query for type included");
+    res.sendStatus(403);
+    return;
+  }
+
+  let userID = req.session.user.user_id;
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query;
+    if (req.query.type === 'joined'){
+      query = "SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name FROM EVENTS INNER JOIN EVENTGOERS ON EVENTS.event_id = EVENTGOERS.event_id INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTGOERS.participant_id = ?";
+    } else if (req.query.type === 'upcoming'){
+      query = "SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name FROM EVENTS INNER JOIN EVENTGOERS ON EVENTS.event_id = EVENTGOERS.event_id INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTGOERS.participant_id = ? AND EVENTS.event_date >= CURDATE()";
+    } else{
+      console.log("cannot find events based on query");
+      connection.release();
+      res.sendStatus(404);
+      return;
+    }
+
+
+    connection.query(query, [userID], function (error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        // console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if there is no rows that match query
+      if (rows.length === 0){
+        res.sendStatus(404);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+
+});
 
 
 
@@ -256,6 +340,8 @@ router.get('/info', function(req, res, next){
         res.sendStatus(401);
         return;
       }
+
+      console.log(rows);
 
       if (rows.length === 0){
         res.sendStatus(404);
@@ -340,6 +426,140 @@ router.delete('/quitClub', function(req, res, next) {
   });
 });
 
-// Route for email notifications
+// User views subscription option to club news and special events
+router.post('/view-club-subscribe', function(req, res,next){
+  let id_of_user = req.session.user.user_id;
+  console.log(req.body);
+
+  req.pool.getConnection(function(cerr, connection){
+
+    if (cerr){
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT news_notif, event_notif FROM EMAIL_NOTIF where club_id = ? AND user_id = ?";
+    connection.query(query, [req.body.club_id, id_of_user], function(qerr, rows, fields){
+      connection.release();
+
+      if (qerr){
+        // console.log("Query error");
+        res.sendStatus(401);
+        return;
+      }
+     
+
+      if (rows.length === 0){
+        // console.log("Cannot subscriptions option of user");
+        res.sendStatus(404);
+        return;
+      }
+
+      res.json(rows);
+    }); // connection.query
+  }); // req.pool.getConnection
+});
+
+// User subscribes/unsubscribes to club news, special events
+router.post('/update-club-subscribe', function(req, res, next){
+  //console.log(req.body);
+
+  let id_of_user = req.session.user.user_id;
+
+  req.pool.getConnection(function (cerr, connection) {
+    // handle connection error
+    if (cerr) {
+      // console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+    // query part
+    let query1 = "SELECT * FROM EMAIL_NOTIF where club_id = ? AND user_id = ?";
+    // check if user with club_id and user_id already exists in email_notif
+    connection.query(query1, [req.body.club_id, id_of_user], function (qerr, rows, fileds) {
+
+      // release connection after query
+      connection.release();
+
+      // handle query error
+      if (qerr) {
+        // console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // if user with club_id and user_id already exists in table,
+      // update the user subscription to news ad events
+      if (rows.length > 0) {
+        console.log("User is already recorded");
+
+        /////////////////////////////////////////////////////////////
+        req.pool.getConnection(function (cerr2, connection2) {
+          // handle connection error
+          if (cerr2) {
+            // console.log("Connection2 error");
+            res.sendStatus(500);
+            return;
+          }
+
+          let query2 = "UPDATE EMAIL_NOTIF SET news_notif = ?, event_notif = ? WHERE club_id = ? AND user_id = ?";
+          connection2.query(query2, [req.body.news_notif, req.body.event_notif, req.body.club_id, id_of_user],
+            function (qerr2, rows, fileds) {
+
+              connection2.release();
+
+              if (qerr2) {
+                // console.log(qerr2);
+                // console.log("Query2 error");
+                res.sendStatus(401);
+                return;
+              }
+
+              // if insert sucess
+              res.sendStatus(200);
+              return;
+            }); // connection.query2
+        }); // req.pool.getConnection2
+
+        return;
+      } // if found user in table
+
+      //////////////////////////////////////////////////////////////
+
+      // if user with club_id and user_id does NOT EXIST in table,
+      // insert the user with user_id, club_id and news_notif, event_notif option
+      req.pool.getConnection(function (cerr2_1, connection2_1) {
+        // handle connection error
+        if (cerr2_1) {
+          // console.log("Connection2_1 error");
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2_1 = "INSERT INTO EMAIL_NOTIF(user_id, club_id, news_notif, event_notif) VALUES(?,?,?,?)";
+        connection2_1.query(query2_1, [id_of_user, req.body.club_id, req.body.news_notif, req.body.event_notif],
+          function (qerr2_1, rows, fileds) {
+
+            connection2_1.release();
+
+            if (qerr2_1) {
+              // console.log(qerr2_1);
+              // console.log("Query2_1 error");
+              res.sendStatus(401);
+              return;
+            }
+
+            // if insert sucess
+            res.sendStatus(200);
+            return;
+
+          }); // connection.query2_1
+      }); // req.pool.getConnection2_1
+
+    }); // connection.query1
+  }); // req.pool.getConnection
+});
+
 
 module.exports = router;
