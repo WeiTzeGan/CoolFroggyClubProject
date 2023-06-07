@@ -160,12 +160,31 @@
     padding: 1rem;
   }
 
-  #edit-button,
-  #sign-up-admin-button {
+  #edit-button {
     padding: 0.2rem 0.5rem;
     font-size: 1rem;
     margin-top: 10px;
   }
+
+  #sign-up-admin-button,
+  #pending-club-manger-button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      margin: 10px;
+      cursor: pointer;
+      font-family: sans-serif;
+      font-weight: normal;
+      font-size: small;
+      text-decoration: none;
+  }
+
+#sign-up-admin-button:hover,
+#pending-club-manger-button:hover {
+    background-color:#63be60;
+}
 
   input[type="text"] {
     width: 20rem;
@@ -246,7 +265,7 @@
   @media (max-width: 768px) {
     .admin-information,
     .clubs,
-    .members, {
+    .members {
       width: 100%;
     }
   }
