@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Signup to Cool Froggy Club!</title>
+    <title>Edit Details</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/account.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Aleo|Slabo+27px" rel="stylesheet"> -->
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="javascripts/dashboard.js" defer></script>
 </head>
@@ -60,7 +64,7 @@
         <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="member-profile.html">Account</a></li>
+                <li><a href="member-profile.html">Profile</a></li>
                 <li><span aria-current="page">Edit Details</span></li>
             </ul>
         </div>
@@ -71,29 +75,56 @@
                 <br>
 
                 <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
-                <form>
+                <form v-on:submit.prevent="update_info"> <!-- prevents default reloading of page after submitting -->
                     <label for="first-name">First Name:</label>
-                    <input type="text" id="first-name" name="first-name" v-bind:placeholder="originFirstName" v-model="first_name">
+                    <input type="text" id="first-name" name="first-name" v-bind:placeholder="originFirstName" v-model="first_name" disabled>
 
                     <label for="last-name">Last Name:</label>
-                    <input type="text" id="last-name" name="last-name" v-bind:placeholder="originLastName" v-model="last_name">
+                    <input type="text" id="last-name" name="last-name" v-bind:placeholder="originLastName" v-model="last_name" disabled>
 
-                    <label for="dob">Date of Birth: {{ formatDate(originDOB) }}</label>
-                    <input type="date" id="dob" name="dob" v-bind:placeholder="originDOB" v-model="dob">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="text" id="dob" name="dob" v-bind:placeholder="formatDate(originDOB)" disabled>
 
-                    <label for="password">New Password:</label>
-                    <input type="password" id="password" name="password" v-model="password">
+                    <div class="pw">
+                        <label>Change Password? Choose yes or no:</label><br>
+                        <input type="radio" id="yes" name="change_pw" v-on:click="this.change_password=true; this.pw_required=true;" value="Yes" required>
+                        <label for="change_pw">Yes</label><br>
+                        <input type="radio" id="no" name="change_pw" v-on:click="this.change_password=false; this.pw_required=false;" value="No">
+                        <label for="change_pw">No</label><br>
+                    </div>
 
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <input type="password" id="confirm-password" name="confirm-new-password" v-model="confirm_password">
+                    <div v-show="change_password" class="show_pw">
+                        <label for="password">New Password:</label>
+                        <input v-bind:type="reveal" id="password" name="password" v-model="password" v-on:focus="reveal_message" v-on:input="validatePassword" v-bind:required="pw_required">
+
+                        <label for="confirm-password">Confirm New Password:</label>
+                        <input v-bind:type="reveal" id="confirm-password" name="confirm-new-password" v-model="confirm_password" v-on:input="validatePassword" onchange="this.setCustomValidity('')" v-bind:required="pw_required">
+                    </div>
+
+                    <!-- code referenced from w3schools -->
+                    <div v-bind:class="message">
+                        <div id="set">
+                            <h3>Password must contain the following:</h3>
+                            <i v-bind:id="icon" v-on:click="see" class="far fa-eye"></i>
+                        </div>
+                        <p id="match" v-bind:class="match_validity">Passwords <b>match</b></p>
+                        <p id="letter" v-bind:class="letter_validity">A <b>lowercase</b> letter</p>
+                        <p id="capital" v-bind:class="capital_validity">A <b>capital (uppercase)</b> letter</p>
+                        <p id="number" v-bind:class="number_validity">A <b>number</b></p>
+                        <p id="length" v-bind:class="length_validity">Minimum <b>8 characters</b></p>
+                        <p id="special" v-bind:class="special_validity">A <b>special character</b></p>
+                        <p id="space" v-bind:class="space_validity">No <b>spaces</b></p>
+                    </div>
 
                     <label for="phone">Mobile Phone:</label>
-                    <input type="tel" id="phone" name="phone" v-bind:placeholder="originMobile" v-model="mobile">
+                    <input type="tel" id="phone" name="phone" v-bind:placeholder="originMobile" v-model="mobile" required>
 
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" v-bind:placeholder="originEmail" v-model="email">
+                    <input type="email" id="email" name="email" v-bind:placeholder="originEmail" v-model="email" required>
 
-                    <input type="button" value="Confirm" v-on:click="update_info()">
+                    <input type="submit" value="Confirm">
+                    <!-- <input type="submit" value="Confirm" v-on:click="validatePassword"> -->
+                    <!-- <input type="button" value="Confirm" v-on:click="update_info"> -->
                 </form>
 
             </article>
