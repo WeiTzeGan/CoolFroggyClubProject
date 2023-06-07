@@ -34,6 +34,9 @@ const vueinst = Vue.createApp({
             future_events: [],
             show_future_events: [],
 
+            // store tickbx options
+            
+
             // to toggle menu bar
             menu: 'hamburger',
             dropdown: 'dropdown-menu'
