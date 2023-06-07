@@ -289,6 +289,7 @@ body {
     /* display: inline-flexbox; */
     width: 100%;
     font-family: Arial, sans-serif;
+    /* font-family: monospace; */
     background-color: #FFFFFF;
     color: #000000;
 }
@@ -317,7 +318,7 @@ label {
     margin-bottom: 10px;
     font-family: sans-serif;
     font-size: 20;
-    color: grey;
+    color: #40513B;
     font-weight: 550;
 }
 
@@ -329,6 +330,25 @@ input, select {
     font-family: sans-serif;
     font-size: medium;
 }
+
+div.pw label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-family: sans-serif;
+    font-size: 20;
+    color: #40513B;
+    font-weight: 550;
+}
+
+div.show_pw label {
+    display: block;
+}
+
+div.show_pw input {
+    display: flex;
+    width: 100%;
+}
+
 
 input[type=submit] {
     background-color: #4CAF50;
@@ -346,6 +366,96 @@ input[type=submit]:hover {
     background-color: #45a049;
 }
 
+div .message-hide {
+    display: none;
+}
+
+div .message-show {
+    display: block;
+    border: 1px solid #ccc;
+    padding: 1rem;
+	width: 100%;
+    border-radius: 10px;
+    font-size: small;
+    margin-bottom: 20px;
+    background-color: #fdfae7;
+    transition-duration:600ms;
+}
+
+div .message-show h3 {
+    padding: 5px;
+}
+
+div .message-show p {
+    padding: 5px;
+    margin-left: 4%;
+}
+
+#set {
+    display: flex;
+    justify-content: space-between;
+    position:relative;
+    margin:auto;
+}
+
+/* for the eye icon */
+i {
+    font-size: 18px;
+    transition-duration:600ms;
+}
+
+#no-see {
+    display: inline-block;
+    color:gray;
+    margin:auto;
+    /* float: right; */
+    transition-duration:0.2s;
+    cursor: pointer;
+}
+
+#see {
+    display: inline-block;
+    color: #262626;
+    margin:auto;
+    /* float: right; */
+    transition-duration:0.2s;
+    cursor: pointer;
+}
+
+input:invalid {
+    border-color: #900;
+    background-color: #fdd;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+
+input:invalid:required {
+    border-color: #900;
+    /* background-image: linear-gradient(to right, pink, lightgreen); */
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    content: "✔ ";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    content: "✖ ";
+}
 
 /* -------------------------------- FOOTER ------------------------------------ */
 

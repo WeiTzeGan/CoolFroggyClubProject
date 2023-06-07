@@ -286,7 +286,6 @@ div.breadcrumb li:not(:last-child)::after {
 
 /* Set default font and background color */
 body {
-  /* display: inline-flexbox; */
   width: 100%;
   font-family: Arial, sans-serif;
   background-color: #FFFFFF;
@@ -307,16 +306,55 @@ div.profile {
   background-color: #daebd1;
 }
 
+div.profile-summary {
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  background-color: #f3f6e0;
+  padding: 1rem;
+}
+
 #edit-button {
   padding: 0.2rem 0.5rem;
   font-size: 1rem;
 }
 
-input[type="text"] {
-  width: 20rem;
+.deets {
+  background-color: white;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+.deets-rows {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.deets-cols {
+  width: 50%;
+  padding: 0.5rem 0 0.5rem 0;
+}
+
+.deets-cols label {
+  display: block;
+}
+
+.deets-cols .left {
+  float: left;
+}
+
+.deets-cols .right {
+  float: right;
+}
+
+input {
+  /* width: fit-content; */
   height: 0.7rem;
-  border: 2px solid #ccc;
-  border-radius: 5px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  /* border-radius: 5px; */
   padding: 1rem;
   font-size: 1rem;
 }
@@ -344,21 +382,6 @@ input[type="text"] {
 .club-upcoming-event-list li {
   padding: 10px;
   border-bottom: 1px solid #ccc;
-}
-
-div.profile-summary {
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  background-color: #f3f6e0;
-  padding: 1rem;
-}
-
-.club-group label
-.clubs-update label,
-.events label,
-.upcoming-events label {
-  display: block;
-  margin-bottom: 0.5rem;
 }
 
 .clubs-update,
@@ -393,9 +416,15 @@ div.profile-summary {
 }
 
 @media (max-width: 768px) {
-  .clubs-update,
-  .joined-event,
-  .upcoming-events {
+  .clubs-update, .joined-event, .upcoming-events {
+    width: 100%;
+  };
+
+  .deets-rows {
+    flex-direction: column;
+  }
+
+  .deets-cols {
     width: 100%;
   }
 }
