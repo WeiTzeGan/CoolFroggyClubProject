@@ -184,12 +184,10 @@ nav a:hover {
 
 /* ----------------- for nav bar breadcrumbing --------------------*/
 div.breadcrumb {
-  padding: 1 .5rem;
-  background-color: white;
-  display: block;
   font-size: small;
-  padding-top: 20px;
-  padding-left: 50px;
+  max-width: 1280px;
+  padding: 20px 40px 0px 40px;
+  margin: auto;
 }
 
 div.breadcrumb ul {
@@ -218,6 +216,7 @@ main {
   margin: auto;
   padding-top: 60px;
   padding-bottom: 60px;
+  min-height: 100vh;
 }
 
 /* -------------------- Pending PAGE ------------------------- */

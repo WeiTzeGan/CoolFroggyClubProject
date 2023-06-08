@@ -184,9 +184,7 @@ nav a:hover {
 
 /* Set default font and background color */
 body {
-    /* display: inline-flexbox; */
     width: 100%;
-    height: 100vh;
     font-family: Arial, sans-serif;
     background-color: #FFFFFF;
     color: #000000;
@@ -194,11 +192,8 @@ body {
 
 main {
     margin: auto;
-    /* padding-top: 60px;
-    padding-bottom: 60px;
-    padding-left: 40px;
-    padding-right: 40px; */
     padding: 60px 40px 60px 40px;
+    min-height: 100vh;
 }
 
 /* -------------------- LOG IN PAGE ------------------------- */
@@ -208,10 +203,6 @@ main {
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #fff;
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
 }
 
 form {
@@ -244,7 +235,7 @@ p#password-reset {
     margin-bottom: 20px;
 }
 
-input[type=submit] {
+input[type=button] {
     background-color: #4CAF50;
     color: #fff;
     border: none;
@@ -256,30 +247,49 @@ input[type=submit] {
     font-size: larger;
 }
 
-input[type=submit]:hover {
+input[type=button]:hover {
     background-color: #45a049;
+}
+
+button#google {
+    background-color: #4285F4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    width: 100%;
+}
+
+button#froggy {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    width: 100%;
+    margin-top: 20px;
 }
 
 p {
     margin-top: 20px;
 }
 
-/* .admin-login {
-    margin-left: auto;
-    list-style: none;
-	background-color: #609966;
-    color: #EDF1D6;
-    padding: 10px 20px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: background-color 0.2s;
+div #google {
+    max-width: 328px;
 }
 
-.admin-login:hover {
-    background-color: #9DC08B;
-} */
+select:required {
+    border-color: #900;
+    /* background-image: linear-gradient(to right, pink, lightgreen); */
+}
 
 footer {
     position: relative;

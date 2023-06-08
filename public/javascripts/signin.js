@@ -44,7 +44,27 @@ const vueinst = Vue.createApp({
 
             // to toggle menu bar
             menu: 'hamburger',
-            dropdown: 'dropdown-menu'
+            dropdown: 'dropdown-menu',
+
+            // reveal passwords
+            is_visible: false,
+            reveal: 'password',
+            icon: 'no-see',
+
+            // check passwords
+            message: 'message-hide',
+            match_validity: 'invalid',
+            letter_validity: 'invalid',
+            capital_validity: 'invalid',
+            number_validity: 'invalid',
+            length_validity: 'invalid',
+            special_validity: 'invalid',
+            space_validity: 'invalid',
+
+            // toggle google sign in div
+            signin_google: false,
+            option_text: "Sign in with Google",
+            login_option: "google"
         };
     },
 
@@ -106,6 +126,24 @@ const vueinst = Vue.createApp({
         },
 
         signup() {
+            const cnfm_pw = document.getElementById("confirm-password");
+
+            // validate password
+            if (this.password !== this.confirm_password) {
+                cnfm_pw.setCustomValidity('Passwords do not match');
+                // https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation
+                // alert('Passwords do not match');
+                return;
+            }
+
+            if (this.letter_validity !== 'valid' || this.capital_validity !== 'valid'
+            || this.number_validity !== 'valid' || this.length_validity !== 'valid'
+            || this.special_validity !== 'valid' || this.space_validity !== 'valid') {
+                cnfm_pw.setCustomValidity('Ensure password fulfills criteria');
+                // alert('Ensure password fulfills criteria');
+                return;
+            }
+
             let req = new XMLHttpRequest();
 
             let signup_data = {
@@ -144,6 +182,19 @@ const vueinst = Vue.createApp({
             req.send();
         },
 
+        // to show google sign in
+        toggleGoogle() {
+            if (this.signin_google === false) {
+                this.signin_google = true;
+                this.option_text = "Back to Cool Froggy Login";
+                this.login_option = "froggy";
+            } else {
+                this.signin_google = false;
+                this.option_text = "Sign in with Google";
+                this.login_option = "google";
+            }
+        },
+
         // to toggle menu in nav bar
         toggleMenu() {
             if (this.menu === 'hamburger') {
@@ -152,6 +203,80 @@ const vueinst = Vue.createApp({
             } else {
                 this.menu = 'hamburger';
                 this.dropdown = 'dropdown-menu';
+            }
+        },
+
+        // reveal / unreveal passwords
+        see: function() {
+            if (this.is_visible) {
+                this.reveal = 'password';
+                this.is_visible = false;
+                this.icon = 'no-see';
+            } else {
+                this.reveal = 'text';
+                this.is_visible = true;
+                this.icon = 'see';
+            }
+        },
+
+        // When the user clicks on the password field, show the message box
+        reveal_message: function() {
+            this.message = 'message-show';
+        },
+
+        // check password match
+        validatePassword: function() {
+            // Validate lowercase letters
+            let lowerCaseLetters = /[a-z]/g;
+            if (this.password.match(lowerCaseLetters)) {
+                this.letter_validity = 'valid';
+            } else {
+                this.letter_validity = 'invalid';
+            }
+
+            // Validate capital letters
+            let upperCaseLetters = /[A-Z]/g;
+            if (this.password.match(upperCaseLetters)) {
+                this.capital_validity = 'valid';
+            } else {
+                this.capital_validity = 'invalid';
+            }
+
+            // Validate numbers
+            let numbers = /[0-9]/g;
+            if (this.password.match(numbers)) {
+                this.number_validity = 'valid';
+            } else {
+                this.number_validity = 'invalid';
+            }
+
+            // Validate length
+            if (this.password.trim().length >= 8) {
+                this.length_validity = 'valid';
+            } else {
+                this.length_validity = 'invalid';
+            }
+
+            // Validate special characters
+            let specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
+            if (this.password.match(specialChars)) {
+                this.special_validity = 'valid';
+            } else {
+                this.special_validity = 'invalid';
+            }
+
+            // Validate no space
+            if (this.password.match(' ')) {
+                this.space_validity = 'invalid';
+            } else {
+                this.space_validity = 'valid';
+            }
+
+            // validate both passwords match
+            if (this.password === this.confirm_password) {
+                this.match_validity = 'valid';
+            } else {
+                this.match_validity = 'invalid';
             }
         }
     }

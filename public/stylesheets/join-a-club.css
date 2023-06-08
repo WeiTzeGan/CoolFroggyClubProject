@@ -298,6 +298,7 @@ body {
 main {
     margin: auto;
     padding: 20px 0px 60px 0px;
+    min-height: 100vh;
 }
 
 /* ----------------------------- CLUBS ----------------------------------------- */

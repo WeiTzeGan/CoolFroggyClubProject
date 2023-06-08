@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/signup.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="javascripts/signin.js" defer></script>
 </head>
@@ -53,33 +54,45 @@
                 <br>
 
                 <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
-                <form>
+                <form v-on:submit.prevent="signup()">
                     <label for="first-name">First Name:</label>
-                    <input type="text" id="first-name" name="first-name" v-model="first_name">
+                    <input type="text" id="first-name" name="first-name" v-model="first_name" required>
 
                     <label for="last-name">Last Name:</label>
-                    <input type="text" id="last-name" name="last-name" v-model="last_name">
+                    <input type="text" id="last-name" name="last-name" v-model="last_name" required>
 
                     <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" name="dob" v-model="dob">
-
-                    <!-- <label for="memberID">Cool Froggy Member ID:</label>
-                    <input type="text" id="memberID" name="memberID" placeholder="* Auto Generated" value="" readonly> -->
+                    <input type="date" id="dob" name="dob" v-model="dob" required>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" v-model="password">
+                    <input v-bind:type="reveal" id="password" name="password" v-model="password" v-on:focus="reveal_message" v-on:input="validatePassword" required>
 
                     <label for="confirm-password">Confirm Password:</label>
-                    <input type="password" id="confirm-password" name="confirm-password" v-model="confirm_password">
+                    <input v-bind:type="reveal" id="confirm-password" name="confirm-password" v-model="confirm_password" v-on:input="validatePassword" onchange="this.setCustomValidity('')" required>
+
+                    <!-- code referenced from w3schools -->
+                    <div v-bind:class="message">
+                        <div id="set">
+                            <h3>Password must contain the following:</h3>
+                            <i v-bind:id="icon" v-on:click="see" class="far fa-eye"></i>
+                        </div>
+                        <p id="match" v-bind:class="match_validity">Passwords <b>match</b></p>
+                        <p id="letter" v-bind:class="letter_validity">A <b>lowercase</b> letter</p>
+                        <p id="capital" v-bind:class="capital_validity">A <b>capital (uppercase)</b> letter</p>
+                        <p id="number" v-bind:class="number_validity">A <b>number</b></p>
+                        <p id="length" v-bind:class="length_validity">Minimum <b>8 characters</b></p>
+                        <p id="special" v-bind:class="special_validity">A <b>special character</b></p>
+                        <p id="space" v-bind:class="space_validity">No <b>spaces</b></p>
+                    </div>
 
                     <label for="phone">Mobile Phone:</label>
-                    <input type="tel" id="phone" name="phone" v-model="mobile">
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="Enter phone number as xxxxxxxxxx" v-model="mobile" required>
 
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" v-model="email">
+                    <input type="email" id="email" name="email" v-model="email" required>
 
                     <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
-                    <input type="button" class="submit" value="Submit" v-on:click="signup()">
+                    <input type="submit" class="submit" value="Submit">
                 </form>
 
             </article>
