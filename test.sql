@@ -87,3 +87,12 @@ INSERT INTO
 PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
 VALUES('NEW CLUB 4', 'THIS IS NEW CLUB 4', 'newclub4@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
 
+INSERT INTO
+PENDING_CLUBS (club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
+VALUES (?,?,?,?,?,?,?);
+
+SELECT
+EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name
+FROM EVENTS
+INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id
+WHERE EVENTS.event_date >= CURDATE() AND EVENTS.club_id IN (SELECT club_id FROM CLUB_MEMBERS WHERE user_id = 2);
