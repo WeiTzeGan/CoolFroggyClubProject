@@ -96,7 +96,7 @@ router.post('/viewEvents', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id, COUNT(EG.participant_id) AS participant_count FROM EVENTS E LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id WHERE E.club_id = 1 GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id";
+    let query = "SELECT E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id, COUNT(EG.participant_id) AS participant_count FROM EVENTS E LEFT JOIN EVENTGOERS EG ON E.event_id = EG.event_id WHERE E.club_id = ? GROUP BY E.event_id, E.event_name, E.event_message, E.event_date, E.event_location, E.club_id";
 
     connection.query(query, [clubID], function(error, rows, fields) {
       connection.release();
@@ -432,7 +432,7 @@ router.post('/eventsEmail', function(req, res, next) {
             from: 'coolfroggyclub@gmail.com',
             to: emails,
             subject: 'New event from ' + rows[0].club_name + ' : ' + data.event_name,
-            text: data.event_message + '\n' + 'Date: ' + data.event_date + '\n' + 'Location: ' + data.event_location + '\n' + '\n' + 'Warm regards, ' + '\n' + rows[0].club_name
+            text: data.event_message + '\n' + '\n' + 'Date: ' + data.event_date + '\n' + 'Location: ' + data.event_location + '\n' + '\n' + 'Warm regards, ' + '\n' + rows[0].club_name
           };
 
           transporter.sendMail(mailOptions, function(error, info) {

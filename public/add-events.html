@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/add-events.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/event_news_club.js" defer></script>
 </head>
 
 <body>
-    <div id="signin">
+    <div id="coolfroggyclub">
         <nav>
             <div class="nav-container">
                 <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a></span>
@@ -56,19 +56,20 @@
                     <input type="text" id="event_name" name="event_name" v-model="event_name">
 
                     <label for="club-name">Club Name:</label>
-                    <input type="text" id="club-name" name="club-name" v-model="club-name">
+                    <input type="text" id="club-name" name="club-name" v-bind:placeholder="club_name" disabled>
 
                     <label for="event_date">Event Date:</label>
                     <input type="date" id="event_date" name="event_date" v-model="event_date">
 
-                    <label for="event_time">Event Time:</label>
-                    <input type="time" id="event_time" name="event_time" v-model="event_time">
+                    <!-- event time not included in database -->
+                    <!-- <label for="event_time">Event Time:</label>
+                    <input type="time" id="event_time" name="event_time" v-model="event_time"> -->
 
                     <label for="event_location">Event Location:</label>
                     <input type="text" id="event_location" name="event_location" v-model="event_location">
 
                     <label for="event_info">Event Information:</label>
-                    <input type="text" id="event_info" name="event_info" v-model="event_info">
+                    <input type="text" id="event_info" name="event_info" v-model="event_message">
 
                     <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
                     <input type="button" value="Add New Event" v-on:click="addEvent()">

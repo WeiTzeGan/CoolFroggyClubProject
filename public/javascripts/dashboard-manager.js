@@ -287,6 +287,11 @@ const vueinst = Vue.createApp({
 
         show_event_participants: function(index, eventID){
             vueinst.viewRSVPS(eventID);
+
+            for (let i = 0; i < vueinst.show_participants.length; i++) {
+                vueinst.hide_event_participants(i);
+            }
+
             if (vueinst.show_participants[index] === false){
                 vueinst.show_participants[index] = true;
             }
@@ -307,6 +312,14 @@ const vueinst = Vue.createApp({
                 this.menu = 'hamburger';
                 this.dropdown = 'dropdown-menu';
             }
+        },
+
+        addEvent: function() {
+            window.location.href = "add-events.html";
+        },
+
+        addNews: function() {
+            window.location.href = "add-news.html";
         }
     }
 }).mount('#coolfroggyclub');

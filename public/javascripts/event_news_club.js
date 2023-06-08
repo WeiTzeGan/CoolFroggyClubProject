@@ -14,7 +14,18 @@ const vueinst1 = Vue.createApp({
 
             // to toggle menu bar
             menu: 'hamburger',
-            dropdown: 'dropdown-menu'
+            dropdown: 'dropdown-menu',
+
+            // Details for adding events
+            club_id: '',
+            event_name: '',
+            club_name: '',
+            event_date: '',
+            event_location: '',
+            event_message: ''
+
+            // Details for adding news
+            
         };
     },
 
@@ -208,6 +219,46 @@ const vueinst1 = Vue.createApp({
                 this.menu = 'hamburger';
                 this.dropdown = 'dropdown-menu';
             }
+        },
+
+        getClubID() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    let response = JSON.parse(this.responseText);
+
+                    vueinst1.club_id = response.clubID;
+                    vueinst1.club_name = response.clubName;
+                }
+            };
+
+            req.open('GET', '/club_managers/getClubID', true);
+            req.send();
+        },
+
+        addEvent() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    alert('Added new event successfully!');
+                    window.location.href = "club-manager-profile.html";
+                } else if (this.readyState === 4 && this.status === 403) {
+                    alert('Event name already exists, or event location already booked at this time');
+                }
+            };
+
+            req.open('POST', '/club_managers/addEvent', true);
+            req.setRequestHeader("Content-type", "application/json");
+
+            req.send(JSON.stringify({
+                event_name: vueinst1.event_name,
+                event_message: vueinst1.event_message,
+                event_date: vueinst1.event_date,
+                event_location: vueinst1.event_location,
+                club_id: vueinst1.club_id
+            }));
         }
 
     }
@@ -226,6 +277,11 @@ window.onload = function () {
     // show public clubs' news even when user has not logged in
     if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
         vueinst1.view_news('all');
+    }
+
+    // Gets club ID
+    if (window.location.href === "http://localhost:8080/add-events.html" || window.location.href === "http://localhost:8080/add-news.html") {
+        vueinst1.getClubID();
     }
 
     /*

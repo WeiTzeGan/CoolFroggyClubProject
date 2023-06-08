@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="stylesheets/add-news.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="javascripts/signin.js" defer></script>
+    <script src="javascripts/event_news_club.js" defer></script>
 </head>
 
 <body>
@@ -53,19 +53,25 @@
 
                 <form>
                     <label for="news_title">Announcement Title:</label>
-                    <input type="text" id="news_title" name="news_title" v-model="news_title">
+                    <input type="text" id="news_title" name="news_title" v-model="news_title" required>
 
                     <label for="news_author">Author:</label>
-                    <input type="text" id="news_author" name="news_author" v-model="news_author">
+                    <input type="text" id="news_author" name="news_author" v-model="news_author" required>
 
                     <label for="club-name">Club Name:</label>
-                    <input type="text" id="club-name" name="club-name" v-model="club-name">
+                    <input type="text" id="club-name" name="club-name" v-model="club-name" required>
 
                     <label for="post_date">Published On:</label>
-                    <input type="date" id="post_date" name="post_date" v-model="post_date">
+                    <input type="date" id="post_date" name="post_date" v-model="post_date" required>
+
+                    <label for="privacy">Choose event privacy:</label>
+                    <input type="radio" id="private" name="privacy" value="private" v-model="privacy" required>
+                    <label for="private">Private</label>
+                    <input type="radio" id="public" name="privacy" value="public" v-model="privacy">
+                    <label for="public">Public</label>
 
                     <label for="post_message">Announcement:</label>
-                    <input type="text" id="post_message" name="post_message" v-model="post_message">
+                    <input type="text" id="post_message" name="post_message" v-model="post_message" required>
 
                     <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
                     <input type="button" value="Add New Announcement" v-on:click="addNews()">

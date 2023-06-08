@@ -61,6 +61,7 @@ CREATE TABLE EVENTS (
     event_date DATE NOT NULL,
     event_location CHAR(255) NOT NULL,
     club_id SMALLINT NOT NULL,
+    private_event TINYINT(1) NOT NULL,
     PRIMARY KEY (event_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
@@ -155,6 +156,12 @@ INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
 VALUES
 ('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
+('Dinner', 'Time to eat!', '2023-06-08', 'MLC', '1');
+
 
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
