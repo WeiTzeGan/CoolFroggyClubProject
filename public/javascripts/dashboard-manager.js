@@ -287,6 +287,10 @@ const vueinst = Vue.createApp({
 
         show_event_participants: function(index, eventID){
             vueinst.viewRSVPS(eventID);
+
+            for (let i = 0; i < vueinst.show_participants.length; i++) {
+                vueinst.hide_event_participants(i);
+            }
             if (vueinst.show_participants[index] === false){
                 vueinst.show_participants[index] = true;
             }

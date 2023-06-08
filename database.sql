@@ -159,6 +159,12 @@ VALUES
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id)
 VALUES
+('Dinner', 'Time to eat!', '2023-06-08', 'MLC', '1');
+
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id)
+VALUES
 ('Rock Paper Scissors tournament', 'Jan ken pon!', '2023-06-22', 'EM bulding', '2');
 
 INSERT INTO EVENTS
