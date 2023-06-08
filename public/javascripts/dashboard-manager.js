@@ -93,6 +93,12 @@ const vueinst = Vue.createApp({
                     }else if (window.location.href === "http://localhost:8080/member-profile.html"){
                         vueinst.first_name = result.first_name;
                         vueinst.last_name = result.last_name;
+                    }else if (window.location.href === "http://localhost:8080/club-manager-profile.html"){
+                        vueinst.first_name = result.first_name;
+                        vueinst.last_name = result.last_name;
+                        vueinst.dob = result.date_of_birth;
+                        vueinst.mobile = result.mobile;
+                        vueinst.email = result.email;
                     }
 
                 }

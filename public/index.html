@@ -96,20 +96,10 @@
 		<div class="latest-news">
 			<h2>Latest News</h2>
 			<ul>
-				<li>
-					<h3>News Article 1</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod eu lorem et ultricies. In
-						porta lorem at dui semper porttitor.</p>
-				</li>
-				<li>
-					<h3>News Article 2</h3>
-					<p>Phasellus bibendum magna ut dolor sagittis, vel luctus dolor posuere. Duis ut nunc et quam
-						fringilla sodales sit amet eget augue.</p>
-				</li>
-				<li>
-					<h3>News Article 3</h3>
-					<p>Aliquam vestibulum morbi blandit cursus risus at ultrices. Nullam dapibus pellentesque commodo.
-					</p>
+				<li v-for="news in all_news">
+					<h3>{{ news.title }}</h3>
+                    <h3>By {{ news.author }}</h3>
+					<p>{{ news.post_message }}</p>
 				</li>
 			</ul>
 		</div>

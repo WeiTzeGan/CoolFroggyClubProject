@@ -334,7 +334,7 @@ window.onload = function () {
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
             vueinst1.signedIn = true;
-            console.log(req.responseText);
+            // console.log(req.responseText);
             vueinst1.access_type = req.responseText;
         } else {
             vueinst1.signedIn = false;

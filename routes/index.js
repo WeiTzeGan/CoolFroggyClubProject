@@ -18,25 +18,24 @@ router.post('/signup', function(req, res, next){
 
   // if already logged in -> meaning already signed up-> stop
   if ('user' in req.session) {
-    console.log("user already logged in");
+    // console.log("user already logged in");
     res.sendStatus(403);
     return;
   }
 
   let data = req.body;
-  // signup_copy = data;
-  console.log(data);
+  // console.log(data);
 
   // if req.body lacks these info
   if (!('first_name' in data) && !('last_name' in data) && !('dob' in data) && !('password' in data) && !('phone' in data) && !('email' in data)) {
-    console.log("lack info");
+    // console.log("lack info");
     res.sendStatus(401);
     return;
   }
 
   // if the provided info is empty
   if (data.first_name === '' && data.last_name === '' && data.password === '' && data.email === '') {
-    console.log("info empty");
+    // console.log("info empty");
     res.sendStatus(401);
     return;
   }
@@ -44,7 +43,7 @@ router.post('/signup', function(req, res, next){
   req.pool.getConnection(function(cerr, connection){
     // handle connection error
     if (cerr){
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -58,13 +57,13 @@ router.post('/signup', function(req, res, next){
 
       // handle query error
       if (qerr){
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(401);
         return;
       }
 
       if (rows.length > 0){
-        console.log("User with email already exists");
+        // console.log("User with email already exists");
         res.sendStatus(403);
         return;
       }
@@ -74,7 +73,7 @@ router.post('/signup', function(req, res, next){
       // Hash the password with 10 salt rounds
       bcrypt.hash(data.password, 10, function(err, hashedPassword) {
         if (err) {
-          console.log("Password hashing error");
+          // console.log("Password hashing error");
           res.sendStatus(500);
           return;
         }
@@ -83,7 +82,7 @@ router.post('/signup', function(req, res, next){
         req.pool.getConnection(function(cerr2, connection2){
           // handle connection error
           if (cerr2){
-            console.log("Connection2 error");
+            // console.log("Connection2 error");
             res.sendStatus(500);
             return;
           }
@@ -97,7 +96,7 @@ router.post('/signup', function(req, res, next){
               connection2.release();
 
               if (qerr2){
-                console.log("Query2 error");
+                // console.log("Query2 error");
                 res.sendStatus(401);
                 return;
               }
@@ -122,7 +121,7 @@ router.post('/login', function (req, res, next) {
 
   // if already logged in, stop logging in again
   if ('user' in req.session) {
-    console.log("user already logged in");
+    // console.log("user already logged in");
     res.sendStatus(403);
     return;
   }
@@ -190,7 +189,7 @@ router.post('/login', function (req, res, next) {
 
         bcrypt.compare(login_data.password, hashedPassword, function(err, result) {
           if (err) {
-            console.log("Password comparison error");
+            // console.log("Password comparison error");
             res.sendStatus(500);
             return;
           }
@@ -201,14 +200,13 @@ router.post('/login', function (req, res, next) {
             // store the necessary user info (name, email, user_type)
             [req.session.user] = rows;
             req.session.user_type = login_data.type;
-            console.log(JSON.stringify(req.session.user));
-            // res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
+            // console.log(JSON.stringify(req.session.user));
             res.json(req.session.user);
             return;
 
           } else {
             //Passwords don't match
-            console.log("Invalid password");
+            // console.log("Invalid password");
             res.sendStatus(403);
             return;
           }
@@ -225,7 +223,6 @@ router.post('/login', function (req, res, next) {
 
 router.get('/checkLogin', function (req, res, next) {
   if ('user' in req.session) {
-    // res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
     let type = req.session.user_type;
     res.send(type);
     return;
@@ -254,7 +251,7 @@ router.post('/google-login', async function (req, res, next) {
 
   // if already logged in, stop logging in again
   if ('user' in req.session) {
-    console.log("user already logged in");
+    // console.log("user already logged in");
     res.sendStatus(403);
     return;
   }
@@ -281,7 +278,7 @@ router.post('/google-login', async function (req, res, next) {
 
     // handle connection error
     if (cerr) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -307,7 +304,7 @@ router.post('/google-login', async function (req, res, next) {
 
       // handle query error
       if (qerr) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(401);
         return;
       }
@@ -315,14 +312,11 @@ router.post('/google-login', async function (req, res, next) {
       if (rows.length > 0) {
         // There is a user
 
-        console.log(rows);
-
         // store the necessary user info (name, email, user_type)
         [req.session.user] = rows;
         req.session.user_type = req.body.type;
 
-        console.log(JSON.stringify(req.session.user));
-        res.cookie('access_type', req.session.user_type, {maxAge: 90000000, httpOnly: true, secure: false, overwrite: true});
+        // console.log(JSON.stringify(req.session.user));
         res.json(req.session.user);
 
       } else {
@@ -332,9 +326,6 @@ router.post('/google-login', async function (req, res, next) {
       }
     }); // connection.query
   });   // req.pool.getConnection
-
-  //res.redirect('/');
-
 });
 
 /* Route to get events table */
@@ -342,7 +333,7 @@ router.get('/view-events', function (req, res, next) {
 
   // if no target field in req.body OR target is empty
   if ( !('type' in req.query) || req.query.type === ''){
-    console.log("type invalid");
+    // console.log("type invalid");
     res.sendStatus(403);
     return;
   }
@@ -356,11 +347,11 @@ router.get('/view-events', function (req, res, next) {
     let query;
     // check for which type of new we want to see (all, past or upcoming news)
     if (req.query.type === 'all'){
-      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id";
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTS.private_event = 0";
     }else if (req.query.type === 'past'){
-      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date < CURDATE()";
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTS.private_event = 0 AND event_date < CURDATE()";
     }else if (req.query.type === 'upcoming'){
-      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE event_date >= CURDATE()";
+      query = "SELECT EVENTS.*, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTS.private_event = 0 AND event_date >= CURDATE()";
     }else{
       connection.release();
       res.sendStatus(403);
@@ -389,7 +380,7 @@ router.get('/view-events', function (req, res, next) {
 router.post('/view-news', function(req, res, next) {
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -412,7 +403,7 @@ router.post('/view-news', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -432,7 +423,7 @@ router.post('/count-news', function(req, res, next){
 
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -455,7 +446,7 @@ router.post('/count-news', function(req, res, next){
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -479,7 +470,7 @@ router.get('/search-news', function(req, res, next){
 
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -490,7 +481,7 @@ router.get('/search-news', function(req, res, next){
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -498,6 +489,7 @@ router.get('/search-news', function(req, res, next){
       // if there is no rows that match query
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
       //console.log(rows);
       res.json(rows);
@@ -517,7 +509,7 @@ router.get('/count-search-news', function(req, res, next){
 
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      console.log("Connection error");
+      // console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -528,7 +520,7 @@ router.get('/count-search-news', function(req, res, next){
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        // console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -536,6 +528,7 @@ router.get('/count-search-news', function(req, res, next){
       // if there is no rows that match query
       if (rows.length === 0){
         res.sendStatus(404);
+        return;
       }
       //console.log(rows);
       res.json(rows);

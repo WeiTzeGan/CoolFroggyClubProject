@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
 router.use('/', function(req, res, next){
   if (!('user' in req.session)){
-    console.log("Message at the top of users.js: User has not logged in");
+    // console.log("Message at the top of users.js: User has not logged in");
     res.sendStatus(401);
     return;
   }else{
@@ -119,6 +119,71 @@ router.get('/view-joined-clubs', function(req, res, next){
     });
   });
 
+});
+
+/* Route to request to form a new club */
+router.post('/add-club-request', function(req, res, next) {
+  var clubName = req.body.club_name;
+  var clubDescription = req.body.club_description;
+  var clubManager = req.session.user.user_id;
+  var clubEmail = req.body.club_email;
+  var managerFirstName = req.session.user.first_name;
+  var managerLastName = req.session.user.last_name;
+  var managerEmail = req.session.user.email;
+
+  // console.log(req.session.user);
+
+
+  // To check if club already exists
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      // console.log("Connection error 1");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT * FROM CLUBS WHERE club_name = ?";
+
+    connection.query(query, [clubName], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        // console.log("Query error 1");
+        res.sendStatus(401);
+        return;
+      }
+
+      if (rows.length > 0) {
+        // console.log("Club already exists");
+        res.sendStatus(403);
+        return;
+      }
+
+      // If passes above, add to pending_clubs table
+      req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+          // console.log("Connection error 2");
+          res.sendStatus(500);
+          return;
+        }
+
+        let query2 = "INSERT INTO PENDING_CLUBS (club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email) VALUES (?,?,?,?,?,?,?)";
+
+        connection.query(query2, [clubName, clubDescription, clubEmail, clubManager, managerFirstName, managerLastName, managerEmail], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            // console.log(error);
+            // console.log("Query error 2");
+            res.sendStatus(401);
+            return;
+          }
+
+          res.sendStatus(200);
+        });
+      });
+    });
+  });
 });
 
 
@@ -262,10 +327,10 @@ router.post('/join-event', function(req, res, next){
 // User view joined events
 router.get('/view-events', function(req, res, next){
 
-  console.log(req.query.type);
+  // console.log(req.query.type);
 
   if ( !('type' in req.query) ){
-    console.log("No query for type included");
+    // console.log("No query for type included");
     res.sendStatus(403);
     return;
   }
@@ -283,9 +348,9 @@ router.get('/view-events', function(req, res, next){
     if (req.query.type === 'joined'){
       query = "SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name FROM EVENTS INNER JOIN EVENTGOERS ON EVENTS.event_id = EVENTGOERS.event_id INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTGOERS.participant_id = ?";
     } else if (req.query.type === 'upcoming'){
-      query = "SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name FROM EVENTS INNER JOIN EVENTGOERS ON EVENTS.event_id = EVENTGOERS.event_id INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTGOERS.participant_id = ? AND EVENTS.event_date >= CURDATE()";
+      query = "SELECT EVENTS.event_name, EVENTS.event_date, EVENTS.event_location, EVENTS.event_message, CLUBS.club_name FROM EVENTS INNER JOIN CLUBS ON EVENTS.club_id = CLUBS.club_id WHERE EVENTS.event_date >= CURDATE() AND EVENTS.club_id IN (SELECT club_id FROM CLUB_MEMBERS WHERE user_id = ?)";
     } else{
-      console.log("cannot find events based on query");
+      // console.log("cannot find events based on query");
       connection.release();
       res.sendStatus(404);
       return;
@@ -341,7 +406,7 @@ router.get('/info', function(req, res, next){
         return;
       }
 
-      console.log(rows);
+      //console.log(rows);
 
       if (rows.length === 0){
         res.sendStatus(404);
@@ -429,7 +494,7 @@ router.delete('/quitClub', function(req, res, next) {
 // User views subscription option to club news and special events
 router.post('/view-club-subscribe', function(req, res,next){
   let id_of_user = req.session.user.user_id;
-  console.log(req.body);
+  // console.log(req.body);
 
   req.pool.getConnection(function(cerr, connection){
 
@@ -448,7 +513,7 @@ router.post('/view-club-subscribe', function(req, res,next){
         res.sendStatus(401);
         return;
       }
-     
+
 
       if (rows.length === 0){
         // console.log("Cannot subscriptions option of user");
@@ -492,7 +557,7 @@ router.post('/update-club-subscribe', function(req, res, next){
       // if user with club_id and user_id already exists in table,
       // update the user subscription to news ad events
       if (rows.length > 0) {
-        console.log("User is already recorded");
+        // console.log("User is already recorded");
 
         /////////////////////////////////////////////////////////////
         req.pool.getConnection(function (cerr2, connection2) {
@@ -560,6 +625,5 @@ router.post('/update-club-subscribe', function(req, res, next){
     }); // connection.query1
   }); // req.pool.getConnection
 });
-
 
 module.exports = router;
