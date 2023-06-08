@@ -196,7 +196,7 @@ VALUES
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)
 VALUES
-('2', '1');
+('2', '1'); 
 
 INSERT INTO EVENTGOERS
 (event_id, participant_id)
