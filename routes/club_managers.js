@@ -432,7 +432,7 @@ router.post('/eventsEmail', function(req, res, next) {
             from: 'coolfroggyclub@gmail.com',
             to: emails,
             subject: 'New event from ' + rows[0].club_name + ' : ' + data.event_name,
-            text: data.event_message + '\n' + 'Date: ' + data.event_date + '\n' + 'Location: ' + data.event_location + '\n' + '\n' + 'Warm regards, ' + '\n' + rows[0].club_name
+            text: data.event_message + '\n' + '\n' + 'Date: ' + data.event_date + '\n' + 'Location: ' + data.event_location + '\n' + '\n' + 'Warm regards, ' + '\n' + rows[0].club_name
           };
 
           transporter.sendMail(mailOptions, function(error, info) {

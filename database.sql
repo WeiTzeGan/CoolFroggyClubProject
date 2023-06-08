@@ -61,6 +61,7 @@ CREATE TABLE EVENTS (
     event_date DATE NOT NULL,
     event_location CHAR(255) NOT NULL,
     club_id SMALLINT NOT NULL,
+    private_event TINYINT(1) NOT NULL,
     PRIMARY KEY (event_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
