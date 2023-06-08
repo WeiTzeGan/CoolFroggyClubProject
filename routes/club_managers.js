@@ -460,12 +460,8 @@ router.post('/eventsEmail', function(req, res, next) {
   });
 });
 
-/* Router to edit club events */
-router.post('/updateEvent', function(req, res, next) {
-  var eventName = req.body.event_name;
-  var eventMessage = req.body.event_message;
-  var eventDate = req.body.event_date;
-  var eventLocation = req.body.event_location;
+/* Route to view specific event */
+router.post('/viewEventDetails', function(req, res, next) {
   var eventID = req.body.event_id;
 
   req.pool.getConnection(function(err, connection) {
@@ -474,12 +470,106 @@ router.post('/updateEvent', function(req, res, next) {
       return;
     }
 
-    let query = "UPDATE EVENTS SET event_name = ?, event_message = ?, event_date = ? event_location = ? WHERE event_id = ?";
+    let query = "SELECT event_name, event_message, event_date, event_location, private_event FROM EVENTS WHERE event_id = ?";
 
-    connection.query(query, [eventName, eventMessage, eventDate, eventLocation, eventID], function(error, rows, fields) {
+    connection.query(query, [eventID], function(error, rows, fields) {
       connection.release();
 
       if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+/* Router to edit club events */
+router.post('/updateEvent', function(req, res, next) {
+  var eventName = req.body.event_name;
+  var eventMessage = req.body.event_message;
+  var eventDate = req.body.event_date;
+  var eventLocation = req.body.event_location;
+  var eventPrivacy = req.body.privacy;
+  var eventID = req.body.event_id;
+  console.log(eventName);
+  console.log(eventMessage);
+  console.log(eventDate);
+  console.log(eventLocation);
+  console.log(eventPrivacy);
+  console.log(eventID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE EVENTS SET event_name = ?, event_message = ?, event_date = ?, event_location = ?, private_event = ? WHERE event_id = ?";
+
+    connection.query(query, [eventName, eventMessage, eventDate, eventLocation, eventPrivacy, eventID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
+    });
+  });
+});
+
+/* Route to view specific news */
+router.post('/viewNewsDetails', function(req, res, next) {
+  var postID = req.body.post_id;
+  console.log(postID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT title, post_message, private_message FROM ANNOUNCEMENTS WHERE post_id = ?";
+
+    connection.query(query, [postID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+/* Router to edit club news */
+router.post('/updateNews', function(req, res, next) {
+  var newsTitle = req.body.title;
+  var newsMessage = req.body.post_message;
+  var newsPrivacy = req.body.private_message;
+  var postID = req.body.post_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE ANNOUNCEMENTS SET title = ?, post_message = ?, private_message = ? WHERE post_id = ?";
+
+    connection.query(query, [newsTitle, newsMessage, newsPrivacy, postID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
         res.sendStatus(500);
         return;
       }

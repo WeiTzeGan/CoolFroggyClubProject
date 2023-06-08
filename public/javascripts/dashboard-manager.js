@@ -326,6 +326,14 @@ const vueinst = Vue.createApp({
 
         addNews: function() {
             window.location.href = "add-news.html";
+        },
+
+        editEvent: function(event_id) {
+            window.location.href = "edit-events.html?event_id=" + event_id;
+        },
+
+        editNews: function(post_id) {
+            window.location.href = "edit-news.html?post_id=" + post_id;
         }
     }
 }).mount('#coolfroggyclub');

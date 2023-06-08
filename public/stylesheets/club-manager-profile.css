@@ -441,6 +441,11 @@ input {
   height: 1.5em;
 }
 
+.edit-button {
+  width: 1em;
+  height: 0.9em;
+}
+
 @media (max-width: 768px) {
   .club-information,
   .club-member,
