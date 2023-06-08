@@ -53,7 +53,7 @@
                 <br>
 
                 <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
-                <form v-on:submit.prevent="signup()"> <!-- USE DIFFERENT FUNCTION !!!!! -->
+                <form v-on:submit.prevent="signup_clubmanager()"> <!-- USE DIFFERENT FUNCTION !!!!! -->
                     <label for="club-name">Club Name:</label>
                     <input type="text" id="club-name" name="club-name" v-model="club-name" required>
 
@@ -72,14 +72,14 @@
                     <label for="dob">Date of Birth:</label>
                     <input type="date" id="dob" name="dob" v-model="dob" required>
 
-                    <label for="password">Password:</label>
+                    <!-- <label for="password">Password:</label>
                     <input v-bind:type="reveal" id="password" name="password" v-model="password" v-on:focus="reveal_message" v-on:input="validatePassword" required>
 
                     <label for="confirm-password">Confirm Password:</label>
-                    <input v-bind:type="reveal" id="confirm-password" name="confirm-password" v-model="confirm_password" v-on:input="validatePassword" onchange="this.setCustomValidity('')" required>
+                    <input v-bind:type="reveal" id="confirm-password" name="confirm-password" v-model="confirm_password" v-on:input="validatePassword" onchange="this.setCustomValidity('')" required> -->
 
                     <!-- code referenced from w3schools -->
-                    <div v-bind:class="message">
+                    <!-- <div v-bind:class="message">
                         <div id="set">
                             <h3>Password must contain the following:</h3>
                             <i v-bind:id="icon" v-on:click="see" class="far fa-eye"></i>
@@ -91,7 +91,7 @@
                         <p id="length" v-bind:class="length_validity">Minimum <b>8 characters</b></p>
                         <p id="special" v-bind:class="special_validity">A <b>special character</b></p>
                         <p id="space" v-bind:class="space_validity">No <b>spaces</b></p>
-                    </div>
+                    </div> -->
 
                     <label for="phone">Mobile Phone:</label>
                     <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="Enter phone number as xxxxxxxxxx" v-model="mobile" required>
