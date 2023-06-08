@@ -35,6 +35,11 @@ const vueinst = Vue.createApp({
             mobile: '',
             email: '',
 
+            //details for club manager sign up
+            club_name: '',
+            club_email: '',
+            club_description:'',
+
             // details for original user details
             originFirstName: '',
             originLastName: '',
@@ -164,6 +169,26 @@ const vueinst = Vue.createApp({
             req.open('POST', '/signup', true);
             req.setRequestHeader('Content-type', 'application/json');
             req.send(JSON.stringify(signup_data));
+        },
+
+        signup_clubmanager(){
+            let req = new XMLHttpRequest();
+
+            let signup_clubmanager_data = {
+                club_name: vueinst.club_name,
+                club_email: vueinst.club_email,
+                club_info: vueinst.club_info
+            };
+
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    window.location.href = "index.html";
+                }
+            };
+
+            req.open('POST', '/signup_clubmanager', true);
+            req.setRequestHeader('Content-type', 'application/json');
+            req.send(JSON.stringify(signup_clubmanager_data));
         },
 
         logout() {
