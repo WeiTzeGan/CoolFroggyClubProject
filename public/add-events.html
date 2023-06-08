@@ -68,6 +68,12 @@
                     <label for="event_location">Event Location:</label>
                     <input type="text" id="event_location" name="event_location" v-model="event_location">
 
+                    <label for="privacy">Choose event privacy:</label>
+                    <input type="radio" id="private" name="privacy" value="private" v-model="privacy" required>
+                    <label for="private">Private</label>
+                    <input type="radio" id="public" name="privacy" value="public" v-model="privacy">
+                    <label for="public">Public</label>
+
                     <label for="event_info">Event Information:</label>
                     <input type="text" id="event_info" name="event_info" v-model="event_message">
 

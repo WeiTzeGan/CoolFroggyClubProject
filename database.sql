@@ -153,30 +153,30 @@ VALUES
 ('AVA', 'BBBB', '2', 123456899, 'ava@gmail.com');
 
 INSERT INTO EVENTS
-(event_name, event_message, event_date, event_location, club_id)
+(event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1');
+('Karaoke', 'Time to sing!', '2023-05-29', 'Lecture Hall', '1', '0');
 
 INSERT INTO EVENTS
-(event_name, event_message, event_date, event_location, club_id)
+(event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Dinner', 'Time to eat!', '2023-06-08', 'MLC', '1');
+('Dinner', 'Time to eat!', '2023-06-08', 'MLC', '1', '0');
 
 
 INSERT INTO EVENTS
-(event_name, event_message, event_date, event_location, club_id)
+(event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Rock Paper Scissors tournament', 'Jan ken pon!', '2023-06-22', 'EM bulding', '2');
+('Rock Paper Scissors tournament', 'Jan ken pon!', '2023-06-22', 'EM bulding', '2', '0');
 
 INSERT INTO EVENTS
-(event_name, event_message, event_date, event_location, club_id)
+(event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Rock and RickRoll', 'We will rock you!', '2023-03-12', 'EM bulding', '2');
+('Rock and RickRoll', 'We will rock you!', '2023-03-12', 'EM bulding', '2', '0');
 
 INSERT INTO EVENTS
-(event_name, event_message, event_date, event_location, club_id)
+(event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Rock and RickRoll', 'We will rock you!', '2023-02-09', 'EM bulding', '2');
+('Rock and RickRoll', 'We will rock you!', '2023-02-09', 'EM bulding', '2', '0');
 
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)

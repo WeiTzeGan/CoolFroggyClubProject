@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="signin">
+    <div id="coolfroggyclub">
         <nav>
             <div class="nav-container">
                 <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png" alt="Cool Froggy Club logo"></a></span>
@@ -55,14 +55,16 @@
                     <label for="news_title">Announcement Title:</label>
                     <input type="text" id="news_title" name="news_title" v-model="news_title" required>
 
-                    <label for="news_author">Author:</label>
-                    <input type="text" id="news_author" name="news_author" v-model="news_author" required>
+                    <!-- author not in database, author is club name -->
+                    <!-- <label for="news_author">Author:</label>
+                    <input type="text" id="news_author" name="news_author" v-model="news_author" required> -->
 
                     <label for="club-name">Club Name:</label>
-                    <input type="text" id="club-name" name="club-name" v-model="club-name" required>
+                    <input type="text" id="club-name" name="club-name" v-bind:placeholder="club_name" required>
 
-                    <label for="post_date">Published On:</label>
-                    <input type="date" id="post_date" name="post_date" v-model="post_date" required>
+                    <!-- Date is automatically set -->
+                    <!-- <label for="post_date">Published On:</label>
+                    <input type="date" id="post_date" name="post_date" v-model="post_date" required> -->
 
                     <label for="privacy">Choose event privacy:</label>
                     <input type="radio" id="private" name="privacy" value="private" v-model="privacy" required>
