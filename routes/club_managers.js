@@ -185,6 +185,7 @@ router.post('/newAnnouncement', function(req, res, next) {
       connection.release();
 
       if (error) {
+        console.log("error");
         res.sendStatus(500);
         return;
       }
@@ -208,6 +209,7 @@ router.post('/newAnnouncement', function(req, res, next) {
           connection.release();
 
           if (error) {
+            console.log("insert error");
             res.sendStatus(500);
             return;
           }
@@ -237,7 +239,7 @@ router.post('/newsEmail', function(req, res, next) {
 
     let query = "SELECT * FROM ANNOUNCEMENTS WHERE title = ?";
 
-    connection.query(query, [data.postTitle], function(error, rows, fields) {
+    connection.query(query, [data.title], function(error, rows, fields) {
       console.log("Announcements was checked");
       connection.release();
 
@@ -314,6 +316,7 @@ router.post('/addEvent', function(req, res, next) {
   var eventDate = req.body.event_date;
   var eventLocation = req.body.event_location;
   var clubID = req.body.club_id;
+  var privateEvent = req.body.private_event;
 
   // To check if event name already exists
   req.pool.getConnection(function(err, connection) {
@@ -348,9 +351,9 @@ router.post('/addEvent', function(req, res, next) {
           return;
         }
 
-        let query2 = "INSERT INTO EVENTS (event_name, event_message, event_date, event_location, club_id) VALUES (?, ?, ?, ?, ?)";
+        let query2 = "INSERT INTO EVENTS (event_name, event_message, event_date, event_location, club_id, private_event) VALUES (?, ?, ?, ?, ?, ?)";
 
-        connection.query(query2, [eventName, eventMessage, eventDate, eventLocation, clubID], function(error, rows, fields) {
+        connection.query(query2, [eventName, eventMessage, eventDate, eventLocation, clubID, privateEvent], function(error, rows, fields) {
           connection.release();
 
           if (error) {
@@ -406,7 +409,7 @@ router.post('/eventsEmail', function(req, res, next) {
           return;
         }
 
-        let query2 = "SELECT USERS.email, EMAIL_NOTIF.club_id, CLUBS.club_name FROM ((EMAIL_NOTIF INNER JOIN USERS ON USERS.user_id = EMAIL_NOTIF.user_id) INNER JOIN CLUBS ON EMAIL_NOTIF.club_id = CLUBS.club_id) WHERE EMAIL_NOTIF.club_id = ? AND EMAIL_NOTIF.news_notif = 1";
+        let query2 = "SELECT USERS.email, EMAIL_NOTIF.club_id, CLUBS.club_name FROM ((EMAIL_NOTIF INNER JOIN USERS ON USERS.user_id = EMAIL_NOTIF.user_id) INNER JOIN CLUBS ON EMAIL_NOTIF.club_id = CLUBS.club_id) WHERE EMAIL_NOTIF.club_id = ? AND EMAIL_NOTIF.event_notif = 1";
 
         connection.query(query2, [data.club_id], function(error, rows, fields) {
           connection.release();
@@ -440,6 +443,7 @@ router.post('/eventsEmail', function(req, res, next) {
               console.log(error);
               console.log('Error sending email');
               res.sendStatus(500);
+              return;
             } else {
               console.log('mail send', info);
               console.log('Email sent successfully');

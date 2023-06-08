@@ -22,10 +22,13 @@ const vueinst1 = Vue.createApp({
             club_name: '',
             event_date: '',
             event_location: '',
-            event_message: ''
+            event_message: '',
 
             // Details for adding news
-            
+            news_title: '',
+            post_date: '',
+            privacy: '',
+            post_message: ''
         };
     },
 
@@ -238,6 +241,13 @@ const vueinst1 = Vue.createApp({
         },
 
         addEvent() {
+            let private;
+            if (vueinst1.privacy === 'private') {
+                private = 1;
+            } else if (vueinst1.privacy === 'public') {
+                private = 0;
+            }
+
             let req = new XMLHttpRequest();
 
             req.onreadystatechange = function() {
@@ -257,6 +267,37 @@ const vueinst1 = Vue.createApp({
                 event_message: vueinst1.event_message,
                 event_date: vueinst1.event_date,
                 event_location: vueinst1.event_location,
+                club_id: vueinst1.club_id,
+                private_event: private,
+            }));
+        },
+
+        addNews() {
+            let private;
+            if (vueinst1.privacy === 'private') {
+                private = 1;
+            } else if (vueinst1.privacy === 'public') {
+                private = 0;
+            }
+
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    alert('Added new announcement successfully!');
+                    window.location.href = "club-manager-profile.html";
+                } else if (this.readyState === 4 && this.status === 403) {
+                    alert('Announcement title already exists');
+                }
+            };
+
+            req.open('POST', '/club_managers/newAnnouncement', true);
+            req.setRequestHeader("Content-type", "application/json");
+
+            req.send(JSON.stringify({
+                title: vueinst1.news_title,
+                post_message: vueinst1.post_message,
+                private_message: private,
                 club_id: vueinst1.club_id
             }));
         }
