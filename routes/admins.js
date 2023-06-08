@@ -205,7 +205,7 @@ router.delete('/deleteClubs', function(req, res, next) {
 });
 
 /* Route to remove specific clubs */
-router.delete('deleteUsers', function(req, res, next) {
+router.delete('/deleteUsers', function(req, res, next) {
   var clubID = req.body.club_id;
 
   req.pool.getConnection(function(err, connection) {

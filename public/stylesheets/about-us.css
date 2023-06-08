@@ -79,7 +79,8 @@ nav a:hover {
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 0.2s;
-    white-space: nowrap;/* to make sure the button won't change when window resized */
+    white-space: nowrap;
+    /* to make sure the button won't change when window resized */
     width: 100%;
     text-align: center;
 }
@@ -99,7 +100,8 @@ nav a:hover {
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 0.2s;
-    white-space: nowrap;/* to make sure the button won't change when window resized */
+    white-space: nowrap;
+    /* to make sure the button won't change when window resized */
     width: 100%;
     text-align: center;
 }
@@ -122,7 +124,8 @@ nav a:hover {
     /* background-color: ; */
 }
 
-.login:hover .account-dropdown, .account-dropdown:hover {
+.login:hover .account-dropdown,
+.account-dropdown:hover {
     display: block;
 }
 
@@ -232,7 +235,8 @@ nav a:hover {
     width: 100%;
 }
 
-.login:hover .account-dropdown-2, .account-dropdown-2:hover {
+.login:hover .account-dropdown-2,
+.account-dropdown-2:hover {
     display: block;
 }
 
@@ -242,10 +246,12 @@ nav a:hover {
     .hamburger {
         display: none;
     }
+
     .nav-menu {
         display: flex;
 
     }
+
     .dropdown-menu.open {
         display: none;
     }
@@ -255,8 +261,10 @@ nav a:hover {
     .dropdown-menu {
         left: 20px;
         top: auto;
-        width: unset; /* sets the width to inherit or initial ie the nav-container width */
+        width: unset;
+        /* sets the width to inherit or initial ie the nav-container width */
     }
+
     .account-dropdown-2 {
         width: inherit;
     }
@@ -298,6 +306,7 @@ body {
 main {
     margin: auto;
     padding: 20px 0px 60px 0px;
+    min-height: 100vh;
 }
 
 

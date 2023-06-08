@@ -42,39 +42,61 @@
 
         <main>
             <article class="loginpage">
-                <h1>Login</h1>
-                <br>
-                <form>
-                    <label for="user-email">Email</label>
-                    <input type="text" id="user-email" name="user-email" v-model="userEmail">
+                <div v-show="!signin_google">
+                    <h1>Login</h1>
+                    <br>
+                    <form>
 
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" v-model="userPassword">
+                        <label for="user-email">Email</label>
+                        <input type="text" id="user-email" name="user-email" v-model="userEmail">
 
-                    <p id="password-reset"><a href="password-reset.html">Forgot password?</a></p>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" v-model="userPassword">
 
-                    <label for="user-type">User Type:</label>
-                    <select id="user-type" name="user-type" v-model="userType">
-                        <option value="" disabled selected>Select User Type</option>
-                        <option value="Club Member">Club Member</option>
-                        <option value="Club Manager">Club Manager</option>
-                        <option value="Admin">Admin</option>
-                    </select>
+                        <p id="password-reset"><a href="password-reset.html">Forgot password?</a></p>
 
-                    <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
-                    <input type="button" value="Log in" v-on:click="login()">
+                        <label for="user-type">User Type:</label>
+                        <select class="user-type" name="user-type" v-model="userType" required>
+                            <option value="" disabled selected>Select User Type</option>
+                            <option value="Club Member">Club Member</option>
+                            <option value="Club Manager">Club Manager</option>
+                            <option value="Admin">Admin</option>
+                        </select>
 
-                    <!-- where google login is -->
-                    <div id="g_id_onload"
-                        data-client_id="732733926826-h9vfvft404fo0i5eel2713ojb4iflhaq.apps.googleusercontent.com"
-                        data-context="signin" data-ux_mode="popup" data-callback="google_login"
-                        data-auto_prompt="false">
-                    </div>
-                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_blue"
-                        data-text="signin_with" data-size="medium" data-logo_alignment="left">
-                    </div>
+                        <!-- have to make input type to button so that after clicking in login won't out the queries in the url anymore -->
+                        <input type="button" value="Log in" v-on:click="login()">
 
-                </form>
+                    </form>
+                </div>
+
+                <div v-show="signin_google">
+                    <h1>Login</h1>
+                    <br>
+                    <form>
+                        <label for="user-type">User Type:</label>
+                        <select class="user-type" name="user-type" v-model="userType" required>
+                            <option value="" disabled selected>Select User Type</option>
+                            <option value="Club Member">Club Member</option>
+                            <option value="Club Manager">Club Manager</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+
+                        <!-- where google login is -->
+                        <div id="google">
+                            <div id="g_id_onload"
+                                data-client_id="732733926826-h9vfvft404fo0i5eel2713ojb4iflhaq.apps.googleusercontent.com"
+                                data-context="signin" data-ux_mode="popup" data-callback="google_login"
+                                data-auto_prompt="false">
+                            </div>
+                            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_blue"
+                                data-text="signin_with" data-size="medium" data-logo_alignment="left" data-width="250">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button v-bind:id="login_option" type="button" v-on:click="toggleGoogle">{{ option_text }}</button>
+                
                 <p>Not a member yet? <a href="signup.html">Sign Up now!</a></p>
             </article>
 

@@ -8,8 +8,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/account.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Aleo|Slabo+27px" rel="stylesheet"> -->
-
+    
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="javascripts/dashboard.js" defer></script>
 </head>
@@ -117,7 +116,7 @@
                     </div>
 
                     <label for="phone">Mobile Phone:</label>
-                    <input type="tel" id="phone" name="phone" v-bind:placeholder="originMobile" v-model="mobile" required>
+                    <input type="tel" id="phone" name="phone" v-bind:placeholder="originMobile" pattern="[0-9]{10}" v-model="mobile" required>
 
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" v-bind:placeholder="originEmail" v-model="email" required>

@@ -296,14 +296,14 @@ body {
 
 main {
     margin: auto;
-    padding: 20px 0px 60px 0px;
+    padding: 40px 0px 60px 0px;
+    min-height: 100vh;
 }
 
 /* -------------------------------- ACCOUNT DETAILS ------------------------------------ */
 .account-details {
-    /* display: flex; */
-    max-width: 50%;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: auto;
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #fff;

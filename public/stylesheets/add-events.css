@@ -184,12 +184,10 @@ nav a:hover {
 
 /* ----------------- for nav bar breadcrumbing --------------------*/
 div.breadcrumb {
-    padding: 1 .5rem;
-    background-color: white;
-    display: block;
     font-size: small;
-    padding-top: 20px;
-    padding-left: 50px;
+    max-width: 1280px;
+    padding: 20px 40px 0px 40px;
+    margin: auto;
 }
 
 div.breadcrumb ul {
@@ -207,7 +205,6 @@ div.breadcrumb li:not(:last-child)::after {
 
 /* Set default font and background color */
 body {
-    /* display: inline-flexbox; */
     width: 100%;
     font-family: Arial, sans-serif;
     background-color: #FFFFFF;
@@ -216,8 +213,8 @@ body {
 
 main {
     margin: auto;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding: 40px 0px 60px 0px;
+    min-height: 100vh;
 }
 
 /* -------------------- SIGN UP PAGE ------------------------- */

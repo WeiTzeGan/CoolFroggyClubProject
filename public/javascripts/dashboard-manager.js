@@ -33,6 +33,10 @@ const vueinst = Vue.createApp({
             club_name: '',
             club_email: '',
             club_members: [],
+
+            // to toggle menu bar
+            menu: 'hamburger',
+            dropdown: 'dropdown-menu'
         };
     },
 
@@ -293,6 +297,17 @@ const vueinst = Vue.createApp({
                 vueinst.show_participants[index] = false;
             }
         },
+
+        // to toggle menu in nav bar ()
+        toggleMenu: function() {
+            if (this.menu === 'hamburger') {
+                this.menu = 'hamburger is-active';
+                this.dropdown = 'dropdown-menu open';
+            } else {
+                this.menu = 'hamburger';
+                this.dropdown = 'dropdown-menu';
+            }
+        }
     }
 }).mount('#coolfroggyclub');
 

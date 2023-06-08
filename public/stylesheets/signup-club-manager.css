@@ -184,12 +184,10 @@ nav a:hover {
 
 /* ----------------- for nav bar breadcrumbing --------------------*/
 div.breadcrumb {
-    padding: 1 .5rem;
-    background-color: white;
-    display: block;
     font-size: small;
-    padding-top: 20px;
-    padding-left: 50px;
+    max-width: 1280px;
+    padding: 20px 40px 0px 40px;
+    margin: auto;
 }
 
 div.breadcrumb ul {
@@ -216,15 +214,13 @@ body {
 
 main {
     margin: auto;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding: 40px 0px 60px 0px;
 }
 
 /* -------------------- SIGN UP PAGE ------------------------- */
 .signuppage {
-    /* display: flex; */
-    max-width: 50%;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: auto;;
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -256,7 +252,7 @@ input, select {
     height: 200px;
 }
 
-input[type=button] {
+input[type=submit] {
     background-color: #4CAF50;
     color: #fff;
     border: none;
@@ -268,8 +264,103 @@ input[type=button] {
     font-size: larger;
 }
 
-input[type=button]:hover {
+input[type=submit]:hover {
     background-color: #45a049;
+}
+
+div .message-hide {
+    display: none;
+}
+
+div .message-show {
+    display: block;
+    border: 1px solid #ccc;
+    padding: 1rem;
+	width: 100%;
+    border-radius: 10px;
+    font-size: small;
+    margin-bottom: 20px;
+    background-color: #fdfae7;
+    transition-duration:600ms;
+}
+
+div .message-show h3 {
+    padding: 5px;
+}
+
+div .message-show p {
+    padding: 5px;
+    margin-left: 4%;
+}
+
+form p {
+    padding: 5px;
+}
+
+#set {
+    display: flex;
+    justify-content: space-between;
+    position:relative;
+    margin:auto;
+}
+
+/* for the eye icon */
+i {
+    font-size: 18px;
+    transition-duration:600ms;
+}
+
+#no-see {
+    display: inline-block;
+    color:gray;
+    margin:auto;
+    /* float: right; */
+    transition-duration:0.2s;
+    cursor: pointer;
+}
+
+#see {
+    display: inline-block;
+    color: #262626;
+    margin:auto;
+    /* float: right; */
+    transition-duration:0.2s;
+    cursor: pointer;
+}
+
+input:invalid {
+    border-color: #900;
+    background-color: #fdd;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+
+input:invalid:required {
+    border-color: #900;
+    /* background-image: linear-gradient(to right, pink, lightgreen); */
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    content: "✔ ";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    content: "✖ ";
 }
 
 footer {
