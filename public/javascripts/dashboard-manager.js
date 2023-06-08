@@ -291,6 +291,7 @@ const vueinst = Vue.createApp({
             for (let i = 0; i < vueinst.show_participants.length; i++) {
                 vueinst.hide_event_participants(i);
             }
+            
             if (vueinst.show_participants[index] === false){
                 vueinst.show_participants[index] = true;
             }
