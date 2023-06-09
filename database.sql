@@ -61,7 +61,7 @@ CREATE TABLE EVENTS (
     event_date DATE NOT NULL,
     event_location CHAR(255) NOT NULL,
     club_id SMALLINT NOT NULL,
-    private_event TINYINT(1) NOT NULL,
+    private_event TINYINT(1) NOT NULL DEFAULT(1),
     PRIMARY KEY (event_id),
     FOREIGN KEY (club_id) REFERENCES CLUBS(club_id) ON DELETE CASCADE
 );
@@ -182,6 +182,16 @@ INSERT INTO CLUBS
 VALUES
 ('Jump Rope Club', 'Come along and jump around like fwoggies!!!', '3', 0123456789, 'jumpropeclub@gmail.com');
 
+INSERT INTO CLUBS
+(club_name, club_description, manager_id, phone, email)
+VALUES
+('FAKE CLUB', 'CCCC', '2', 123456899, 'fakeclub@gmail.com');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id, private_event)
+VALUES
+('Fake event', 'Time to fake it', '2023-09-29', 'Lecture Hall', '3', '0');
+
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
@@ -217,6 +227,10 @@ INSERT INTO EVENTS
 VALUES
 ('Panic! At The WDC Project', 'Please give us a HD uwu we worked really hard', '2023-06-09', 'Home Sweet Home', '3', '1');
 
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id, private_event)
+VALUES
+('Meeting', 'We will rock you!', '2023-02-09', 'EM bulding', '2', 1);
 
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)

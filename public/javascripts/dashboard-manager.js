@@ -36,6 +36,7 @@ const vueinst = Vue.createApp({
             club_name: '',
             club_email: '',
             club_members: [],
+            club_description: '',
 
             // to toggle menu bar
             menu: 'hamburger',
@@ -97,23 +98,8 @@ const vueinst = Vue.createApp({
                 if ( req.readyState === 4  && req.status === 200) {
                     let result = JSON.parse(req.response)[0];
 
-                    if (window.location.href === "http://localhost:8080/account.html"){
-                        vueinst.originFirstName = result.first_name;
-                        vueinst.originLastName = result.last_name;
-                        vueinst.originDOB = result.date_of_birth;
-                        vueinst.originEmail = result.email;
-                        vueinst.originMobile = result.mobile;
-
-                        vueinst.first_name = result.first_name;
-                        vueinst.last_name = result.last_name;
-                        vueinst.dob = result.date_of_birth;
-                        vueinst.mobile = result.mobile;
-                        vueinst.email = result.email;
-                    }else if (window.location.href === "http://localhost:8080/member-profile.html"){
-                        vueinst.first_name = result.first_name;
-                        vueinst.last_name = result.last_name;
-                    }
-
+                    vueinst.first_name = result.first_name;
+                    vueinst.last_name = result.last_name;
                 }
             };
 
@@ -240,6 +226,8 @@ const vueinst = Vue.createApp({
                     vueinst.club_id = response.clubID;
                     vueinst.club_name = response.clubName;
                     vueinst.club_email = response.clubEmail;
+                    vueinst.club_description = response.clubDescription;
+                    vueinst.club_phone = response.clubPhone;
 
                     // Once club_id is received, call viewMembers and get_club_event
                     vueinst.viewMembers();
@@ -339,6 +327,18 @@ const vueinst = Vue.createApp({
 
         addNews: function() {
             window.location.href = "add-news.html";
+        },
+
+        editEvent: function(event_id) {
+            window.location.href = "edit-events.html?event_id=" + event_id;
+        },
+
+        editNews: function(post_id) {
+            window.location.href = "edit-news.html?post_id=" + post_id;
+        },
+
+        editClub: function() {
+            window.location.href = "club-account.html";
         }
     }
 }).mount('#coolfroggyclub');

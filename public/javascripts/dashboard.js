@@ -265,7 +265,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log("Fetched subscriptions successfully");
+                    // console.log("Fetched subscriptions successfully");
                     let result = JSON.parse(req.response)[0];
 
                     if (result.news_notif){

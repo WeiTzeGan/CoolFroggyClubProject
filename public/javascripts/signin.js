@@ -1,19 +1,3 @@
-// function get_cookie(cname) {
-//     let name = cname + "=";
-//     let decodedCookie = decodeURIComponent(document.cookie);
-//     let ca = decodedCookie.split(';');
-//     for(let i = 0; i <ca.length; i++) {
-//       let c = ca[i];
-//       while (c.charAt(0) == ' ') {
-//         c = c.substring(1);
-//       }
-//       if (c.indexOf(name) == 0) {
-//         return c.substring(name.length, c.length);
-//       }
-//     }
-//     return "";
-// }
-
 const vueinst = Vue.createApp({
     data() {
         return {
@@ -211,16 +195,17 @@ const vueinst = Vue.createApp({
             let signup_clubmanager_data = {
                 club_name: vueinst.club_name,
                 club_email: vueinst.club_email,
-                club_info: vueinst.club_info
+                club_description: vueinst.club_description
             };
 
             req.onreadystatechange = function () {
                 if (req.readyState === 4 && req.status === 200) {
-                    window.location.href = "index.html";
+                    alert("Request to form a club submitted");
+                    window.location.href = "member-profile.html";
                 }
             };
 
-            req.open('POST', '/signup_clubmanager', true);
+            req.open('POST', '/users/add-club-request', true);
             req.setRequestHeader('Content-type', 'application/json');
             req.send(JSON.stringify(signup_clubmanager_data));
         },

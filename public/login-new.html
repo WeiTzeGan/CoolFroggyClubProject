@@ -51,9 +51,7 @@
                         <input type="text" id="user-email" name="user-email" v-model="userEmail">
 
                         <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" v-model="userPassword">
-
-                        <p id="password-reset"><a href="password-reset.html">Forgot password?</a></p>
+                        <input type="password" id="password" name="password" v-model="userPassword"><br /><br />
 
                         <label for="user-type">User Type:</label>
                         <select class="user-type" name="user-type" v-model="userType" required>
@@ -96,7 +94,7 @@
                 </div>
 
                 <button v-bind:id="login_option" type="button" v-on:click="toggleGoogle">{{ option_text }}</button>
-                
+
                 <p>Not a member yet? <a href="signup.html">Sign Up now!</a></p>
             </article>
 

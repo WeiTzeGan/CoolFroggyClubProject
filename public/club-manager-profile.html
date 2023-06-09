@@ -80,60 +80,30 @@
                 <div class="profile">
                     <!-- Club-Manager Profile Summary -->
                     <div class="club-information">
-                        <!-- <form>
-                            <h2>Club Information <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h2>
-                            <div class="form-group">
-                                <label for="club-name">Club Name: </label>
-                                <input type="text" id="clubnameid" name="clubname"
-                                    v-bind:value="club_name" disabled class="text-box">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email: </label>
-                                <input type="text" id="emailid" name="email" v-bind:value="club_email"
-                                    disabled class="text-box">
-                            </div>
-                            <div class="form-group">
-                                <label for="club-info">Club Description: </label>
-                                <input type="text" id="club-info" name="club-info"
-                                    v-bind:value="first_name + ' ' + last_name" disabled class="text-box">
-                            </div>
-                        </form> -->
-
                         <h1>Hi, <span id="username"> {{ first_name + ' ' + last_name}}</span>!</h1>
                         <br>
-                        <h3>Profile Summary  <button type="button" id="edit-button" onclick="location.href ='account.html';"> Edit</button> </h3>
+                        <h3>Club Information  <button type="button" id="edit-button" v-on:click="editClub"> Edit</button> </h3>
                         <br>
                         <div class="deets">
                             <div class="deets-rows">
                                 <div class="deets-cols left">
-                                    <label for="first_name">First Name: </label>
-                                    <input type="text" id="first-name" name="first-name" v-bind:value="first_name" disabled>
+                                    <label for="first_name">Club Name: </label>
+                                    <input type="text" id="club-name" name="first-name" v-bind:value="club_name" disabled>
                                 </div>
                                 <div class="deets-cols right">
-                                    <label for="username">Last Name: </label>
-                                    <input type="text" id="last-name" name="last-name" v-bind:value="last_name" disabled>
+                                    <label for="username">Club Email: </label>
+                                    <input type="text" id="email" name="email" v-bind:value="club_email" disabled>
                                 </div>
                             </div>
 
                             <div class="deets-rows">
                                 <div class="deets-cols left">
-                                    <label for="dob">Date of Birth:</label>
-                                    <input type="text" id="dob" name="dob" v-bind:value="formatDate(dob)" disabled>
+                                    <label for="dob">Club Description</label>
+                                    <input type="text" id="description" name="description" v-bind:value="club_description" disabled>
                                 </div>
                                 <div class="deets-cols right">
-                                    <label for="email">Email: </label>
-                                    <input type="text" id="email" name="email" v-bind:value="email" disabled>
-                                </div>
-                            </div>
-
-                            <div class="deets-rows">
-                                <div class="deets-cols left">
-                                    <label for="mobile">Mobile: </label>
-                                    <input type="text" id="mobile" name="mobile" v-bind:value="mobile" disabled>
-                                </div>
-                                <div class="deets-cols right">
-                                    <!-- <label for="username">Last Name: </label>
-                                    <input type="text" v-bind:value="last_name" disabled> -->
+                                    <label for="email">Club Phone: </label>
+                                    <input type="text" id="phone" name="phone" v-bind:value="club_phone" disabled>
                                 </div>
                             </div>
                         </div>
@@ -146,9 +116,13 @@
                             <div class="club-member-content">
                                 <div class="member-list" v-for="(member, index) in club_members" v-bind:key="member.user_id">
                                     <div class="indv-member">
-                                        <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
-                                        <span class="member-name">{{member.email}}</span><br />
-                                        <span class="member-name">{{member.mobile}}</span><br />
+                                        <div class="member-column">
+                                            <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
+                                        </div>
+                                        <div class="member-column">
+                                            <span class="member-name">Email: {{member.email}}</span><br /><br />
+                                            <span class="member-name">Mobile: {{member.mobile}}</span><br />
+                                        </div>
                                         <button type="button" v-on:click="deleteMember(member.user_id)" class="delete-button" title="Remove Member">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
@@ -185,6 +159,9 @@
                                         <button type="button" class="more-info-button" v-show="show_events[index]" v-on:click="hide_full_event(index)">See less</button>
                                         <button type="button" class="more-info-button" v-show="!show_participants[index]" v-on:click="show_event_participants(index, event.event_id)">View Participants</button>
                                         <button type="button" class="more-info-button" v-show="show_participants[index]" v-on:click="hide_event_participants(index, event.event_id)">Close</button>
+                                        <button type="button" class="more-info-button" v-on:click="editEvent(event.event_id)">
+                                            <img src="images/edit-button.png" alt="Edit" class="edit-button">
+                                        </button>
                                     </li>
                                     <!-- Add more events here -->
                                 </ul>
@@ -196,26 +173,31 @@
 
                     <!-- Club Latest News -->
                     <div class="club-news">
-                        <h2>Club News </h2>
-                        <div class="club-news-content">
-                            <div class="left-news-side" v-for="(news, index) in club_news" v-bind:key="news.post_id">
-                                <h3> {{ news.title }} </h3>
-                                <br>
-                                <p>Club: {{ club_name }}</p>
-                                <p>Published On: {{ formatDate(news.post_date) }}</p>
-                                <br />
-                                <div class="news-desc" v-show="show_news[index]">
-                                    <p>{{news.post_message}}</p>
-                                </div>
-                                    <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                    <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);">See full message </button>
-                                    <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);">See less </button>
-                                <hr>
-                                <br>
-                            </div>
-                            <button type="button" class="add-news-button" v-on:click="addNews">Add News</button>
+                        <div class="club-news-header">
+                          <h2>Club News</h2>
+                          <button type="button" class="add-news-button" v-on:click="addNews">Add News</button>
                         </div>
-                    </div>
+                        <div class="club-news-content">
+                          <div class="left-news-side" v-for="(news, index) in club_news" v-bind:key="news.post_id">
+                            <h3>{{ news.title }}</h3>
+                            <br>
+                            <p>Club: {{ club_name }}</p>
+                            <p>Published On: {{ formatDate(news.post_date) }}</p>
+                            <br />
+                            <div class="news-desc" v-show="show_news[index]">
+                              <p>{{ news.post_message }}</p>
+                            </div>
+                            <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index)">See full message</button>
+                            <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index)">See less</button>
+                            <button type="button" class="more-info-button" v-on:click="editNews(news.post_id)">
+                              <img src="images/edit-button.png" alt="Edit" class="edit-button">
+                            </button>
+                            <hr>
+                            <br>
+                          </div>
+                        </div>
+                      </div>
+
                 </div>
             </article>
         </main>

@@ -16,12 +16,14 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+
 router.use('/', function(req, res, next){
   // if not logged in or
   // NOT logged in as club manager
   if (!('user' in req.session) || !('manager_id' in req.session.user)){
     console.log("Not logged in OR not logged in as club manager");
     res.sendStatus(403);
+    return;
   }else{
     next();
   }
@@ -38,7 +40,7 @@ router.get('/getClubID', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT CLUB_MANAGERS.club_id, CLUBS.club_name, CLUBS.email FROM ((CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id) INNER JOIN CLUBS ON CLUB_MANAGERS.club_id = CLUBS. club_id) WHERE CLUB_MANAGERS.manager_id = ?";
+    let query = "SELECT CLUB_MANAGERS.club_id, CLUBS.club_name, CLUBS.email, CLUBS.club_description, CLUBS.phone FROM ((CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id) INNER JOIN CLUBS ON CLUB_MANAGERS.club_id = CLUBS. club_id) WHERE CLUB_MANAGERS.manager_id = ?";
 
     connection.query(query, [managerID], function(error, rows, fields) {
       connection.release();
@@ -52,7 +54,9 @@ router.get('/getClubID', function(req, res, next) {
       res.json({
         clubID: rows[0].club_id,
         clubName: rows[0].club_name,
-        clubEmail: rows[0].email
+        clubEmail: rows[0].email,
+        clubDescription: rows[0].club_description,
+        clubPhone: rows[0].phone
       });
     });
   });
@@ -81,6 +85,43 @@ router.post('/viewMembers', function(req, res, next) {
       }
 
       res.json(rows);
+    });
+  });
+});
+
+// Route to edit club details
+router.post('/editClub', function(req, res, next) {
+  let clubName = req.body.club_name;
+  let clubDescription = req.body.club_description;
+  let clubPhone = req.body.club_phone;
+  let clubEmail = req.body.club_email;
+  let clubID = req.body.club_id;
+
+  console.log(clubName);
+  console.log(clubDescription);
+  console.log(clubPhone);
+  console.log(clubEmail);
+  console.log(clubID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE CLUBS SET club_name = ?, club_description = ?, phone = ?, email = ? WHERE club_id = ?";
+
+    connection.query(query, [clubName, clubDescription, clubPhone, clubEmail, clubID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
     });
   });
 });
@@ -458,12 +499,8 @@ router.post('/eventsEmail', function(req, res, next) {
   });
 });
 
-/* Router to edit club events */
-router.post('/updateEvent', function(req, res, next) {
-  var eventName = req.body.event_name;
-  var eventMessage = req.body.event_message;
-  var eventDate = req.body.event_date;
-  var eventLocation = req.body.event_location;
+/* Route to view specific event */
+router.post('/viewEventDetails', function(req, res, next) {
   var eventID = req.body.event_id;
 
   req.pool.getConnection(function(err, connection) {
@@ -472,12 +509,106 @@ router.post('/updateEvent', function(req, res, next) {
       return;
     }
 
-    let query = "UPDATE EVENTS SET event_name = ?, event_message = ?, event_date = ? event_location = ? WHERE event_id = ?";
+    let query = "SELECT event_name, event_message, event_date, event_location, private_event FROM EVENTS WHERE event_id = ?";
 
-    connection.query(query, [eventName, eventMessage, eventDate, eventLocation, eventID], function(error, rows, fields) {
+    connection.query(query, [eventID], function(error, rows, fields) {
       connection.release();
 
       if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+/* Router to edit club events */
+router.post('/updateEvent', function(req, res, next) {
+  var eventName = req.body.event_name;
+  var eventMessage = req.body.event_message;
+  var eventDate = req.body.event_date;
+  var eventLocation = req.body.event_location;
+  var eventPrivacy = req.body.privacy;
+  var eventID = req.body.event_id;
+  console.log(eventName);
+  console.log(eventMessage);
+  console.log(eventDate);
+  console.log(eventLocation);
+  console.log(eventPrivacy);
+  console.log(eventID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE EVENTS SET event_name = ?, event_message = ?, event_date = ?, event_location = ?, private_event = ? WHERE event_id = ?";
+
+    connection.query(query, [eventName, eventMessage, eventDate, eventLocation, eventPrivacy, eventID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
+    });
+  });
+});
+
+/* Route to view specific news */
+router.post('/viewNewsDetails', function(req, res, next) {
+  var postID = req.body.post_id;
+  console.log(postID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "SELECT title, post_message, private_message FROM ANNOUNCEMENTS WHERE post_id = ?";
+
+    connection.query(query, [postID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.json(rows);
+    });
+  });
+});
+
+/* Router to edit club news */
+router.post('/updateNews', function(req, res, next) {
+  var newsTitle = req.body.title;
+  var newsMessage = req.body.post_message;
+  var newsPrivacy = req.body.private_message;
+  var postID = req.body.post_id;
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE ANNOUNCEMENTS SET title = ?, post_message = ?, private_message = ? WHERE post_id = ?";
+
+    connection.query(query, [newsTitle, newsMessage, newsPrivacy, postID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -512,59 +643,5 @@ router.post('/viewEventgoers', function(req, res, next) {
   });
 });
 
-/* Route to make new club */
-router.post('/addClubRequest', function(req, res, next) {
-  var clubName = req.body.club_name;
-  var clubDescription = req.body.club_description;
-  var clubManager = req.body.user_id;
-  var clubPhone = req.body.phone;
-  var clubEmail = req.body.email;
-
-  // To check if club already exists
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      res.sendStatus(500);
-      return;
-    }
-
-    let query = "SELECT * FROM CLUBS WHERE club_name = ?";
-
-    connection.query(query, [clubName], function(error, rows, fields) {
-      connection.release();
-
-      if (error) {
-        res.sendStatus(500);
-        return;
-      }
-
-      if (rows.length > 0) {
-        console.log("Club already exists");
-        res.sendStatus(403);
-        return;
-      }
-
-      // If passes above, add to pending_clubs table
-      req.pool.getConnection(function(cerr, connection) {
-        if (cerr) {
-          res.sendStatus(500);
-          return;
-        }
-
-        let query2 = "INSERT INTO PENDING_CLUBS (club_name, club_description, club_manager_id, phone, email) VALUES (?, ?, ?, ?, ?)";
-
-        connection.query(query2, [clubName, clubDescription, clubManager, clubPhone, clubEmail], function(error, rows, fields) {
-          connection.release();
-
-          if (error) {
-            res.sendStatus(500);
-            return;
-          }
-
-          res.sendStatus(200);
-        });
-      });
-    });
-  });
-});
 
 module.exports = router;

@@ -130,11 +130,11 @@
                                             <br>
                                             <p>Tick the boxes to subscribe, untick or leave empty to unsubscribe</p>
                                             <button type="button" v-on:click="edit_clubs_subscribe(club.club_id, index); show_edit[index] = false; show_view[index] = true;">Save changes</button>
-
                                         </div>
                                     </li>
                                 </ul>
                             </div>
+                            <button type="button" id="form-club-button" onclick="location.href='signup-club-manager.html';">Form New Club</button><br>
                         </div>
                     </div>
 
@@ -193,7 +193,7 @@
                             </div>
                         </div>
                         <div class="upcoming-events">
-                            <h2>Other Upcoming Events</h2>
+                            <h2>Upcoming Events Of Joined Clubs</h2>
                             <div class="upcoming-events-content">
                                 <ul class="club-upcoming-event-list">
                                     <li v-for="(event, index) in future_events">
