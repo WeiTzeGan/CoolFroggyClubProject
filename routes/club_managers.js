@@ -21,7 +21,7 @@ router.use('/', function(req, res, next){
   // if not logged in or
   // NOT logged in as club manager
   if (!('user' in req.session) || !('manager_id' in req.session.user)){
-    console.log("Not logged in OR not logged in as club manager");
+    //console.log("Not logged in OR not logged in as club manager");
     res.sendStatus(403);
     return;
   }else{
@@ -35,7 +35,7 @@ router.get('/getClubID', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -46,7 +46,7 @@ router.get('/getClubID', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -68,7 +68,7 @@ router.post('/viewMembers', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -79,7 +79,7 @@ router.post('/viewMembers', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -97,15 +97,9 @@ router.post('/editClub', function(req, res, next) {
   let clubEmail = req.body.club_email;
   let clubID = req.body.club_id;
 
-  console.log(clubName);
-  console.log(clubDescription);
-  console.log(clubPhone);
-  console.log(clubEmail);
-  console.log(clubID);
-
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -116,7 +110,7 @@ router.post('/editClub', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -132,7 +126,7 @@ router.post('/viewEvents', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -143,7 +137,7 @@ router.post('/viewEvents', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -159,7 +153,7 @@ router.post('/viewNews', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -170,7 +164,7 @@ router.post('/viewNews', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -222,17 +216,17 @@ router.post('/newAnnouncement', function(req, res, next) {
     let query = "SELECT * FROM ANNOUNCEMENTS WHERE title = ?";
 
     connection.query(query, [postTitle], function(error, rows, fields) {
-      console.log("Announcements was checked");
+      //console.log("Announcements was checked");
       connection.release();
 
       if (error) {
-        console.log("error");
+        //console.log("error");
         res.sendStatus(500);
         return;
       }
 
       if (rows.length > 0) {
-        console.log("Announcement title already exists");
+        //console.log("Announcement title already exists");
         res.sendStatus(403);
         return;
       }
@@ -250,7 +244,7 @@ router.post('/newAnnouncement', function(req, res, next) {
           connection.release();
 
           if (error) {
-            console.log("insert error");
+            //console.log("insert error");
             res.sendStatus(500);
             return;
           }
@@ -281,7 +275,7 @@ router.post('/newsEmail', function(req, res, next) {
     let query = "SELECT * FROM ANNOUNCEMENTS WHERE title = ?";
 
     connection.query(query, [data.title], function(error, rows, fields) {
-      console.log("Announcements was checked");
+      //console.log("Announcements was checked");
       connection.release();
 
       if (error) {
@@ -290,7 +284,7 @@ router.post('/newsEmail', function(req, res, next) {
       }
 
       if (rows.length < 1) {
-        console.log("Announcement doesn't exist");
+        //console.log("Announcement doesn't exist");
         res.sendStatus(403);
         return;
       }
@@ -322,7 +316,7 @@ router.post('/newsEmail', function(req, res, next) {
           // Remove the trailing comma and whitespace
           emails = emails.trim().slice(0, -1);
 
-          console.log(emails);
+          //console.log(emails);
 
           const mailOptions = {
             from: 'coolfroggyclub@gmail.com',
@@ -333,16 +327,16 @@ router.post('/newsEmail', function(req, res, next) {
 
           transporter.sendMail(mailOptions, function(error, info) {
             if (error) {
-              console.log(error);
-              console.log('Error sending email');
+              //console.log(error);
+              //console.log('Error sending email');
               res.sendStatus(500);
             } else {
-              console.log('mail send', info);
-              console.log('Email sent successfully');
+              //console.log('mail send', info);
+              //console.log('Email sent successfully');
             }
           });
 
-          console.log("Email successfully sent");
+          //console.log("Email successfully sent");
           res.sendStatus(200);
       });
       });
@@ -362,7 +356,7 @@ router.post('/addEvent', function(req, res, next) {
   // To check if event name already exists
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -373,13 +367,13 @@ router.post('/addEvent', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("First query error");
+        //console.log("First query error");
         res.sendStatus(500);
         return;
       }
 
       if (rows.length > 0) {
-        console.log("Event name already exists, or event location already booked at this time");
+        //console.log("Event name already exists, or event location already booked at this time");
         res.sendStatus(403);
         return;
       }
@@ -387,7 +381,7 @@ router.post('/addEvent', function(req, res, next) {
       // If passes all above, insert into events table
       req.pool.getConnection(function(cerr, connection) {
         if (cerr) {
-          console.log("Second query error");
+          //console.log("Second query error");
           res.sendStatus(500);
           return;
         }
@@ -421,7 +415,7 @@ router.post('/eventsEmail', function(req, res, next) {
   // To check if event exists
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -432,13 +426,13 @@ router.post('/eventsEmail', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("First query error");
+        //console.log("First query error");
         res.sendStatus(500);
         return;
       }
 
       if (rows.length < 1) {
-        console.log("Event doesn't exist");
+        //console.log("Event doesn't exist");
         res.sendStatus(403);
         return;
       }
@@ -470,7 +464,7 @@ router.post('/eventsEmail', function(req, res, next) {
           // Remove the trailing comma and whitespace
           emails = emails.trim().slice(0, -1);
 
-          console.log(emails);
+          //console.log(emails);
 
           const mailOptions = {
             from: 'coolfroggyclub@gmail.com',
@@ -481,17 +475,17 @@ router.post('/eventsEmail', function(req, res, next) {
 
           transporter.sendMail(mailOptions, function(error, info) {
             if (error) {
-              console.log(error);
-              console.log('Error sending email');
+              //console.log(error);
+              //console.log('Error sending email');
               res.sendStatus(500);
               return;
             } else {
-              console.log('mail send', info);
-              console.log('Email sent successfully');
+              //console.log('mail send', info);
+              //console.log('Email sent successfully');
             }
           });
 
-          console.log("Email successfully sent");
+          //console.log("Email successfully sent");
           res.sendStatus(200);
       });
       });
@@ -532,16 +526,10 @@ router.post('/updateEvent', function(req, res, next) {
   var eventLocation = req.body.event_location;
   var eventPrivacy = req.body.privacy;
   var eventID = req.body.event_id;
-  console.log(eventName);
-  console.log(eventMessage);
-  console.log(eventDate);
-  console.log(eventLocation);
-  console.log(eventPrivacy);
-  console.log(eventID);
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -552,7 +540,7 @@ router.post('/updateEvent', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }
@@ -565,7 +553,7 @@ router.post('/updateEvent', function(req, res, next) {
 /* Route to view specific news */
 router.post('/viewNewsDetails', function(req, res, next) {
   var postID = req.body.post_id;
-  console.log(postID);
+  //console.log(postID);
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
@@ -597,7 +585,7 @@ router.post('/updateNews', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -608,7 +596,7 @@ router.post('/updateNews', function(req, res, next) {
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(500);
         return;
       }

@@ -11,7 +11,7 @@ router.use('/', function(req, res, next){
   // if not logged in or
   // NOT logged in as admin
   if (!('user' in req.session) || !('admin_id' in req.session.user)){
-    console.log("Not logged in OR not logged in as admin");
+    //console.log("Not logged in OR not logged in as admin");
     res.sendStatus(403);
   }else{
     next();
@@ -37,7 +37,7 @@ router.get('/info', function(req, res, next){
 
   req.pool.getConnection(function(err, connection) {
     if (err) {
-      console.log("Connection error");
+      //console.log("Connection error");
       res.sendStatus(500);
       return;
     }
@@ -48,7 +48,7 @@ router.get('/info', function(req, res, next){
       connection.release();
 
       if (error) {
-        console.log("Query error");
+        //console.log("Query error");
         res.sendStatus(401);
         return;
       }
@@ -279,7 +279,7 @@ router.post('/registerAdmins', function(req, res, next) {
       }
 
       if (rows.length > 0) {
-        console.log("Admin already exists");
+        //console.log("Admin already exists");
         res.sendStatus(403);
         return;
       }
@@ -287,7 +287,7 @@ router.post('/registerAdmins', function(req, res, next) {
       // Hash the password with 10 salt rounds
       bcrypt.hash(adminPassword, 10, function(err, hashedPassword) {
         if (err) {
-          console.log("Password hashing error");
+          //console.log("Password hashing error");
           res.sendStatus(500);
           return;
         }
@@ -370,7 +370,7 @@ router.post('/addClub', function(req, res, next) {
       }
 
       if (rows.length > 0) {
-        console.log("Club already exists");
+        //console.log("Club already exists");
         res.sendStatus(403);
         return;
       }
@@ -378,7 +378,7 @@ router.post('/addClub', function(req, res, next) {
       // If passes above, add to pending_clubs table
       req.pool.getConnection(function(cerr, connection2) {
         if (cerr) {
-          console.log("Connection error 2");
+          //console.log("Connection error 2");
           res.sendStatus(500);
           return;
         }
@@ -389,8 +389,8 @@ router.post('/addClub', function(req, res, next) {
           connection2.release();
 
           if (error) {
-            console.log(error);
-            console.log("Query error 2");
+            //console.log(error);
+            //console.log("Query error 2");
             res.sendStatus(401);
             return;
           }
@@ -398,7 +398,7 @@ router.post('/addClub', function(req, res, next) {
           req.pool.getConnection(function(cerr2, connection3){
 
             if (cerr2){
-              console.log("Connection error 3");
+              //console.log("Connection error 3");
               res.sendStatus(500);
               return;
             }
@@ -409,8 +409,8 @@ router.post('/addClub', function(req, res, next) {
               connection3.release();
 
               if (error2) {
-                console.log(error2);
-                console.log("Query error 3");
+                //console.log(error2);
+                //console.log("Query error 3");
                 res.sendStatus(404);
                 return;
               }

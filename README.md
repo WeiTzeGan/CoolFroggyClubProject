@@ -20,3 +20,18 @@ We recommend using the 'Shared Repository Model (Branch & Pull)' to collaborate 
 4. service mysql start
 5. mysql < database.sql
 6. npm start
+
+# To log in as normal user
+Email: sygoh2014@gmail.com
+Password: test1234!A
+User type: Club Member
+
+# To log in as club manager
+Email: xxxx@gmail.com
+Password: test1234!A
+User type: Club Manager
+
+# To log in as admin
+Email: thosvu2@gmail.com
+Password: test1234!A
+User type: Admin
