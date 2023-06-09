@@ -478,3 +478,29 @@ footer img {
   height: 30px;
   margin: 0 10px;
 }
+
+.member-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.indv-member {
+  display: flex;
+  align-items: center;
+}
+
+.member-column {
+  flex: 1;
+  padding-right: 10px;
+}
+
+.member-name {
+  font-weight: bold;
+}
+
+.member-email,
+.member-mobile {
+  margin-top: 5px;
+  color: #888;
+}

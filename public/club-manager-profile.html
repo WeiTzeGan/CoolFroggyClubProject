@@ -108,9 +108,13 @@
                             <div class="club-member-content">
                                 <div class="member-list" v-for="(member, index) in club_members" v-bind:key="member.user_id">
                                     <div class="indv-member">
-                                        <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
-                                        <span class="member-name">{{member.email}}</span><br />
-                                        <span class="member-name">{{member.mobile}}</span><br />
+                                        <div class="member-column">
+                                            <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
+                                        </div>
+                                        <div class="member-column">
+                                            <span class="member-name">Email: {{member.email}}</span><br /><br />
+                                            <span class="member-name">Mobile: {{member.mobile}}</span><br />
+                                        </div>
                                         <button type="button" v-on:click="deleteMember(member.user_id)" class="delete-button" title="Remove Member">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
