@@ -99,7 +99,7 @@ CREATE TABLE PENDING_CLUBS (
     manager_email VARCHAR(255) NOT NULL,
     manager_phone VARCHAR(20),
     PRIMARY KEY (pending_club_id, club_name),
-    FOREIGN KEY (club_manager_id) REFERENCES CLUB_MANAGERS(manager_id) ON DELETE SET NULL
+    FOREIGN KEY (club_manager_id) REFERENCES USERS(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE EMAIL_NOTIF (
