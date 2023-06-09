@@ -357,6 +357,10 @@ INSERT INTO EVENTGOERS
 VALUES
 ('6', '5');
 
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('2', '2');
 
 INSERT INTO ANNOUNCEMENTS
 (title, post_message, private_message, club_id)
