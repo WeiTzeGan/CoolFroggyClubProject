@@ -108,9 +108,13 @@
                             <div class="club-member-content">
                                 <div class="member-list" v-for="(member, index) in club_members" v-bind:key="member.user_id">
                                     <div class="indv-member">
-                                        <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
-                                        <span class="member-name">{{member.email}}</span><br />
-                                        <span class="member-name">{{member.mobile}}</span><br />
+                                        <div class="member-column">
+                                            <p class="member-name">{{member.first_name}} {{member.last_name}}</p><br />
+                                        </div>
+                                        <div class="member-column">
+                                            <span class="member-name">Email: {{member.email}}</span><br /><br />
+                                            <span class="member-name">Mobile: {{member.mobile}}</span><br />
+                                        </div>
                                         <button type="button" v-on:click="deleteMember(member.user_id)" class="delete-button" title="Remove Member">
                                             <img src="images/delete-button.png" alt="Delete" class="delete-icon">
                                         </button>
@@ -161,29 +165,31 @@
 
                     <!-- Club Latest News -->
                     <div class="club-news">
-                        <h2>Club News </h2>
-                        <div class="club-news-content">
-                            <div class="left-news-side" v-for="(news, index) in club_news" v-bind:key="news.post_id">
-                                <h3> {{ news.title }} </h3>
-                                <br>
-                                <p>Club: {{ club_name }}</p>
-                                <p>Published On: {{ formatDate(news.post_date) }}</p>
-                                <br />
-                                <div class="news-desc" v-show="show_news[index]">
-                                    <p>{{news.post_message}}</p>
-                                </div>
-                                    <!-- this should appear like WDC prac task (aka only appear after click show) -->
-                                    <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index);">See full message </button>
-                                    <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index);">See less </button>
-                                    <button type="button" class="more-info-button" v-on:click="editNews(news.post_id)">
-                                        <img src="images/edit-button.png" alt="Edit" class="edit-button">
-                                    </button>
-                                <hr>
-                                <br>
-                            </div>
-                            <button type="button" class="add-news-button" v-on:click="addNews">Add News</button>
+                        <div class="club-news-header">
+                          <h2>Club News</h2>
+                          <button type="button" class="add-news-button" v-on:click="addNews">Add News</button>
                         </div>
-                    </div>
+                        <div class="club-news-content">
+                          <div class="left-news-side" v-for="(news, index) in club_news" v-bind:key="news.post_id">
+                            <h3>{{ news.title }}</h3>
+                            <br>
+                            <p>Club: {{ club_name }}</p>
+                            <p>Published On: {{ formatDate(news.post_date) }}</p>
+                            <br />
+                            <div class="news-desc" v-show="show_news[index]">
+                              <p>{{ news.post_message }}</p>
+                            </div>
+                            <button type="button" v-show="!show_news[index]" v-on:click="show_full_message(index)">See full message</button>
+                            <button type="button" v-show="show_news[index]" v-on:click="hide_full_message(index)">See less</button>
+                            <button type="button" class="more-info-button" v-on:click="editNews(news.post_id)">
+                              <img src="images/edit-button.png" alt="Edit" class="edit-button">
+                            </button>
+                            <hr>
+                            <br>
+                          </div>
+                        </div>
+                      </div>
+
                 </div>
             </article>
         </main>
