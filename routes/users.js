@@ -148,6 +148,7 @@ router.post('/add-club-request', function(req, res, next) {
       connection.release();
 
       if (error) {
+        // console.log(error);
         // console.log("Query error 1");
         res.sendStatus(401);
         return;
