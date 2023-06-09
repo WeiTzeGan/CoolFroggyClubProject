@@ -347,11 +347,16 @@ main {
 }
 
 /* The dots/bullets/indicators */
+.dots-container {
+    text-align: center;
+    margin: 5px 0px 5px 0px;
+}
+
 .dot {
     cursor: pointer;
     height: 15px;
     width: 15px;
-    margin: 0 2px;
+    margin: 3px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
@@ -379,11 +384,27 @@ main {
     }
 }
 
+/* .center {
+    max-width: 1280px;
+    margin: 0px 40px 0px 40px;
+} */
+
 /* Style the upcoming events section */
 .upcoming-events {
     background-color: #9DC08B;
     padding: 20px;
     margin-bottom: 50px;
+    /* display: flex;
+    justify-content: center; */
+}
+
+/* Style the latest news section */
+.latest-news {
+    background-color: #609966;
+    padding: 20px;
+    margin-bottom: 50px;
+    /* display: flex;
+    justify-content: center; */
 }
 
 .upcoming-events h2 {
@@ -407,13 +428,6 @@ main {
 
 .upcoming-events a:hover {
     color: #609966;
-}
-
-/* Style the latest news section */
-.latest-news {
-    background-color: #609966;
-    padding: 20px;
-    margin-bottom: 50px;
 }
 
 .latest-news h2 {

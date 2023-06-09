@@ -120,17 +120,18 @@ const vueinst = Vue.createApp({
         },
 
         update_info: function(){
-            let new_info;
+            let new_info = {
+                new_fname: this.first_name,
+                new_lname: this.last_name,
+                new_email: this.email,
+                new_mobile: this.mobile,
+                new_password: this.password
+            };
+
             const cnfm_pw = document.getElementById("confirm-password");
 
-            // if user chooses to change password -> then include in JSON object
+            // if user chooses to change password
             if (this.change_password) {
-                new_info = {
-                    new_email: vueinst.email,
-                    new_mobile: vueinst.mobile,
-                    new_password: vueinst.password
-                };
-
                 // validate password
                 if (this.password !== this.confirm_password) {
                     cnfm_pw.setCustomValidity('Passwords do not match');
@@ -146,14 +147,6 @@ const vueinst = Vue.createApp({
                     // alert('Ensure password fulfills criteria');
                     return;
                 }
-
-            } else {
-
-                // HAVE TO UPDATE ROUTER TO HANDLE CHANGING INFO WITHOUT CHANGING PASSWORDS ! --------------------------------
-                new_info = {
-                    new_email: vueinst.email,
-                    new_mobile: vueinst.mobile
-                };
             }
 
             let req = new XMLHttpRequest();

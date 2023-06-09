@@ -313,7 +313,7 @@ div.news-collection {
     max-width: 700px;
     border: 1px solid #ccc;
     background-color: #daebd1;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 div.input[type="text"] {

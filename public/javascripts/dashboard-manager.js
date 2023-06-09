@@ -107,36 +107,6 @@ const vueinst = Vue.createApp({
             req.send();
         },
 
-        update_info: function(){
-            let new_info = {
-                new_email: vueinst.email,
-                new_mobile: vueinst.mobile,
-                new_password: vueinst.password
-            };
-
-            let req = new XMLHttpRequest();
-
-            req.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    vueinst.first_name = '';
-                    vueinst.last_name = '';
-                    vueinst.dob = null;
-                    vueinst.password = '';
-                    vueinst.confirm_password = '';
-                    vueinst.mobile = '';
-                    vueinst.email = '';
-                    alert('Account details changed sucessfully');
-                    window.location.href = "member-profile.html";
-                } else if (this.readyState == 4 && this.status == 401) {
-                    alert('Cannot change account details');
-                }
-            };
-
-            req.open('POST', '/users/update-info', true);
-            req.setRequestHeader("Content-type", "application/json");
-            req.send(JSON.stringify(new_info));
-        },
-
         // functions to help get personalized news from club
         get_club_news: function(){
             let req = new XMLHttpRequest();
