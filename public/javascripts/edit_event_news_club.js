@@ -39,6 +39,19 @@ const vueinst = Vue.createApp({
             originNewsMessage: '',
             originNewsPrivacy: '',
 
+            // details for original
+            club_id: '',
+            club_name: '',
+            club_email: '',
+            club_description: '',
+            club_phone: '',
+
+            // details for editing club
+            new_club_name: '',
+            new_club_email: '',
+            new_club_description: '',
+            new_club_phone: '',
+
             // to toggle menu bar
             menu: 'hamburger',
             dropdown: 'dropdown-menu',
@@ -226,6 +239,58 @@ const vueinst = Vue.createApp({
 
             req.open('POST', '/logout', true);
             req.send();
+        },
+
+        getClubID() {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    let response = JSON.parse(this.responseText);
+
+                    vueinst.club_id = response.clubID;
+                    vueinst.club_name = response.clubName;
+                    vueinst.club_email = response.clubEmail;
+                    vueinst.club_description = response.clubDescription;
+                    vueinst.club_phone = response.clubPhone;
+
+                    vueinst.new_club_name = response.clubName;
+                    vueinst.new_club_email = response.clubEmail;
+                    vueinst.new_club_description = response.clubDescription;
+                    vueinst.new_club_phone = response.clubPhone;
+                }
+            };
+
+            req.open('GET', '/club_managers/getClubID', true);
+            req.send();
+        },
+
+        update_club: function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    vueinst.new_club_name = '';
+                    vueinst.new_club_email = '';
+                    vueinst.new_club_description = '';
+                    vueinst.new_club_phone = '';
+                    alert('Club details changed sucessfully');
+                    window.location.href = "club-manager-profile.html";
+                } else if (this.readyState == 4 && this.status == 401) {
+                    alert('Cannot change club details');
+                }
+            };
+
+            req.open('POST', '/club_managers/editClub', true);
+            req.setRequestHeader("Content-type", "application/json");
+
+            req.send(JSON.stringify({
+                club_name: vueinst.new_club_name,
+                club_email: vueinst.new_club_email,
+                club_description: vueinst.new_club_description,
+                club_phone: vueinst.new_club_phone,
+                club_id: vueinst.club_id
+            }));
         }
     }
 
@@ -240,6 +305,7 @@ window.onload = function () {
 
     vueinst.view_old_info();
     vueinst.view_old_news();
+    vueinst.getClubID();
 
     if (window.location.href === "http://localhost:8080/member-profile.html"){
         vueinst.view_member_news();

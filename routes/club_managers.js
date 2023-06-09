@@ -40,7 +40,7 @@ router.get('/getClubID', function(req, res, next) {
       return;
     }
 
-    let query = "SELECT CLUB_MANAGERS.club_id, CLUBS.club_name, CLUBS.email FROM ((CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id) INNER JOIN CLUBS ON CLUB_MANAGERS.club_id = CLUBS. club_id) WHERE CLUB_MANAGERS.manager_id = ?";
+    let query = "SELECT CLUB_MANAGERS.club_id, CLUBS.club_name, CLUBS.email, CLUBS.club_description, CLUBS.phone FROM ((CLUB_MANAGERS INNER JOIN USERS ON CLUB_MANAGERS.manager_id = USERS.user_id) INNER JOIN CLUBS ON CLUB_MANAGERS.club_id = CLUBS. club_id) WHERE CLUB_MANAGERS.manager_id = ?";
 
     connection.query(query, [managerID], function(error, rows, fields) {
       connection.release();
@@ -54,7 +54,9 @@ router.get('/getClubID', function(req, res, next) {
       res.json({
         clubID: rows[0].club_id,
         clubName: rows[0].club_name,
-        clubEmail: rows[0].email
+        clubEmail: rows[0].email,
+        clubDescription: rows[0].club_description,
+        clubPhone: rows[0].phone
       });
     });
   });
@@ -83,6 +85,43 @@ router.post('/viewMembers', function(req, res, next) {
       }
 
       res.json(rows);
+    });
+  });
+});
+
+// Route to edit club details
+router.post('/editClub', function(req, res, next) {
+  let clubName = req.body.club_name;
+  let clubDescription = req.body.club_description;
+  let clubPhone = req.body.club_phone;
+  let clubEmail = req.body.club_email;
+  let clubID = req.body.club_id;
+
+  console.log(clubName);
+  console.log(clubDescription);
+  console.log(clubPhone);
+  console.log(clubEmail);
+  console.log(clubID);
+
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log("Connection error");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = "UPDATE CLUBS SET club_name = ?, club_description = ?, phone = ?, email = ? WHERE club_id = ?";
+
+    connection.query(query, [clubName, clubDescription, clubPhone, clubEmail, clubID], function(error, rows, fields) {
+      connection.release();
+
+      if (error) {
+        console.log("Query error");
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
     });
   });
 });

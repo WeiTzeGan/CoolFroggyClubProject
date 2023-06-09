@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Edit Event</title>
+    <title>Edit Club</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,39 +64,30 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="club-manager-profile.html">Profile</a></li>
-                <li><span aria-current="page">Edit Event</span></li>
+                <li><span aria-current="page">Edit Club</span></li>
             </ul>
         </div>
 
         <main>
             <article class="account-details">
-                <h1>Edit event details</h1>
+                <h1>Edit club details</h1>
                 <br>
 
                 <!-- -------------------LINK BACK TO LOGIN PAGE AFTER SIGNING UP------------------------ -->
                 <form v-on:submit.prevent="update_info"> <!-- prevents default reloading of page after submitting -->
-                    <label for="first-name">Event Name:</label>
-                    <input type="text" id="event-name" name="event-name" v-bind:placeholder="originEventName" v-model="event_name">
+                    <label for="first-name">Club Name:</label>
+                    <input type="text" id="club_name" name="club_name" v-bind:placeholder="club_name" v-model="new_club_name">
 
-                    <label for="last-name">Event Message:</label>
-                    <input type="text" id="event_message" name="event_message" v-bind:placeholder="originEventMessage" v-model="event_message">
+                    <label for="last-name">Email:</label>
+                    <input type="text" id="email" name="email" v-bind:placeholder="club_email" v-model="new_club_email">
 
-                    <label for="dob">Original Event Date:</label>
-                    <input type="text" id="dob" name="dob" v-bind:placeholder="formatDate(originEventDate)" disabled>
+                    <label for="last-name">Description:</label>
+                    <input type="text" id="club_description" name="club_description" v-bind:placeholder="club_description" v-model="new_club_description">
 
-                    <label for="event_date">New Event Date:</label>
-                    <input type="date" id="event_date" name="event_date" v-model="event_date" required>
+                    <label for="last-name">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" v-bind:placeholder="club_phone" v-model="new_club_phone">
 
-                    <label for="phone">Event Location:</label>
-                    <input type="text" id="event_location" name="event_location" v-bind:placeholder="originEventLocation" v-model="event_location">
-
-                    <label for="privacy">Choose event privacy:</label>
-                    <input type="radio" id="private" name="privacy" value="private" v-bind:placeholder="originPrivacy" v-model="privacy">
-                    <label for="private">Private</label>
-                    <input type="radio" id="public" name="privacy" value="public" v-bind:placeholder="originPrivacy" v-model="privacy">
-                    <label for="public">Public</label>
-
-                    <input type="submit" value="Confirm" v-on:click="update_info">
+                    <input type="submit" value="Confirm" v-on:click="update_club">
                 </form>
 
             </article>
