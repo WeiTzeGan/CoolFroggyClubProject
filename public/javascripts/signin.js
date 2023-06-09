@@ -3,6 +3,8 @@ const vueinst = Vue.createApp({
         return {
             signedIn: false,
             buttonHover: false,
+
+            // check if club_member or club_manager
             access_type: '',
 
             // details for login
@@ -57,6 +59,26 @@ const vueinst = Vue.createApp({
         };
     },
 
+    mounted() {
+        // This checks if user has logged in to display the "sign out" and "account" OR "log in/ signup"
+        this.$nextTick(() => {
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    vueinst.access_type = req.responseText;
+                    console.log("signed already");
+                    vueinst.signedIn = true;
+                } else {
+                    vueinst.signedIn = false;
+                }
+            };
+
+            req.open('GET', '/checkLogin', true);
+            req.send();
+        });
+    },
+
     computed: {
         URL: function () {
             // If user is signed in, change log in button to account button
@@ -77,6 +99,18 @@ const vueinst = Vue.createApp({
                 return "Account";
             } else {
                 return "Log in/Sign up";
+            }
+        },
+        URL_manager: function() {
+            if (this.access_type === 'Club Manager') {
+                return "club-manager-profile.html";
+            }
+        },
+        show_your_club: function () {
+            if (this.access_type === 'Club Manager') {
+                return 'account-dropdown-item';
+            } else if (this.access_type === 'Club Member') {
+                return 'account-dropdown-item not-manager';
             }
         }
     },
@@ -327,25 +361,3 @@ function google_login(response) {
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(google_login_data));
 }
-
-
-window.onload = function () {
-    /*
-        This checks if user has logged in to
-        display the "sign out" and "account" OR "log in/ signup"
-    */
-    let req = new XMLHttpRequest();
-
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
-            vueinst.access_type = req.responseText;
-            console.log("signed already");
-            vueinst.signedIn = true;
-        } else {
-            vueinst.signedIn = false;
-        }
-    };
-
-    req.open('GET', '/checkLogin', true);
-    req.send();
-};

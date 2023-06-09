@@ -3,6 +3,8 @@ const vueinst1 = Vue.createApp({
         return {
             signedIn: false,
             buttonHover: false,
+
+            // check if club_member or club_manager
             access_type: '',
 
             all_events: [],
@@ -32,6 +34,45 @@ const vueinst1 = Vue.createApp({
         };
     },
 
+    mounted() {
+        // show events even when user has not logged in
+        if (window.location.href === "http://localhost:8080/upcoming-events.html" || window.location.href === "http://localhost:8080/index.html"){
+            this.view_event('all');
+        }
+        // show clubs even when user has not logged in
+        if (window.location.href === "http://localhost:8080/join-a-club.html"){
+            this.view_club();
+        }
+        // show public clubs' news even when user has not logged in
+        if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
+            this.view_news('all');
+        }
+
+        // Gets club ID
+        if (window.location.href === "http://localhost:8080/add-events.html" || window.location.href === "http://localhost:8080/add-news.html") {
+            this.getClubID();
+        }
+
+        this.$nextTick(() => {
+            // This checks if user has logged in to display the
+            // "sign out" and "account" OR "log in/ signup"
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    vueinst1.signedIn = true;
+                    console.log(req.responseText);
+                    vueinst1.access_type = req.responseText;
+                } else {
+                    vueinst1.signedIn = false;
+                }
+            };
+
+            req.open('GET', '/checkLogin', true);
+            req.send();
+        });
+    },
+
     computed: {
         URL: function () {
             // If user is signed in, change log in button to account button
@@ -52,6 +93,18 @@ const vueinst1 = Vue.createApp({
                 return "Account";
             } else {
                 return "Log in/Sign up";
+            }
+        },
+        URL_manager: function() {
+            if (this.access_type === 'Club Manager') {
+                return "club-manager-profile.html";
+            }
+        },
+        show_your_club: function () {
+            if (this.access_type === 'Club Manager') {
+                return 'account-dropdown-item';
+            } else if (this.access_type === 'Club Member') {
+                return 'account-dropdown-item not-manager';
             }
         }
     },
@@ -97,6 +150,7 @@ const vueinst1 = Vue.createApp({
                     alert("Event already joined, cannot do it again");
                 }else if(req.readyState === 4 && req.status === 401){
                     alert("Please log in to join the event");
+                    window.location.href = "login-new.html";
                 }
             };
 
@@ -143,6 +197,7 @@ const vueinst1 = Vue.createApp({
                     alert("Club already joined, cannot do it again");
                 }else if(req.readyState === 4 && req.status === 401){
                     alert("Please log in to join the club");
+                    window.location.href = "login-new.html";
                 }
             };
 
@@ -204,6 +259,7 @@ const vueinst1 = Vue.createApp({
                 if (this.readyState == 4 && this.status == 200) {
                     alert('Logged out Sucessfully');
                     vueinst1.signedIn = false;
+                    window.location.href = "index.html";
                 } else if (this.readyState == 4 && this.status == 403) {
                     alert('You have not logged in yet');
                 }
@@ -304,44 +360,4 @@ const vueinst1 = Vue.createApp({
 
     }
 }).mount('#coolfroggyclub');
-
-
-window.onload = function () {
-    // show events even when user has not logged in
-    if (window.location.href === "http://localhost:8080/upcoming-events.html" || window.location.href === "http://localhost:8080/index.html"){
-        vueinst1.view_event('all');
-    }
-    // show clubs even when user has not logged in
-    if (window.location.href === "http://localhost:8080/join-a-club.html"){
-        vueinst1.view_club();
-    }
-    // show public clubs' news even when user has not logged in
-    if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
-        vueinst1.view_news('all');
-    }
-
-    // Gets club ID
-    if (window.location.href === "http://localhost:8080/add-events.html" || window.location.href === "http://localhost:8080/add-news.html") {
-        vueinst1.getClubID();
-    }
-
-    /*
-        This checks if user has logged in to
-        display the "sign out" and "account" OR "log in/ signup"
-    */
-    let req = new XMLHttpRequest();
-
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
-            vueinst1.signedIn = true;
-            // console.log(req.responseText);
-            vueinst1.access_type = req.responseText;
-        } else {
-            vueinst1.signedIn = false;
-        }
-    };
-
-    req.open('GET', '/checkLogin', true);
-    req.send();
-};
 

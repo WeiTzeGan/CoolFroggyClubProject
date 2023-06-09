@@ -29,8 +29,8 @@
                         <a>{{ buttonName }}</a>
                         <ul class="account-dropdown">
                             <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
-                            <li><button class="account-dropdown-item" type="button"
-                                    v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                            <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+                            <li><button class="account-dropdown-item" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                         </ul>
                     </div>
                 </div>
@@ -52,8 +52,8 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown-2">
                         <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
-                        <li><button class="account-dropdown-item-2" type="button"
-                                v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                        <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+                        <li><button class="account-dropdown-item-2" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +62,6 @@
         <div aria-label="Breadcrumb" class="breadcrumb">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <!-- <li><a href="account-page.html">Account</a></li> -->
                 <li><span aria-current="page">Profile</span></li>
             </ul>
         </div>

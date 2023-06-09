@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/account.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="javascripts/dashboard.js" defer></script>
 </head>
@@ -30,6 +30,7 @@
                         <a>{{ buttonName }}</a>
                         <ul class="account-dropdown">
                             <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
+                            <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
                             <li><button class="account-dropdown-item" type="button"
                                     v-on:click="signedIn=false; logout();">Sign Out</button></li>
                         </ul>
@@ -53,6 +54,7 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown-2">
                         <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
+                        <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
                         <li><button class="account-dropdown-item-2" type="button"
                                 v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>

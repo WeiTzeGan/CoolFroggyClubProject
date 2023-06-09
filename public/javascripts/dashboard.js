@@ -4,6 +4,9 @@ const vueinst = Vue.createApp({
             signedIn: false,
             buttonHover: false,
 
+            // check if club_member or club_manager
+            access_type: '',
+
             // details needed for editing user details
             first_name: '',
             last_name: '',
@@ -66,6 +69,37 @@ const vueinst = Vue.createApp({
         };
     },
 
+    mounted() {
+        this.view_old_info();
+
+        if (window.location.href === "http://localhost:8080/member-profile.html"){
+            this.view_member_news();
+            this.view_joined_clubs();
+            this.view_joined_event();
+            this.view_clubs_upcoming_events();
+        }
+
+        // this.$nextTick(() => {
+
+        // });
+
+        let req = new XMLHttpRequest();
+
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status === 200 ) {
+                vueinst.signedIn = true;
+                console.log(req.responseText);
+                vueinst.access_type = req.responseText;
+            } else if (req.readyState === 4 && req.status === 401) {
+                vueinst.signedIn = false;
+            }
+        };
+
+        req.open('GET', '/checkLogin', true);
+        req.send();
+
+    },
+
     computed: {
         URL: function () {
             // If user is signed in, change log in button to account button
@@ -81,6 +115,18 @@ const vueinst = Vue.createApp({
                 return "Account";
             } else {
                 return "Log in/Sign up";
+            }
+        },
+        URL_manager: function() {
+            if (this.access_type === 'Club Manager') {
+                return "club-manager-profile.html";
+            }
+        },
+        show_your_club: function () {
+            if (this.access_type === 'Club Manager') {
+                return 'account-dropdown-item';
+            } else if (this.access_type === 'Club Member') {
+                return 'account-dropdown-item not-manager';
             }
         }
     },
@@ -251,13 +297,13 @@ const vueinst = Vue.createApp({
 
             if (vueinst.news_subs[index]){
                 newsNotif = 1;
-            }else{
+            } else {
                 newsNotif = 0;
             }
 
             if (vueinst.events_subs[index]){
                 eventsNotif = 1;
-            }else{
+            } else {
                 eventsNotif = 0;
             }
 
@@ -473,33 +519,3 @@ const vueinst = Vue.createApp({
     }
 
 }).mount('#coolfroggyclub');
-
-
-window.onload = function () {
-    /*
-        This checks if user has logged in to
-        display the "sign out" and "account" OR "log in/ signup"
-    */
-
-    vueinst.view_old_info();
-
-    if (window.location.href === "http://localhost:8080/member-profile.html"){
-        vueinst.view_member_news();
-        vueinst.view_joined_clubs();
-        vueinst.view_joined_event();
-        vueinst.view_clubs_upcoming_events();
-    }
-
-    let req = new XMLHttpRequest();
-
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200 ) {
-            vueinst.signedIn = true;
-        } else if (req.readyState === 4 && req.status === 401) {
-            vueinst.signedIn = false;
-        }
-    };
-
-    req.open('GET', '/checkLogin', true);
-    req.send();
-};

@@ -30,6 +30,10 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown">
                         <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
+
+                        <!-- make sure this is hidden when it's not club-manager-->
+                        <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+
                         <li><button class="account-dropdown-item" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>
                 </div>
@@ -52,6 +56,10 @@
                 <a>{{ buttonName }}</a>
                 <ul class="account-dropdown-2">
                     <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
+
+                    <!-- make sure this is hidden when it's not club-manager-->
+                    <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+
                     <li><button class="account-dropdown-item-2" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                 </ul>
             </div>
