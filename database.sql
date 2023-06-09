@@ -225,12 +225,17 @@ VALUES
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
-('Panic! At The WDC Project', 'Please give us a HD uwu we worked really hard', '2023-06-09', 'Home Sweet Home', '3', '1');
+('Panic! At The WDC Project', 'Please give us a HD uwu we worked really hard', '2023-06-09', 'Home Sweet Home', '3', '0');
 
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
 ('Meeting', 'We will rock you!', '2023-02-09', 'EM bulding', '2', 1);
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id, private_event)
+VALUES
+('Meow Meow', 'Meow Meow Meow Meow Meow', '2023-12-09', 'Park 10', '2', 1);
 
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)

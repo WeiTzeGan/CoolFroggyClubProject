@@ -268,6 +268,11 @@ nav a:hover {
 
 
 /* ----------------- for nav bar breadcrumbing --------------------*/
+button {
+    font-size: medium;
+    font-family: Arial, sans-serif;
+}
+
 div.breadcrumb {
     font-size: small;
     max-width: 1280px;
@@ -313,7 +318,7 @@ div.events-collection {
     max-width: 700px;
     border: 1px solid #ccc;
     background-color: #daebd1;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 div.events-nav {
