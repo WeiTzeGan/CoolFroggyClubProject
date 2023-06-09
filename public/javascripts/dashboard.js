@@ -88,7 +88,7 @@ const vueinst = Vue.createApp({
         req.onreadystatechange = function () {
             if (req.readyState === 4 && req.status === 200 ) {
                 vueinst.signedIn = true;
-                console.log(req.responseText);
+                // console.log(req.responseText);
                 vueinst.access_type = req.responseText;
             } else if (req.readyState === 4 && req.status === 401) {
                 vueinst.signedIn = false;
