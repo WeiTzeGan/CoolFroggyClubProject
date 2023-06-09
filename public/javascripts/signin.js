@@ -200,7 +200,7 @@ const vueinst = Vue.createApp({
 
             req.onreadystatechange = function () {
                 if (req.readyState === 4 && req.status === 200) {
-                    alert("Request to form a club submitted");
+                    alert("Request to form a club submitted. Please wait for Admin approval.");
                     window.location.href = "member-profile.html";
                 }
             };
