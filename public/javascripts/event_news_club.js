@@ -36,7 +36,7 @@ const vueinst1 = Vue.createApp({
 
     mounted() {
         // show events even when user has not logged in
-        if (window.location.href === "http://localhost:8080/upcoming-events.html" || window.location.href === "http://localhost:8080/index.html"){
+        if (window.location.href === "http://localhost:8080/upcoming-events.html" || window.location.href === "http://localhost:8080/index.html" || window.location.href === "http://localhost:8080/"){
             this.view_event('all');
         }
         // show clubs even when user has not logged in
@@ -44,7 +44,7 @@ const vueinst1 = Vue.createApp({
             this.view_club();
         }
         // show public clubs' news even when user has not logged in
-        if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html"){
+        if (window.location.href === "http://localhost:8080/latest-news.html" || window.location.href === "http://localhost:8080/index.html" || window.location.href === "http://localhost:8080/"){
             this.view_news('all');
         }
 
