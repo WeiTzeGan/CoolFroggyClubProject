@@ -306,6 +306,11 @@ main {
 }
 
 /* ----------------------------- CLUBS ----------------------------------------- */
+button {
+    font-size: medium;
+    font-family: Arial, sans-serif;
+}
+
 div.clubs-collection {
     display: flex;
     flex-direction: column;

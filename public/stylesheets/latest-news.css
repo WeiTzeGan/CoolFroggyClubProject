@@ -304,6 +304,11 @@ main {
 }
 
 /* -------------------------------- EVENTS ------------------------------------ */
+button {
+    font-size: medium;
+    font-family: Arial, sans-serif;
+}
+
 div.news-collection {
     display: flex;
     flex-wrap: wrap;
