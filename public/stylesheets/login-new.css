@@ -228,7 +228,7 @@ input, select {
 }
 
 input[type=password] {
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 
 p#password-reset {
@@ -289,6 +289,10 @@ div #google {
 select:required {
     border-color: #900;
     /* background-image: linear-gradient(to right, pink, lightgreen); */
+}
+
+select:valid {
+    border-color: none;
 }
 
 footer {

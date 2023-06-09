@@ -424,45 +424,67 @@ router.get('/info', function(req, res, next){
 
 // User edit personal details
 router.post('/update-info', function(req, res, next) {
+  var newFName = req.body.new_fname;
+  var newLName = req.body.new_lname;
   var newPassword = req.body.new_password;
   var newEmail = req.body.new_email;
   var newMobile = req.body.new_mobile;
   var userID = req.session.user.user_id;
 
-
-  // Hash the password with 10 salt rounds
-  bcrypt.hash(newPassword, 10, function(err, hashedPassword) {
-    if (err) {
-      // console.log("Password hashing error");
-      res.sendStatus(500);
-      return;
-    }
-
+  if (!req.body.newPassword) {
     req.pool.getConnection(function(err, connection) {
       if (err) {
-        // console.log("Connection error");
         res.sendStatus(500);
         return;
       }
 
-      let query = "UPDATE USERS SET user_password = ?, email = ?, mobile = ? WHERE user_id = ?";
+      let query = "UPDATE USERS SET first_name = ?, last_name = ?, email = ?, mobile = ? WHERE user_id = ?";
 
-      connection.query(query, [hashedPassword, newEmail, newMobile, userID], function(error, rows, fields) {
-        connection.release();
-
+      connection.query(query, [newFName, newLName, newEmail, newMobile, userID], function(error, rows, fields) {
         if (error) {
-          // console.log("Query error");
           res.sendStatus(401);
           return;
         }
 
         res.sendStatus(200);
+      });
+    });
 
-      }); // connection.query
+  } else {
+    // Hash the password with 10 salt rounds
+    bcrypt.hash(newPassword, 10, function(err, hashedPassword) {
+      if (err) {
+        // console.log("Password hashing error");
+        res.sendStatus(500);
+        return;
+      }
 
-    }); // req.pool.getConnection
+      req.pool.getConnection(function(err, connection) {
+        if (err) {
+          // console.log("Connection error");
+          res.sendStatus(500);
+          return;
+        }
 
-  }); // bcrypt.hash
+        let query = "UPDATE USERS SET first_name = ?, last_name = ?, user_password = ?, email = ?, mobile = ? WHERE user_id = ?";
+
+        connection.query(query, [newFName, newLName, hashedPassword, newEmail, newMobile, userID], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            // console.log("Query error");
+            res.sendStatus(401);
+            return;
+          }
+
+          res.sendStatus(200);
+
+        }); // connection.query
+
+      }); // req.pool.getConnection
+
+    }); // bcrypt.hash
+  }
 });
 
 // Route to quit a club

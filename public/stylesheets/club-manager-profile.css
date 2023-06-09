@@ -322,13 +322,17 @@ div.club-information {
 #edit-button {
   padding: 0.2rem 0.5rem;
   font-size: 1rem;
-  /* margin-top: 10px; */
 }
 
-.more-info-button, .add-event-button, .add-news-button {
+.more-info-button, .add-event-button, .add-news-button, .edit-news-button {
   padding: 0.2rem 0.5rem;
   font-size: 1rem;
   margin-top: 10px;
+}
+
+.edit-button {
+  width: 1em;
+  height: 0.9em;
 }
 
 .deets {
@@ -375,7 +379,7 @@ input {
   width: 100%;
 }
 
-.club-member-content, .club-events-content, .club-news-content {
+.club-member-content, .club-events-content {
   height: 200px;
   overflow-y: scroll;
   /* padding: 10px; */
@@ -398,26 +402,12 @@ input {
   /* align-content: ; */
 }
 
-.member-events label,
-.club-member label,
-.clubs-events label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.member-events,
-.club-news {
+.member-events {
   display: flex;
   flex-wrap: wrap;
 }
 
-.club-news {
-  height: 500px;
-}
-
-.club-member,
-.clubs-events,
-.club-news {
+.club-member, .clubs-events {
   width: 100%;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
@@ -425,62 +415,17 @@ input {
   padding: 1rem;
 }
 
-.club-member,
-.club-events {
+.club-member, .club-events {
   width: 50%;
+  margin-bottom: 1rem;
   border: 1px solid #ccc;
   background-color: #f3f6e0;
   padding: 1rem;
   height: 300px;
 }
 
-.club-member h2,
-.club-events h2 {
+.club-member h2, .club-events h2 {
   margin-bottom: 0.5rem;
-}
-
-
-.delete-icon {
-  width: 1.5em;
-  height: 1.5em;
-}
-
-.edit-button {
-  width: 1em;
-  height: 0.9em;
-}
-
-@media (max-width: 768px) {
-  .club-information,
-  .club-member,
-  .club-events,
-  .clubs-news {
-    width: 100%;
-  }
-}
-
-/* ---------------- USE VUE TO HIDE EITHER BUTTON ---------------------- */
-div.left-news-nav {
-  width: 90%;
-}
-
-/* --------------------------------------------------------------------- */
-
-footer {
-  position: static;
-  display: flex;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #40513B;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-}
-
-footer img {
-  height: 30px;
-  margin: 0 10px;
 }
 
 .member-list {
@@ -503,22 +448,41 @@ footer img {
   font-weight: bold;
 }
 
-.member-email,
-.member-mobile {
+.member-email, .member-mobile {
   margin-top: 5px;
   color: #888;
+}
+
+.club-news {
+  width: 100%;
+  margin-bottom: 20px;
+  /* margin-bottom: 1rem; */
+  border: 1px solid #ccc;
+  background-color: #f3f6e0;
+  padding: 1rem;
+  height: 400px;
+}
+
+.club-news-header {
+  display: block;
+  /* align-items: center; */
 }
 
 .club-news-content {
   display: flex;
   flex-wrap: wrap;
+  height: 300px;
+  overflow-y: scroll;
+  /* padding: 10px; */
 }
 
-.left-news-side {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f5f5f5;
+.indv-news {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 1rem;
+  background-color: #ffffff;
+  width: 100%;
+  border-radius: 10px;
 }
 
 .left-news-side h3 {
@@ -538,20 +502,39 @@ footer img {
   margin-bottom: 5px;
 }
 
-.club-news {
-  margin-bottom: 20px;
-}
-
-.club-news-header {
-  display: flex;
-  align-items: center;
-}
-
-.club-news-header h2 {
-  flex-grow: 1;
-  margin-right: 10px;
-}
-
 .add-news-button {
   white-space: nowrap;
+}
+
+.delete-icon {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .club-information,
+  .club-member,
+  .club-events,
+  .clubs-news {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------- */
+
+footer {
+  position: static;
+  display: flex;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #40513B;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+footer img {
+  height: 30px;
+  margin: 0 10px;
 }

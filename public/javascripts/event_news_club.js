@@ -103,7 +103,7 @@ const vueinst1 = Vue.createApp({
         show_your_club: function () {
             if (this.access_type === 'Club Manager') {
                 return 'account-dropdown-item';
-            } else if (this.access_type === 'Club Member') {
+            } else if (this.access_type === 'Club Member' || this.access_type === 'Admin') {
                 return 'account-dropdown-item not-manager';
             }
         }

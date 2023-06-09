@@ -215,6 +215,7 @@ body {
 main {
     margin: auto;
     padding: 40px 0px 60px 0px;
+    min-height: 100vh;
 }
 
 /* -------------------- SIGN UP PAGE ------------------------- */
@@ -328,11 +329,6 @@ i {
     cursor: pointer;
 }
 
-input:invalid {
-    border-color: #900;
-    background-color: #fdd;
-}
-
 input:focus:invalid {
     outline: none;
 }
@@ -340,7 +336,7 @@ input:focus:invalid {
 
 input:invalid:required {
     border-color: #900;
-    /* background-image: linear-gradient(to right, pink, lightgreen); */
+    background-color: #fdd;
 }
 
 /* Add a green text color and a checkmark when the requirements are right */

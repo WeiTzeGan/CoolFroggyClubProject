@@ -65,46 +65,70 @@ router.get('/info', function(req, res, next){
   }); // req.pool.getConnection
 });
 
+// update admin details
 router.post('/update-info', function(req, res, next) {
+  var newFName = req.body.new_fname;
+  var newLName = req.body.new_lname;
   var newPassword = req.body.new_password;
   var newEmail = req.body.new_email;
   var newMobile = req.body.new_mobile;
   var adminID = req.session.user.admin_id;
 
-
-  // Hash the password with 10 salt rounds
-  bcrypt.hash(newPassword, 10, function(err, hashedPassword) {
-    if (err) {
-      // console.log("Password hashing error");
-      res.sendStatus(500);
-      return;
-    }
-
+  if (!req.body.newPassword) {
     req.pool.getConnection(function(err, connection) {
       if (err) {
-        // console.log("Connection error");
         res.sendStatus(500);
         return;
       }
 
-      let query = "UPDATE ADMINS SET admin_password = ?, email = ?, mobile = ? WHERE admin_id = ?";
+      let query = "UPDATE ADMINS SET first_name = ?, last_name = ?, email = ?, mobile = ? WHERE admin_id = ?";
 
-      connection.query(query, [hashedPassword, newEmail, newMobile, adminID], function(error, rows, fields) {
-        connection.release();
-
+      connection.query(query, [newFName, newLName, newEmail, newMobile, adminID], function(error, rows, fields) {
         if (error) {
-          // console.log("Query error");
           res.sendStatus(401);
           return;
         }
 
         res.sendStatus(200);
+      });
+    });
 
-      }); // connection.query
+  } else {
 
-    }); // req.pool.getConnection
+    // Hash the password with 10 salt rounds
+    bcrypt.hash(newPassword, 10, function(err, hashedPassword) {
+      if (err) {
+        // console.log("Password hashing error");
+        res.sendStatus(500);
+        return;
+      }
 
-  }); // bcrypt.hash
+      req.pool.getConnection(function(err, connection) {
+        if (err) {
+          // console.log("Connection error");
+          res.sendStatus(500);
+          return;
+        }
+
+        let query = "UPDATE ADMINS SET first_name = ?, last_name = ?, admin_password = ?, email = ?, mobile = ? WHERE admin_id = ?";
+
+        connection.query(query, [newFName, newLName, hashedPassword, newEmail, newMobile, adminID], function(error, rows, fields) {
+          connection.release();
+
+          if (error) {
+            // console.log("Query error");
+            res.sendStatus(401);
+            return;
+          }
+
+          res.sendStatus(200);
+
+        }); // connection.query
+
+      }); // req.pool.getConnection
+
+    }); // bcrypt.hash
+  }
 });
 
 

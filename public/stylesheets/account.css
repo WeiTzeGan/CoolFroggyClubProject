@@ -438,7 +438,7 @@ input:focus:invalid {
 
 input:invalid:required {
     border-color: #900;
-    /* background-image: linear-gradient(to right, pink, lightgreen); */
+    background-color: #fdd
 }
 
 /* Add a green text color and a checkmark when the requirements are right */

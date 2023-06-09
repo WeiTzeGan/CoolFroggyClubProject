@@ -382,7 +382,7 @@ label[for="club"] {
 }
 
 input {
-  /* width: fit-content; */
+  width: 97%;
   height: 0.7rem;
   outline: none;
   border: none;
