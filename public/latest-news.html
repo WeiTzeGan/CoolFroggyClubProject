@@ -13,9 +13,8 @@
 
 <body>
     <div id="coolfroggyclub">
-
-        <nav id="signin">
-            <div class="nav-container" onload="check_login()">
+        <nav>
+            <div class="nav-container" >
                 <span><a href="index.html" class="logo"><img src="images/CoolFroggyLogo.png"
                             alt="Cool Froggy Club logo"></a></span>
 
@@ -24,13 +23,14 @@
                     <div><a href="upcoming-events.html">Upcoming Events</a></div>
                     <div><a href="latest-news.html">Latest News</a></div>
                     <div><a href="join-a-club.html">Join A Club</a></div>
+
                     <div class="login" v-show="!signedIn"><a v-bind:href="URL">{{ buttonName }}</a></div>
                     <div class="login" v-show="signedIn">
                         <a>{{ buttonName }}</a>
                         <ul class="account-dropdown">
                             <li><a class="account-dropdown-item" v-bind:href="URL">Your Profile</a></li>
-                            <li><button class="account-dropdown-item" type="button"
-                                    v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                            <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+                            <li><button class="account-dropdown-item" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                         </ul>
                     </div>
                 </div>
@@ -52,8 +52,8 @@
                     <a>{{ buttonName }}</a>
                     <ul class="account-dropdown-2">
                         <li><a class="account-dropdown-item-2" v-bind:href="URL">Your Profile</a></li>
-                        <li><button class="account-dropdown-item-2" type="button"
-                                v-on:click="signedIn=false; logout();">Sign Out</button></li>
+                        <li><a v-bind:class="show_your_club" v-bind:href="URL_manager">Your Club</a></li>
+                        <li><button class="account-dropdown-item-2" type="button" v-on:click="signedIn=false; logout();">Sign Out</button></li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +65,6 @@
                 <li><span aria-current="page">Latest News</span></li>
             </ul>
         </div>
-
 
 
         <main>

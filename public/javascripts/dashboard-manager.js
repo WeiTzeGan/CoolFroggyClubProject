@@ -4,6 +4,9 @@ const vueinst = Vue.createApp({
             signedIn: false,
             buttonHover: false,
 
+            // check if club_member or club_manager
+            access_type: '',
+
             // details needed for editing user details
             first_name: '',
             last_name: '',
@@ -40,13 +43,17 @@ const vueinst = Vue.createApp({
         };
     },
 
+    // mounted() {
+
+    // }
+
     computed: {
         URL: function () {
             // If user is signed in, change log in button to account button
             if (this.signedIn === false) {
                 return "login-new.html";
             } else {
-                return 'account.html';
+                return 'member-profile.html';
             }
         },
         buttonName: function () {
@@ -55,6 +62,18 @@ const vueinst = Vue.createApp({
                 return "Account";
             } else {
                 return "Log in/Sign up";
+            }
+        },
+        URL_manager: function() {
+            if (this.access_type === 'Club Manager') {
+                return "club-manager-profile.html";
+            }
+        },
+        show_your_club: function () {
+            if (this.access_type === 'Club Manager') {
+                return 'account-dropdown-item';
+            } else if (this.access_type === 'Club Member') {
+                return 'account-dropdown-item not-manager';
             }
         }
     },
@@ -329,10 +348,6 @@ window.onload = function () {
     if (window.location.href === "http://localhost:8080/club-manager-profile.html") {
         vueinst.getClubID();
     }
-    /*
-        This checks if user has logged in to
-        display the "sign out" and "account" OR "log in/ signup"
-    */
 
     vueinst.view_old_info();
 
@@ -341,11 +356,15 @@ window.onload = function () {
         vueinst.count_member_news();
     }
 
+    // This checks if user has logged in to display the
+    // "sign out" and "account" OR "log in/ signup"
     let req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
             vueinst.signedIn = true;
+            console.log(req.responseText);
+            vueinst.access_type = req.responseText;
         } else if (req.readyState === 4 && req.status === 401) {
             vueinst.signedIn = false;
         }

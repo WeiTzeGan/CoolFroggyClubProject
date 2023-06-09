@@ -115,22 +115,42 @@ CREATE TABLE EMAIL_NOTIF (
 INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)
 VALUES
-('admin1', 'shinyi', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
+('admin1', 'shinyi', '2003-01-14', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'sygoh2014@gmail.com', '0405851384');
 
 INSERT INTO ADMINS
 (first_name, last_name, date_of_birth, admin_password, email, mobile)
 VALUES
-('janson', 'vu', '2003-04-23', 'password123', 'thosvu2@gmail.com', '9999999999');
+('janson', 'vu', '2003-04-23', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'thosvu2@gmail.com', '9999999999');
+
+INSERT INTO ADMINS
+(first_name, last_name, date_of_birth, admin_password, email, mobile)
+VALUES
+('ellie', 'test1', '1999-03-24', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'ellie@mail.com', '0123456789');
 
 INSERT INTO USERS
 (first_name, last_name, date_of_birth, user_password, email, mobile)
 VALUES
-('ShinYi', 'G', '2003-01-14', 'password123', 'sygoh2014@gmail.com', '0405851384');
+('ShinYi', 'G', '2003-01-14', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'sygoh2014@gmail.com', '0405851384');
 
 INSERT INTO USERS
 (first_name, last_name, date_of_birth, user_password, email, mobile)
 VALUES
-('janson', 'vu', '2003-04-23', 'password123', 'thosvu2@gmail.com', '9999999999');
+('janson', 'vu', '2003-04-23', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'thosvu2@gmail.com', '9999999999');
+
+INSERT INTO USERS
+(first_name, last_name, date_of_birth, user_password, email, mobile)
+VALUES
+('ellie', 'test2', '1999-03-24', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'ellie2@mail.com', '0123456789');
+
+INSERT INTO USERS
+(first_name, last_name, date_of_birth, user_password, email, mobile)
+VALUES
+('test', '4', '2003-04-23', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'xxx@gmail.com', '9999999999');
+
+INSERT INTO USERS
+(first_name, last_name, date_of_birth, user_password, email, mobile)
+VALUES
+('test', '5', '2003-04-23', '$2b$10$ffk.uLZuSa89qw6ai.6zBe2trzkWTBEGYkhh3M9yADM1HuWKZLSxO', 'xxxx@gmail.com', '9999999999');
 
 INSERT INTO CLUB_MANAGERS
 (manager_id, club_id)
@@ -142,6 +162,11 @@ INSERT INTO CLUB_MANAGERS
 VALUES
 ('2', '2');
 
+INSERT INTO CLUB_MANAGERS
+(manager_id, club_id)
+VALUES
+('3', '3');
+
 INSERT INTO CLUBS
 (club_name, club_description, manager_id, phone, email)
 VALUES
@@ -152,6 +177,11 @@ INSERT INTO CLUBS
 VALUES
 ('AVA', 'BBBB', '2', 123456899, 'ava@gmail.com');
 
+INSERT INTO CLUBS
+(club_name, club_description, manager_id, phone, email)
+VALUES
+('Jump Rope Club', 'Come along and jump around like fwoggies!!!', '3', 0123456789, 'jumpropeclub@gmail.com');
+
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
@@ -161,7 +191,6 @@ INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
 VALUES
 ('Dinner', 'Time to eat!', '2023-06-08', 'MLC', '1', '0');
-
 
 INSERT INTO EVENTS
 (event_name, event_message, event_date, event_location, club_id, private_event)
@@ -178,6 +207,17 @@ INSERT INTO EVENTS
 VALUES
 ('Rock and RickRoll', 'We will rock you!', '2023-02-09', 'EM bulding', '2', '0');
 
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id, private_event)
+VALUES
+('Skipping Showdown', 'Time to Skip! Hop! Jump! (off a cliff)', '2023-06-15', 'Depths of your Despair', '3', '0');
+
+INSERT INTO EVENTS
+(event_name, event_message, event_date, event_location, club_id, private_event)
+VALUES
+('Panic! At The WDC Project', 'Please give us a HD uwu we worked really hard', '2023-06-09', 'Home Sweet Home', '3', '1');
+
+
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)
 VALUES
@@ -196,7 +236,47 @@ VALUES
 INSERT INTO CLUB_MEMBERS
 (club_id, user_id)
 VALUES
-('2', '1'); 
+('2', '1');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('3', '1');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('3', '2');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('3', '3');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('1', '3');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('1', '4');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('1', '5');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('3', '5');
+
+INSERT INTO CLUB_MEMBERS
+(club_id, user_id)
+VALUES
+('2', '4');
 
 INSERT INTO EVENTGOERS
 (event_id, participant_id)
@@ -207,6 +287,62 @@ INSERT INTO EVENTGOERS
 (event_id, participant_id)
 VALUES
 ('1', '2');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('1', '3');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('1', '4');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('5', '1');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('5', '2');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('5', '3');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('5', '4');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('5', '5');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('6', '2');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('6', '3');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('6', '4');
+
+INSERT INTO EVENTGOERS
+(event_id, participant_id)
+VALUES
+('6', '5');
+
 
 INSERT INTO ANNOUNCEMENTS
 (title, post_message, private_message, club_id)
@@ -244,6 +380,12 @@ INSERT INTO ANNOUNCEMENTS
 VALUES
 ('Meeting 2', 'We are having meeting 2', '1', '2', '2023-02-12');
 
+INSERT INTO ANNOUNCEMENTS
+(title, post_message, private_message, club_id, post_date)
+VALUES
+('Skip Rope Challenge', 'We are having a skipping rope challenge, come join us!', '0', '3', '2023-04-20');
+
+
 INSERT INTO EMAIL_NOTIF
 VALUES
 ('1', '1', '1', '1');
@@ -260,6 +402,10 @@ INSERT INTO EMAIL_NOTIF
 VALUES
 ('2', '1', 0, 0);
 
+INSERT INTO EMAIL_NOTIF
+VALUES
+('5', '3', 1, 1);
+
 INSERT INTO
 PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
 VALUES('NEW CLUB 1', 'THIS IS NEW CLUB 1', 'newclub1@gmail.com', 2, 'janson', 'vu', 'thosvu2@gmail.com');
@@ -267,7 +413,6 @@ VALUES('NEW CLUB 1', 'THIS IS NEW CLUB 1', 'newclub1@gmail.com', 2, 'janson', 'v
 INSERT INTO
 PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)
 VALUES('NEW CLUB 2', 'THIS IS NEW CLUB 2', 'newclub2@gmail.com', 1, 'shinyi', 'G', 'sygoh2014@gmail.com');
-
 
 INSERT INTO
 PENDING_CLUBS(club_name, club_description, club_email, club_manager_id, manager_first_name, manager_last_name, manager_email)

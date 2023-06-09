@@ -124,6 +124,10 @@ nav a:hover {
     /* background-color: ; */
 }
 
+.not-manager {
+    display: none;
+  }
+
 .login:hover .account-dropdown,
 .account-dropdown:hover {
     display: block;

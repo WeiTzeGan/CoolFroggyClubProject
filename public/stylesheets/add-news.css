@@ -20,7 +20,7 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 99;
     background-color: #EDF1D6;
     /* padding: 20px; */
 }
@@ -65,6 +65,49 @@ nav a:hover {
     height: 100px;
 }
 
+.login {
+    margin-left: auto;
+}
+
+
+.login a {
+    background-color: #609966;
+    color: #EDF1D6;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    white-space: nowrap;/* to make sure the button won't change when window resized */
+    width: 100%;
+    text-align: center;
+}
+
+.login a:hover {
+    background-color: #9DC08B;
+}
+
+.login button {
+    background-color: #609966;
+    color: #EDF1D6;
+    padding: 10px 20px;
+    border-style: none;
+    /* border-color:#609966; */
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    white-space: nowrap;/* to make sure the button won't change when window resized */
+    width: 100%;
+    text-align: center;
+}
+
+.login button:hover {
+    background-color: #9DC08B;
+}
+
 .account-dropdown {
     display: none;
     position: absolute;
@@ -77,6 +120,10 @@ nav a:hover {
     display: block;
     padding: 8px;
     /* background-color: ; */
+}
+
+.not-manager {
+    display: none;
 }
 
 .login:hover .account-dropdown, .account-dropdown:hover {
@@ -161,6 +208,40 @@ nav a:hover {
     justify-content: center;
 }
 
+.dropdown-menu .login {
+    width: 100%;
+}
+
+.dropdown-menu .login .account-dropdown-item2 {
+    display: block;
+}
+
+.account-dropdown-2 {
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 250px;
+    list-style: none;
+    padding: 0.7rem;
+    background: rgba(237, 241, 214, 0.4);
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+}
+
+.account-dropdown-2 li {
+    padding: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login:hover .account-dropdown-2, .account-dropdown-2:hover {
+    display: block;
+}
+
+/*------------------------------------------------------*/
+
 @media (min-width: 835px) {
     .hamburger {
         display: none;
@@ -179,6 +260,9 @@ nav a:hover {
         left: 20px;
         top: auto;
         width: unset; /* sets the width to inherit or initial ie the nav-container width */
+    }
+    .account-dropdown-2 {
+        width: inherit;
     }
 }
 
